@@ -1,0 +1,10 @@
+training_data/
+venv/
+venv_2021/
+models/
+Anaconda3-2020.11-Linux-x86_64.sh
+clause_vector.npy
+vocab.npy
+stnce_embedding.json
+stnce_embedding_reverse.json
+verizon.npy
