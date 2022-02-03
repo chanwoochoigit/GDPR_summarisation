@@ -10,12 +10,9 @@ from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
+from sklearn.preprocessing import normalize
 
 class Clustering():
-
-    """returns the cosine similarity between 2 vectors"""
-    def cosine(self, u, v):
-        return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
 
     def list_to_str(self, tokens_list):
         sentences = []
@@ -27,14 +24,14 @@ class Clustering():
 
         return sentences
 
-    def do_sentenceBERT(self):
-        model = SentenceTransformer('bert-base-nli-mean-tokens')
-        sentence_embeddings = model.encode(cls_tokenised)
+    def do_sentenceBERT(self, sentences):
+        model = SentenceTransformer('stsb-mpnet-base-v2')
+        sentence_embeddings = model.encode(sentences)
         # print('Sample BERT embedding vector - length', len(sentence_embeddings[0]))
         # print('Sample BERT embedding vector - note includes negative values', sentence_embeddings[0])
         sentence_dict = {}
         sentence_dict_reverse = {}
-        for raw, emb in zip(self.list_to_str(cls_tokenised), sentence_embeddings):
+        for raw, emb in zip(sentences, sentence_embeddings):
             sentence_dict[raw] = emb.tolist()
             sentence_dict_reverse[str(emb.tolist())] = raw
 
@@ -46,10 +43,13 @@ class Clustering():
 
     def do_kmeans(self, sentences, k):
         X = np.asarray(sentences)
+
+        #normalise vector to make cosine similarity effect
+        normed_X = normalize(X, axis=1, norm='l1')
         num_clusters = k
         # K-Means Parameters
-        kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(X)
-        pred = kmeans.predict(X)
+        kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(normed_X)
+        pred = kmeans.predict(normed_X)
 
         sent_cluster_dict = {}
 
@@ -73,17 +73,19 @@ class Clustering():
     # perform elbow method to find optimal k: returns WSS score for k values from 1 to kmax
     def do_elbow(self, sentences, kmax):
         X = np.asarray(sentences)
+        normed_X = normalize(X, axis=1, norm='l1')
+
         sse = []
         for k in range(1, kmax + 1):
-            kmeans = KMeans(n_clusters=k).fit(X)
+            kmeans = KMeans(n_clusters=k).fit(normed_X)
             centroids = kmeans.cluster_centers_
-            pred_clusters = kmeans.predict(X)
+            pred_clusters = kmeans.predict(normed_X)
             curr_sse = 0
 
             # calculate square of Euclidean distance of each point from its cluster center and add to current WSS
-            for i in range(len(X)):
+            for i in range(len(normed_X)):
                 curr_center = centroids[pred_clusters[i]]
-                curr_sse += (X[i, 0] - curr_center[0]) ** 2 + (X[i, 1] - curr_center[1]) ** 2
+                curr_sse += (normed_X[i, 0] - curr_center[0]) ** 2 + (normed_X[i, 1] - curr_center[1]) ** 2
 
             sse.append(curr_sse)
 
@@ -96,12 +98,14 @@ class Clustering():
 
     def do_silhoulette(self, sentences, kmax):
         X = np.asarray(sentences)
+        normed_X = normalize(X, axis=1, norm='l1')
+
         sil = []
         # dissimilarity would not be defined for a single cluster, thus, minimum number of clusters should be 2
         for k in range(2, kmax + 1):
-            kmeans = KMeans(n_clusters=k).fit(X)
+            kmeans = KMeans(n_clusters=k).fit(normed_X)
             labels = kmeans.labels_
-            sil.append(silhouette_score(X, labels, metric='euclidean'))
+            sil.append(silhouette_score(normed_X, labels, metric='euclidean'))
 
         y = sil
         x = range(len(y))
@@ -221,13 +225,13 @@ class EvalCluster():
 
         return N11, N10, N01, N00
 
-    def run_calculation(self):
+    def run_calculation(self, num_classes):
         corpus = self.load_corpus()
         result = self.init_nd_dict()
 
         for i, cls in enumerate(corpus.keys()):
             for doc in corpus[cls]:
-                print('class: {}/15---------------------------------------------------'.format(i+1))
+                print('class: {}/{}---------------------------------------------------'.format(i+1, num_classes))
                 print('calculating mutual information...{}/{}'.format(doc, len(corpus[cls].keys())))
                 for word in corpus[cls][doc]:
                     score = self.calc_mi(word, cls)
@@ -251,7 +255,7 @@ class EvalCluster():
     def sort_dict_by_value(self, dict_to_sort):
         return dict(sorted(dict_to_sort.items(), key=lambda item: item[1], reverse=True))
 
-    def sort_result(self):
+    def sort_result(self, num_classes):
         with open('mi_scores.json', 'r') as f:
             to_display = json.load(f)
         to_sort = self.init_nd_dict()
@@ -262,25 +266,23 @@ class EvalCluster():
 
         result = self.init_nd_dict()
 
-        for i in range(15):
+        for i in range(num_classes):
             result[i] = self.format_ranked_result(self.sort_dict_by_value(to_sort[str(i)]))
 
         with open('ranked_result_cluster.json', 'w') as f:
             json.dump(result, f)
 
-    def validate_result(self):
+    def validate_result(self, num_keywords, max_sentences):
         superwords = self.init_nd_dict()
 
         with open('ranked_result_cluster.json', 'r') as f:
             results = json.load(f)
 
-        # print(results)
-
         # choose 5 "strongest" words and store them in a dict
         for i in list(results.keys()):
-            for j in range(5):
+            for j in range(num_keywords):
                 superwords[i][j] = list(results[str(i)].keys())[j]
-        # print(strong_words)
+        # print(superwords)
 
         with open('sent_cluster.json', 'r') as f:
             clusters = json.load(f)
@@ -292,61 +294,91 @@ class EvalCluster():
             temps = [[], [], [], [], []]
 
             for s in sentences:
-                for i in range(5):
+                for i in range(num_keywords):
                     if superwords[cluster][i] in s and s not in temps[i]:   # if each superword is in any of the sentences in the same cluster
                         temps[i].append(s)                                  # where the superword belongs, append it to a list
 
-            for i in range(5):
+            for i in range(num_keywords):
                 super_sentences[cluster][superwords[cluster][i]] = temps[i]  # save the list of sentences in a dict
 
-        self.format_supersentences(superwords, super_sentences)  #format the "supersentences" to be human-readable to a file
+        self.format_supersentences(superwords, super_sentences, max_sentences)  #format the "supersentences" to be human-readable to a file
 
-    def format_supersentences(self, superwords, super_sentences):
+    def format_supersentences(self, superwords, super_sentences, max_sentences):
         with open('supersentences_per_cluster.txt', 'a') as f:
             for cluster in super_sentences.keys():
                 f.write('cluster ' + str(cluster) + ':\n')
 
-                for i in range(5):
+                for i in range(max_sentences):
                     f.write('\tword {} "{}":'.format(i+1, superwords[cluster][i]) + '\n')
-                    for j, s in enumerate(super_sentences[cluster][superwords[cluster][i]]):
-                        f.write('\t\t{}: "{}"\n'.format(j, s))
+                    target_word = superwords[cluster][i]
+                    sentences = super_sentences[cluster][target_word]
+                    for j, s in enumerate(sentences):
+                        if j == max_sentences:
+                            break
+                        f.write('\t\t{}: "{}"\n'.format(j+1, s))
 
                 f.write('\n')
 
+class UtilityFunct():
+
+    def split_sentences(self, sentences):
+        splitted = []
+        for s in sentences:
+            #remove unsupported punctuations
+            splitted.append(s.replace('-',' ').replace('!','').replace('[',' ').replace(']',' ').replace(':',' ').replace(';',' ')\
+                            .replace('(a)',' ').replace('(b)','').replace('(c)','').replace('(d)','').replace('(e)','') \
+                            .replace('\u2019',' ').replace('\u2013',' ').replace('\u2014',' ').replace('\u201d',' ')
+                            .replace('\u201c',' ').replace('\u2018', ' ').replace('\u202f', ' ').replace('\u00e0', ' ')
+                            .replace('\u00e9',' ').replace('\u00a0', ' ').replace('(', ' ').replace(')',' ').replace('_',' ')
+                            .replace('   ',' ').replace('  ',' ').replace('    ',' ').replace('U.S.','USA').replace('E.U.','eu').replace('e.g.','for example,')
+                            .replace('. ','.').replace('.','. ')
+                            .split('. '))
+
+        splitted = list(itertools.chain.from_iterable(splitted))
+
+        formatted = []
+        for sentence in splitted:
+            if sentence == '': continue
+            else:
+                if '.' not in sentence:
+                    formatted.append(str(sentence)+'.')
+                else:
+                    formatted.append(str(sentence))
+
+        return formatted
+
 
 """""""""""""use alice clauses for experiment"""""""""""""
-alice_csv = pd.read_csv('training_data/alice/data_alice.csv')
-alice_clause = alice_csv['clause'].to_list()
-cls_tokenised = []
-
-from nltk.tokenize import word_tokenize
-for c in alice_clause:
-    cls_tokenised.append(word_tokenize(c.lower()))
-
-# sentences_embedded_d2v = do_doc2vec()
-# do_sentenceBERT()
+knn = Clustering()
+# alice_csv = pd.read_csv('training_data/alice/data_alice.csv')
+# alice_clause = alice_csv['clause'].to_list()
+#
+# uf = UtilityFunct()
+#
+# sentences = uf.split_sentences(alice_clause)
+#
+# knn.do_sentenceBERT(sentences)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""load embedded sentences to be processed"""""""""
-# with open('stnce_embedding.json', 'r') as f:
-#     sent_dict = json.load(f)
-# with open('stnce_embedding_reverse.json', 'r') as f:
-#     sent_dict_reverse = json.load(f)
-#
-# embedded_sentences = list(sent_dict.values())
+with open('stnce_embedding.json', 'r') as f:
+    sent_dict = json.load(f)
+with open('stnce_embedding_reverse.json', 'r') as f:
+    sent_dict_reverse = json.load(f)
+
+embedded_sentences = list(sent_dict.values())
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""perform k-means clustering"""""""""""""
-# knn = Clustering()
-# knn.do_kmeans(embedded_sentences, 15)
-# do_elbow(embedded_sentences,300)
-# do_silhoulette(embedded_sentences,100)
+# knn.do_kmeans(embedded_sentences, 20)
+# knn.do_elbow(embedded_sentences,150)
+# knn.do_silhoulette(embedded_sentences,100)
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""evaluate k-means"""""""""""""""""
 eval = EvalCluster()
 # eval.create_corpus()
-# eval.run_calculation()
-# eval.sort_result()
-eval.validate_result()
+# eval.run_calculation(20)
+# eval.sort_result(num_classes=20)
+eval.validate_result(num_keywords=5, max_sentences=5)
 """"""""""""""""""""""""""""""""""""""""""""""""""

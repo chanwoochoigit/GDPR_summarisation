@@ -1,434 +1,634 @@
 cluster 0:
-	word 1 "exceptions":
-		0: "there may be exceptions to the right to deletion for specific legal reasons which , if applicable , we will set out for you in response to your request . "
-		1: "there may be exceptions to the right to erasure for specific legal reasons which , if applicable , we will set out for you in response to your request "
-	word 2 "menus":
-		0: "riders may enable or disallow our app to collect location data from their mobile devices through the settings > privacy menus in our app . riders and delivery recipients can enable or disallow such collections through the settings on their mobile device . "
-		1: "users may enable our app to send push notifications about discounts and news from us . push notifications may be enabled or disabled through the settings > privacy menus in the uber app . "
-	word 3 "response":
-		0: "there may be exceptions to the right to deletion for specific legal reasons which , if applicable , we will set out for you in response to your request . "
-		1: "we may reveal your personal data to any law enforcement agency , court , regulator , government authority , or in connection with any legal action if we are required to do so to meet a legal or regulatory obligation , where the request is proportionate , or otherwise to protect our rights or the rights of anyone else ( for example , in response to valid and properly served legal process such as subpoena or warrant ) . "
-		2: "there may be exceptions to the right to erasure for specific legal reasons which , if applicable , we will set out for you in response to your request "
-	word 4 "settings":
-		0: "riders may enable or disallow our app to collect location data from their mobile devices through the settings > privacy menus in our app . riders and delivery recipients can enable or disallow such collections through the settings on their mobile device . "
-		1: "users may enable our app to send push notifications about discounts and news from us . push notifications may be enabled or disabled through the settings > privacy menus in the uber app . "
-		2: "you may also provide other account information , like an email address , bio , or profile picture . we also store your user account preferences and settings . "
-		3: "it may take a short amount of time for privacy settings to be fully reflected throughout our systems . "
-		4: "we might use your information for marketing purposes or to send you notifications on your device depending on your settings . "
-		5: "this may include your ip address , user-agent string , browser type , operating system , referral urls , device information ( e.g. , device ids ) , device settings , pages visited , links clicked , the requested url , and search terms . "
-	word 5 "properly":
-		0: "we may reveal your personal data to any law enforcement agency , court , regulator , government authority , or in connection with any legal action if we are required to do so to meet a legal or regulatory obligation , where the request is proportionate , or otherwise to protect our rights or the rights of anyone else ( for example , in response to valid and properly served legal process such as subpoena or warrant ) . "
-		1: "this may include using your data to complete the delivery and to give your details to the sender and the person the item was sent to , to let them know you have the item , and allow the delivery to be properly tracked within the postal service . "
+	word 1 "delete":
+		1: "We store data until it is no longer necessary to provide our services and our application Products or until your account is deleted whichever comes first."
+		2: "For example, when you search for something on our application, you can access and delete that query from within your search history at any time, but the log of that search is deleted after six months."
+		3: " If you submit a copy of your government issued ID for account verification purposes, we delete that copy 30 days after review, unless otherwise stated."
+		4: "When you delete your account, we delete things that you have posted, such as your photos and status updates, and you won't be able to recover this information later."
+		5: "Snaps and Chats sent in our product will be automatically deleted by default from our servers after we detect they ve been opened by all recipients or have expired."
+	word 2 "You":
+		1: "You can also delete some information in the app, like photos you ve saved to Memories, Our Story submissions, and search history."
+		2: "You can opt out in the Marketing Communications section of the Account section of our website."
+		3: "You may also request that we delete personal information that we hold about you."
+		4: "You can object to processing of your personal information, ask us to restrict processing of your personal information or request portability of your personal information, if we have collected and process your personal information with your consent, then you can withdraw your consent at any time."
+		5: "You can link or unlink your account from other services like Facebook, Google or Twitter ."
+	word 3 "withdraw":
+		1: "You can object to processing of your personal information, ask us to restrict processing of your personal information or request portability of your personal information, if we have collected and process your personal information with your consent, then you can withdraw your consent at any time."
+		2: "You will always have the option to change your mind and withdraw your consent at any time."
+		3: "At any time, you can withdraw consent you have provided by going to settings."
+		4: "You can withdraw your consent at any time and free of charge."
+		5: "You can also say no to us using your data for direct marketing and in certain other legitimate interest circumstances, withdraw any consent you ve given us and ask a member of staff to review a computer made decision."
+	word 4 "longer":
+		1: "We store data until it is no longer necessary to provide our services and our application Products or until your account is deleted whichever comes first."
+		2: "Responses to such surveys are collected on the basis of consent and will be deleted once no longer necessary for the purposes collected."
+		3: "If you no longer want to receive certain communications from us via email or text message, simply access the "Communications Settings" option in the "Account" section of our website and uncheck those items to unsubscribe."
+		4: "If you subsequently decide you no longer wish to receive these notifications, you can use your mobile device's settings functionality to turn them off."
+		5: "If you agree to receive those notifications and subsequently decide you no longer wish to receive these notifications, you can use your browser s settings to turn them off."
+	word 5 "We":
+		1: "We store data until it is no longer necessary to provide our services and our application Products or until your account is deleted whichever comes first."
+		2: "We store your basic account information like your name, phone number, and email address and list of friends until you ask us to delete them."
+		3: "We ll also delete most of the information we ve collected about you after you have been inactive for a while."
+		4: "We also enable users to request access to or copies of their data, changes or updates to their accounts, deletion of their accounts, or that we restrict its processing of user personal data."
+		5: "We take reasonable measures to destroy or de identify personal information in a secure manner when it is no longer required."
 
 cluster 1:
-	word 1 "owned":
-		0: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a delivery person acts as a substitute ( uk only ) "
-		1: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a rider uses their employer ’ s business profile , such as when they take trips arranged through our central service . "
-		2: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a driver or delivery person uses an account owned by or associated with an uber partner transportation company or restaurant . "
-	word 2 "real-time":
-		0: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a delivery person acts as a substitute ( uk only ) "
-		1: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a rider uses their employer ’ s business profile , such as when they take trips arranged through our central service . "
-		2: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a driver or delivery person uses an account owned by or associated with an uber partner transportation company or restaurant . "
-	word 3 "owner":
-		0: "if the ownership or control of all or part of our products or their assets changes , we may transfer your information to the new owner . "
-		1: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a delivery person acts as a substitute ( uk only ) "
-		2: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a rider uses their employer ’ s business profile , such as when they take trips arranged through our central service . "
-		3: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a driver or delivery person uses an account owned by or associated with an uber partner transportation company or restaurant . "
-		4: "if our business enters into a joint venture with , purchases or is sold to or merged with another business entity , your information may be disclosed or transferred to the target company , our new business partners or owners or their advisors . "
-	word 4 "trip":
-		0: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a delivery person acts as a substitute ( uk only ) "
-		1: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a rider uses their employer ’ s business profile , such as when they take trips arranged through our central service . "
-		2: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a driver or delivery person uses an account owned by or associated with an uber partner transportation company or restaurant . "
-		3: "riders who have enabled the app to collect location data from their mobile device may also enable the app to share their location with their driver from the time the ride is requested to the start of the trip . this can help improve pickups for both drivers and riders , particularly in crowded areas . "
-	word 5 "transportation":
-		0: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a delivery person acts as a substitute ( uk only ) "
-		1: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a rider uses their employer ’ s business profile , such as when they take trips arranged through our central service . "
-		2: "if a user requests transportation or places an order using an account owned by another party , we may share their order or trip information , including real-time location data , with the owner of that account . this occurs , for example , when a driver or delivery person uses an account owned by or associated with an uber partner transportation company or restaurant . "
+	word 1 "consent":
+		1: "In some cases we ll ask for consent to use your information for specific purposes."
+		2: "Even if we re not relying on consent to use your information, we may ask you for permission to access data like contacts and location."
+		3: "We do so in order to fulfill our agreements with users, such as our Terms of Use, or based on users prior consent, adequacy decisions for the relevant countries, or other transfer mechanisms as may be available under applicable law, such as the Standard Contractual Clauses."
+		4: "Although we may send users communications about our partners products and services, we do not sell users personal data to, or share it with, such partners or others for purposes of their own direct marketing or advertising, except with users consent."
+		5: "We may collect and use personal data based on the user s consent."
+	word 2 "parent":
+		1: "While individuals under the age of 18 may utilize the service, they may do so only with the involvement, supervision, and approval of a parent or legal guardian."
+		2: "If you're under 18, you may use our Services only with the involvement of a parent or guardian."
+		3: "And if we need your parent or guardian's permission we'll give you clear details about what's needed at the time."
+		4: "Sometimes we'll ask to get your parent or guardian's consent."
+		5: "Sometimes we'll be asking for your parent or guardian to do that."
+	word 3 "permission":
+		1: "Even if we re not relying on consent to use your information, we may ask you for permission to access data like contacts and location."
+		2: "Android devices notify users of the permissions that the app seeks before their first use of the app, and use of the app constitutes a grant of such permission."
+		3: "Please note that we will only access your camera or photos from your device if you give us permission to do so, and we will only access images that you specifically choose to share with us and metadata related to those images, such as the type of file and the size of the image."
+		4: "With respect to certain third parties which may request or require that we share your information with them, your permission will be requested before we provide your information to such third parties."
+		5: "Sometimes we might ask your permission to do things, like when you subscribe to an email."
+	word 4 "guardian":
+		1: "While individuals under the age of 18 may utilize the service, they may do so only with the involvement, supervision, and approval of a parent or legal guardian."
+		2: "You consent to and direct us to disclose necessary information to your agent or legal representative, such as the holder of a power of attorney that you grant, or a guardian appointed for you."
+		3: "If you're under 18, you may use our Services only with the involvement of a parent or guardian."
+		4: "And if we need your parent or guardian's permission we'll give you clear details about what's needed at the time."
+		5: "Sometimes we'll ask to get your parent or guardian's consent."
+	word 5 "ll":
+		1: "In some cases we ll ask for consent to use your information for specific purposes."
+		2: "We do so in order to fulfill our agreements with users, such as our Terms of Use, or based on users prior consent, adequacy decisions for the relevant countries, or other transfer mechanisms as may be available under applicable law, such as the Standard Contractual Clauses."
+		3: "Although we may send users communications about our partners products and services, we do not sell users personal data to, or share it with, such partners or others for purposes of their own direct marketing or advertising, except with users consent."
+		4: "We may collect and use personal data based on the user s consent."
+		5: "withdrawing your consent will not affect the lawfulness of any processing we conducted prior to your withdrawal, nor will it affect processing of your personal information conducted in reliance on lawful processing grounds other than consent, ."
 
 cluster 2:
-	word 1 "views":
-		0: "also we want to enable our customer support team to help you with any enquiries or complaints in the most efficient way possible and to provide a positive customer experience and hope to contact you for your views and feedback on our services or our partners ’ services and/or products and to notify you if there are any important changes or developments to the sites or our services , including letting you know that our services are operating in a new area , where you have asked us to do so . "
-		1: "we like to hear your views as this can help us to improve our products and services . "
-	word 2 "similarly":
-		0: "similarly , if you use our prescription dispensing and delivery service , we will ask you to give us some health-related information online . this information is held securely on our pharmacy system to allow pharmacy staff in our stores to check your prescription history and medical conditions , ensuring you receive the best possible service from us . "
-		1: "similarly , if an advertiser incorporates our ad technology , we may receive limited information about your activity on the advertiser ’ s site or app , such as whether you bought something from the advertiser . "
-	word 3 "legal":
-		0: "because we are subject to legal and regulatory requirements relating to drivers and delivery persons , this generally means that we retain their account and data for a minimum of 7 years after a deletion request . "
-		1: "also we search the fraud prevention agencies and kyc , know your customer , and aml , anti money laundering , service providers to fulfil our legal duties . "
-		2: "this enables us to protect both our business and our customers from fraudsters . we have a legal obligation to obtain and hold this information about you . "
-		3: "besides that , we use compliance with a legal obligation when we use your personal information to comply with laws . for instance , we collect seller place of establishment and bank account information for identity verification purposes . "
-		4: "also managing legal issues , legal compliance : we need to use and disclose personal data in certain ways to comply with our legal obligations and to protect the vital interests of the individual or others : for example , we may collect or share personal data to help resolve an urgent medical situation . "
-		5: "this involves sharing your personal data with organisations such as datacash , which verify those details and transactions and pick up on anything that may indicate illegal activity . this may in some cases involve the disclosure of information to a credit reference agency , which will keep a record of that information and may pass it to the police . "
-		6: "this enables us , in particular , to provide you , with your consent as legally required , with information about products and services , which we believe might interest you , and improve our products , services , content , and advertising by analysing your use of the services of other corporate family members , in particular through the matching of certain data like cookie ids . "
-		7: "this applies in particular to cases where we may still need the data for the execution of the contract or for the assertion of or defence against legal claims , or where such retention is otherwise required or permitted by law . in these cases , the duration of the restriction of processing depends on the respective statutory limitation or retention periods . the data will be deleted after the relevant limitation or retention periods have expired . "
-		8: "it satisfies a legitimate interest ( which is not overridden by your data protection interests ) , such as preventing fraud , ensuring network and information security , enforcing our rules and policies , protecting our legal rights and interests , research and development , personalizing the services , and marketing and promoting the services , or "
-		9: "additionally , if you are in the eea , you must be over the age required by the laws of your country to create an account or otherwise use the services , or we need to have obtained verifiable consent from your parent or legal guardian . "
-	word 4 "additionally":
-		0: "additionally , if someone uses your promotion code , we may associate your name with that person . "
-		1: "additionally , if you are in the eea , you must be over the age required by the laws of your country to create an account or otherwise use the services , or we need to have obtained verifiable consent from your parent or legal guardian . "
-	word 5 "watch":
-		0: "besides that , we collect information on how you use our services . for example , the articles you read and the programmes you watch . "
-		1: "also view or edit the watch list or order details , view the profile page , send member-to-member messages and conduct after-sale activities , such as leaving feedback , cancelling orders , requesting returns or submitting claims . "
+	word 1 "device":
+		1: "As described below, we collect information from and about the computers, phones, connected TVs and other web connected devices you use that integrate with our Products, and we combine this information across different devices that you use."
+		2: "These partners provide information about your activities off our application including information about your device, websites you visit, purchases you make, the ads you see and how you use their services ."
+		3: "Location related information can be based on things such as precise device location if you've allowed us to collect it , IP addresses and information from your and others' use of our Products such as check ins or events you attend ."
+		4: "We collect information from and about the devices you use."
+		5: "For example, we collect information about your hardware and software, such as the hardware model, operating system version, device memory, advertising identifiers, unique application identifiers, apps installed, unique device identifiers, browser type, language, battery level, and time zone,."
+	word 2 "location":
+		1: "Location related information can be based on things such as precise device location if you've allowed us to collect it , IP addresses and information from your and others' use of our Products such as check ins or events you attend ."
+		2: "When you use our services we may collect information about your location."
+		3: "With your permission, we may also collect information about your precise location using methods that include GPS, wireless networks, cell towers, Wi Fi access points, and other sensors, such as gyroscopes, accelerometers, and compasses."
+		4: "We use your information to contextualize your experience by, among other things, tagging your Memories content using your precise location information if, of course, you ve given us permission to collect that information and applying other labels based on the content."
+		5: "We store location information for different lengths of time based on how precise it is and which services you use."
+	word 3 "mobile":
+		1: "For example, we collect information about your wireless and mobile network connections, such as mobile phone number, service provider, IP address, and signal strength."
+		2: "We collect location data driver and delivery person when our app is running in the foreground app open and on screen or background app open but not on screen of their mobile device."
+		3: "We collect precise or approximate location data from riders and delivery recipients mobile devices if they enable us to do so."
+		4: "We collect precise or approximate location data from the time a ride or delivery is requested until it is finished, and any time the app is running in the foreground of their mobile device."
+		5: "We may collect data about the devices used to access our services, including the hardware models, device IP address, operating systems and versions, software, preferred languages, unique device identifiers, advertising identifiers, serial numbers, device motion data, and mobile network data."
+	word 4 "IP":
+		1: "Location related information can be based on things such as precise device location if you've allowed us to collect it , IP addresses and information from your and others' use of our Products such as check ins or events you attend ."
+		2: "For example, we collect information about your wireless and mobile network connections, such as mobile phone number, service provider, IP address, and signal strength."
+		3: "We also collect log information when you use our website, such as details about how you ve used our services, device information, such as your web browser type and language, access times, pages viewed, IP address, identifiers associated with cookies or other technologies that may uniquely identify your device or browser, and pages you visited before or after navigating to our website."
+		4: "We may collect data about the devices used to access our services, including the hardware models, device IP address, operating systems and versions, software, preferred languages, unique device identifiers, advertising identifiers, serial numbers, device motion data, and mobile network data."
+		5: "We collect information about device and software characteristics such as type and configuration , connection information including type wifi, cellular , statistics on page views, referring source for example, referral URLs , IP address which may tell us your general location , browser and standard web server log information."
+	word 5 "devices":
+		1: "As described below, we collect information from and about the computers, phones, connected TVs and other web connected devices you use that integrate with our Products, and we combine this information across different devices that you use."
+		2: "We collect information from and about the devices you use."
+		3: "We may also collect the personal data of those who start but do not complete applications to be drivers or delivery persons, those who rent bicycles, scooters, or other light electrical devices offered by other companies through an Uber app, or in connection with our mapping technology and features."
+		4: "We collect precise or approximate location data from riders and delivery recipients mobile devices if they enable us to do so."
+		5: "We may collect data about the devices used to access our services, including the hardware models, device IP address, operating systems and versions, software, preferred languages, unique device identifiers, advertising identifiers, serial numbers, device motion data, and mobile network data."
 
 cluster 3:
-	word 1 "occasionally":
-		0: "occasionally we share cctv with public or regulatory authorities or in response to requests from individuals seeking to protect their rights , the rights of others or helping to prevent crime and nuisance . we will only share cctv if we consider a request to be appropriate . "
-		1: "occasionally , for marketing purposes , we may obtain lists of potential customers from external companies . "
-		2: "occasionally , we contact customers who meet a particular set of criteria , including health-related factors , to invite them to take part in clinical research . the research may be carried out by external companies acting on our behalf , but we ’ ll never pass your personal information onto them unless we have your consent to do so . "
-	word 2 "upload":
-		0: "many of our services require us to collect images and other information from your device ’ s camera and photos . for example , you won ’ t be able to send snaps or upload photos from your camera roll unless we can access your camera or photos . "
-		1: "others may sync their contacts or calendar with our services . we receive personal data ( including contact information ) about you when others import or sync their contacts or calendar with our services , associate their contacts with member profiles , scan and upload business cards , or send messages using our services ( including invites or connection requests ) . if you or others opt-in to sync email accounts with our services , we will also collect “ email header ” information that we can associate with member profiles . "
-		2: "other times we may contact your parent or guardian : so you can get notifications from us , so we can show you more things we think you 'll like , based on what you do , so you can post comments , so you can upload your contribution to us . "
-		3: "most activity on our product is public , including your profile information , your time zone and language , when you created your account , and your uploaded contents and certain information about your uploaded contents like the date , time , and application and version of our product you used from . "
-	word 3 "zone":
-		0: "other examples of information we collect are version and time zone settings , purchase and content use history , which we sometimes aggregate with similar information from other customers to create features such as best sellers , the full uniform resource locators ( url ) clickstream to , through and from our website , including date and time , cookie number , products and/ or content you viewed or searched for , page response times , download errors , length of visits to certain pages , page interaction information , such as scrolling , clicks , and mouse-overs , phone numbers used to call our customer service number , and images or videos when you shop in our stores using our services . "
-		1: "most activity on our product is public , including your profile information , your time zone and language , when you created your account , and your uploaded contents and certain information about your uploaded contents like the date , time , and application and version of our product you used from . "
-	word 4 "external":
-		0: "other customers you want to set up joint our accounts with , other apps , other banks if you use account switching or aggregation services and people you ’ ve asked to represent you , like solicitors and law enforcement and other external parties . "
-		1: "occasionally , for marketing purposes , we may obtain lists of potential customers from external companies . "
-		2: "occasionally , we contact customers who meet a particular set of criteria , including health-related factors , to invite them to take part in clinical research . the research may be carried out by external companies acting on our behalf , but we ’ ll never pass your personal information onto them unless we have your consent to do so . "
-	word 5 "option":
-		0: "most mobile device platforms ( ios , android , etc . ) have defined certain types of device data that apps can not access without the device owner ’ s permission , and these platforms have different methods for how that permission can be obtained . ios devices notify users the first time the app requests permission to access certain types of data and gives users the option to grant or refuse permission . android devices notify users of the permissions that the app seeks before their first use of the app , and use of the app constitutes a grant of such permission . "
-		1: "although some parts of the services may be private or quarantined , they may become public ( e.g. , at the moderator ’ s option in the case of private communities ) and you should take that into consideration before posting to the services . "
-		2: "most modern web browsers give you the option to send a do not track signal to the sites you visit , indicating that you do not wish to be tracked . "
+	word 1 "email":
+		1: "We use your information to send you communications, including by email."
+		2: "For example, we may use email to respond to support inquiries or to share information about our products, services, and promotional offers that we think may interest you."
+		3: "For example, we have notified some users by email of ballot measures or pending legislation relating to the availability of our services in those users areas."
+		4: "We collect information about your interactions with our emails and texts, and with our messages through push and online messaging channels."
+		5: "These communications may be by various methods, such as email, push notifications, text message, online messaging channels, and matched identifier communications described below ."
+	word 2 "messages":
+		1: "We collect information about your interactions with our emails and texts, and with our messages through push and online messaging channels."
+		2: "Please note that you cannot unsubscribe from service related correspondence from us, such as messages relating to your account transactions."
+		3: "We use your information to review your messages on our product to detect activity that poses a risk to the safety of you, our community and/or members of the public."
+		4: "If you opt out of receiving marketing messages from us, we may still send you updates about your account, such as when someone comments on one of your contents."
+		5: "We also use automatic scanning technology on messages to support and protect our site."
+	word 3 "send":
+		1: "Similarly, when you use Messenger or our application to communicate with people or businesses, those people and businesses can see the content you send."
+		2: "For example, we process information from WhatsApp about accounts sending spam on its service so we can take appropriate action against those accounts on our application, our application or Messenger."
+		3: "We use your information to send you communications, including by email."
+		4: "For example, we enable drivers and riders, and restaurants or delivery persons and delivery recipients, to call, text, or send other files to each other generally without disclosing their telephone numbers to each other ."
+		5: "This includes sending users communications about our services, features, promotions, sweepstakes, studies, surveys, news, updates, and events."
+	word 4 "data":
+		1: "We may use the data we collect to generate and provide users with receipts, inform them of changes to our terms, services, or policies, or send other communications that aren t for the purpose of marketing the services or products of us or our partners."
+		2: "Furthermore, to send you information by post about our products, services and promotions we process your data."
+		3: "Given the volumes of customers and orders we deal with, we use automated systems including a third party fraud detection provider called Ravelin, which analyses your order data in order to make automated decisions as to whether or not we will accept an order."
+		4: "If you d like a copy of the relevant data protection clauses, please get in touch via our chat or send an email us."
+		5: "Examples include fulfilling orders for products or services, delivering packages, sending postal mail and e mail, removing repetitive information from customer lists, analysing data, providing marketing assistance, providing search results and links, including paid listings and links, processing payments, transmitting content, assessing and managing credit risk, and providing customer service."
+	word 5 "personal":
+		1: "We use your personal information to communicate with you in relation to our Services via different channels, for example, by phone, email, chat."
+		2: "If you choose to link your Advantage Card to our App we re then able to provide you with personalised offers and messages."
+		3: "Where this happens, we place a notice in store or we may contact you in writing to tell you that your personal information is changing hands."
 
 cluster 4:
-	word 1 "purpose":
-		0: "following an account deletion request , uber deletes the user ’ s account and data , unless they must be retained due to legal or regulatory requirements , for purposes of safety , security , and fraud prevention , or because of an issue relating to the user ’ s account such as an outstanding credit or an unresolved claim or dispute . "
-		1: "the reasons to process your personal data include initiating a payment , sending or requesting money , adding value to an account , or paying a bill , authenticating your access to an account , communicating with you about your account , the sites , the services , or our system , creating an account connection between your account and a third-party account or platform , performing creditworthiness and other financial standing checks , evaluating applications , and comparing information for accuracy and verification purposes , and keeping your account and financial information up to date . "
-		2: "for the purposes of this privacy statement , an “ account connection ” with such a third-party is a connection you authorise or enable between your account and another account , payment instrument , or platform that you lawfully control or own . "
-		3: "the purpose of this disclosure is to allow us to provide our services to you . we also set out in the list of third parties , under each `` category '' , non-exclusive examples of the actual third parties , which may include their assigns and successors , to whom we currently disclose your account information or to whom we may consider disclosing your account information , together with the purpose of doing so , and the actual information we disclose , except as explicitly stated , these third parties are limited by law or by contract from using the information for secondary purposes beyond the purposes for which the information was shared . "
-		4: "our group may share personal data with other organisations or public bodies for legal purposes , such the police , law enforcement agencies , fraud prevention agencies and other bodies where is necessary or appropriate for the prevention or detection of crime or to protect the rights , property or safety of any person . this may include informing other organisations of addresses to and from which we will not deliver or collect items . "
-		5: "the eu gdpr and uk data protection laws require a legal basis for our use of personal information . our basis varies depending on the specific purpose for which we use personal information . "
-		6: "last aggregated or non-identifiable data . we may also share aggregated or non-personally identifiable information with our partners or others for business purposes . "
-		7: "individuals in the european economic area have the right to opt out of all of our processing of their personal data for direct marketing purposes . to exercise this right , please see the “ settings ” page for your account . you may also click the “ unsubscribe ” link in any of our marketing emails . "
-		8: "the sentences below sets out and explains each legal basis we rely on and the purpose of using your personal data . "
-		9: "more than one legal basis could apply when we use your personal data for a particular purpose . "
-		10: "the terms and conditions of the service will explain when we need your permission to use your data for a specific purpose , and how to give that permission . "
-		11: "below you will find a summary of the purposes for which we process your personal data , including the categories of recipients to whom we transmit personal data for the purposes stated , sorted by our legal basis for this processing or sharing . "
-		12: "participation in proceedings including judicial proceedings conducted by courts , law enforcement agencies , government agencies or public authorities , intergovernmental or supranational bodies , in particular for the purpose of detecting , investigating and prosecuting illegal acts , unless there is a statutory obligation to this effect , and we may legitimately assume that the disclosure of the data is necessary to avert imminent disadvantages or to report a suspicion of an illegal act . "
-		13: "performance of identity checks , creditworthiness and other financial standing checks , evaluation of applications and comparison of information for accuracy and verification purposes . "
-		14: "should your personal data be processed for any purpose not specified in this user privacy notice , you will be informed in advance of the processing of your data for this new purpose . "
-		15: "the transmission of personal data between different corporate family members to enable cross border transactions and for other legally permitted purposes is based on our worldwide data protection principles , which are binding internal data protection regulations , or on the basis of other appropriate safeguards like standard data protection clauses issued or approved by the european commission . "
-		16: "your personal data will be stored by us and our service providers in accordance with applicable data protection laws to the extent necessary for the processing purposes set out in this user privacy notice . "
-		17: "users in the european economic area ( eea ) can also use advertising and related preferences to determine to what extent they consent to the processing of their personal data for advertising purposes via cookies and similar technologies . if you decide not to have your personal data processed by us for advertising purposes via cookies and similar technologies , this does not mean that we will not show you advertisements . it simply means that these advertisements will not be personalised for you using first-party or third-party cookies , web beacons or similar technologies . "
-		18: "using personal data of other users that you have access to for any other purpose , such as adding them to a mailing list without their express consent , constitutes a violation of our user agreement . "
-		19: "under the australian privacy act , you have the right to opt out of the use of your personal information for the purpose of direct marketing , including in relation to personalised advertising . "
-		20: "when using self-serve ads platform , we may record a session replay of your visit for customer service , troubleshooting , and usability research purposes . "
-	word 2 "provide":
-		0: "after every trip , drivers and riders are able to rate each other on a scale from 1 to 5. an average of those ratings is associated with a user ’ s account and is displayed to other users for whom they provide or receive services . for example , rider ratings are available to drivers from whom they request transportation , and driver ratings are available to their riders . "
-		1: "in the course of providing such services , these service providers may have access to your personal or other information . we do not authorize them to use or disclose your personal information except in connection with providing their services ( which includes maintaining and improving their services ) . "
-		2: "our service may be provided through and/or utilize features ( such as voice controls ) operated by third party platforms , or contain links to sites operated by third parties whose policies regarding the handling of information may differ from ours . "
-		3: "subject to your settings , we may also use this information in order to infer other information about your identity , for example by associating your account with hashes of email addresses that share common components with the email address you have provided to us . we do this to operate and personalize our services . "
-		4: "for personal data that we have about you , you can firstly delete your data . you can ask us to erase or delete all or some of your personal data ( e.g. , if it is no longer necessary to provide services to you ) . "
-		5: "at any time , you can withdraw consent you have provided by going to settings . "
-		6: "given the volumes of customers and orders we deal with , we use automated systems including a third party fraud detection provider called ravelin , which analyses your order data in order to make automated decisions as to whether or not we will accept an order . "
-		7: "the checks and decisions that are made look at various components including known industry indicators of fraud which our expert fraud detection provider makes available to us , as well as fraud patterns we have detected on our sites . when combined , these generate an automated score indicating the likelihood of a fraudulent transaction . "
-		8: "the types of third party service providers whom we share your information with including payment providers that includes online payment providers and fraud detection providers , it service providers like cloud providers , restaurant partners , riders , customer support partners and marketing and advertising partners . "
-		9: "the purpose of this disclosure is to allow us to provide our services to you . we also set out in the list of third parties , under each `` category '' , non-exclusive examples of the actual third parties , which may include their assigns and successors , to whom we currently disclose your account information or to whom we may consider disclosing your account information , together with the purpose of doing so , and the actual information we disclose , except as explicitly stated , these third parties are limited by law or by contract from using the information for secondary purposes beyond the purposes for which the information was shared . "
-		10: "your personal data where you have provided us with consent to use your personal data , you can withdraw this at any time "
-		11: "additionally the wifi that is available in our stores and offices is provided by o2 . "
-		12: "the credit reference agencies provide us with information about you which helps us to understand your credit-worthiness – how easily you will find it to repay credit to us . "
-		13: "they are the ‘ data controller ’ of that information and you can ask them about how they use your information by contacting them using the details provided in your terms and conditions or on their website . "
-		14: "we only share nonpublic information about you with our service providers . "
-		15: "the personal data of yours that we use includes details we collect about you when you use our websites and apps , information provided when you use or receive our services and information we receive from other sources . "
-		16: "looking at the web pages you ’ ve visited and the things you ’ ve bought helps us to understand you as a customer better and allows us to provide personalised services , content , communications and online advertising . "
-		17: "the information commissioner ’ s office provides full details of your data protection rights . there is more information on their own website . "
-		18: "our website has been issued with a secure server digital certificate by the online certification authority , digicert . this confirms that our website is a legitimate website that provides an encrypted communication channel to protect the information you pass to us when making a purchase . for more information please visit the verisign website . "
-		19: "the benefit of being an advantage card member is to receive points and rewards on the products and services that interest you . without building up a detailed picture of you we can ’ t tailor our offers and rewards to be personal to you and you won ’ t receive the full benefits of being an advantage card member . if you don ’ t wish to have your data used in this way , please contact us using the details provided below . "
-		20: "subject to your settings , we also provide certain third parties with personal data to help us offer or operate our services . "
-		21: "enabling the delivery of purchased items by logistics/delivery service providers including notifications in connection with the delivery ( such as tracking information ) , the latter to the extent permitted by applicable law without your consent . "
-		22: "your personal data will be stored by us and our service providers in accordance with applicable data protection laws to the extent necessary for the processing purposes set out in this user privacy notice . "
-		23: "although we will do our best to protect your personal data once with us , we can not guarantee the security of any personal data sent to our site while still in transit and so you provide it at your own risk . "
-		24: "personalize the services , and provide and optimize advertisements , content , and features that match user profiles or interests . "
-		25: "your use of these features enables the sharing of certain information with your friends or the public , depending on the settings you establish with the third party that provides the social sharing feature . "
-		26: "the california consumer privacy act ( “ ccpa ” ) requires us to provide california residents with some additional information about the categories of personal information we collect and share , where we get that personal information , and how and why we use it . "
-	word 3 "lodge":
-		0: "subject to possible restrictions under national law , as a data subject , you have the right to access , rectification , erasure , restriction of processing and data portability with regard to your personal data . in addition , you can withdraw your consent and object to our processing of your personal data on the basis of our legitimate interests . you can also lodge a complaint with a supervisory authority . "
-		1: "the rights and options described above are subject to limitations and exceptions under applicable law . in addition to those rights , you have the right to lodge a complaint with the relevant supervisory authority . however , we encourage you to contact us first , and we will do our very best to resolve your concern . "
-		2: "eea users also have the right to lodge a complaint with their local supervisory authority . "
-	word 4 "jurisdictions":
-		0: "the parties mentioned above may be established in jurisdictions other than your own and outside the european economic area and switzerland . these countries do not always afford an equivalent level of privacy protection . "
-		1: "the laws in some jurisdictions require companies to tell you about the legal ground they rely on to use or disclose your personal data . to the extent those laws apply , our legal grounds are as follows . "
-		2: "individuals in california , the european economic area , canada , costa rica and some other jurisdictions outside the united states have certain legal rights to obtain confirmation of whether we hold personal data about them , to access personal data we hold about them including , in some cases , in portable form , and to obtain its correction , update , amendment or deletion in appropriate circumstances . "
-	word 5 "stated":
-		0: "the purpose of this disclosure is to allow us to provide our services to you . we also set out in the list of third parties , under each `` category '' , non-exclusive examples of the actual third parties , which may include their assigns and successors , to whom we currently disclose your account information or to whom we may consider disclosing your account information , together with the purpose of doing so , and the actual information we disclose , except as explicitly stated , these third parties are limited by law or by contract from using the information for secondary purposes beyond the purposes for which the information was shared . "
-		1: "unless stated otherwise , our current privacy notice applies to all information that we have about you and your account . we stand behind the promises we make , however , and will never materially change our policies and practices to make them less protective of customer information collected in the past without the consent of affected customers . "
-		2: "below you will find a summary of the purposes for which we process your personal data , including the categories of recipients to whom we transmit personal data for the purposes stated , sorted by our legal basis for this processing or sharing . "
+	word 1 "services":
+		1: "We work with third party partners who help us provide and improve our Products or who use our application Business Tools to grow their businesses, which makes it possible to operate our companies and provide free services to people around the world."
+		2: "We provide information and content to vendors and service providers who support our business, such as by providing technical infrastructure services, analysing how our Products are used, providing customer service, facilitating payments or conducting surveys."
+		3: "For more information about information collected by third parties on our services, visit our Support Site."
+		4: "Our services may contain third party content and integrations."
+		5: "We may also transfer data to countries other than the one where our users live or use our services."
+	word 2 "personal":
+		1: "For example, we engage Service Providers to provide marketing, advertising, communications, security, infrastructure and IT services, to customize, personalize and optimize our service, to provide bank account or balance information, to process credit card transactions or other payment methods, to provide customer service, to analyze and enhance data including data about users' interactions with our service , and to process and administer consumer surveys."
+		2: "For members, these suggestions are part of our service and may include customized and personalized viewing recommendations."
+		3: "It's fundamental to what we do at our service and necessary in order to make our product and its features relevant and personalized to you."
+		4: "So, if you let us know that you are interested in a new skill for example,, by watching a learning video , we will use this information to personalize content in your feed, suggest that you follow certain members on our site, or suggest related learning content to help you towards that new skill."
+		5: "For example, we may personalize your feed or job recommendations based on your learning history."
+	word 3 "data":
+		1: "We may also transfer data to countries other than the one where our users live or use our services."
+		2: "For example, we engage Service Providers to provide marketing, advertising, communications, security, infrastructure and IT services, to customize, personalize and optimize our service, to provide bank account or balance information, to process credit card transactions or other payment methods, to provide customer service, to analyze and enhance data including data about users' interactions with our service , and to process and administer consumer surveys."
+		3: "We also use the data we have about you to suggest skills you could add to your profile and skills that you might need to pursue your next opportunity."
+		4: "We will use your data to recommend jobs or mentees, show you and others relevant professional contacts for example,, who work at a company, in an industry, function or location or have certain skills and connections ."
+		5: "We will use your data to recommend jobs to you and you to recruiters."
+	word 4 "products":
+		1: "This helps us to improve and enhance the safety and security of our services, improve our ability to prevent the use of our services for illegal or improper purposes, develop new features and products, and facilitate insurance and finance solutions in connection with our services."
+		2: "We may also send communications to our users about products and services offered by our partners."
+		3: "These companies include those we've hired to provide customer service support, operate the technical infrastructure that we need to provideour service, assist in protecting and securing our systems and services, and help market our own products and services as well as partner products, services, events, and co branded promotions in which our product is involved."
+		4: "For example, we will get contact information for Company Page administrators and for authorizing users of our premium Services, such as our recruiting, sales or learning products."
+		5: "These third party service providers may, for example, provide you with Services, verify your identity, assist in processing transactions, send you advertisements for our products and services, or provide customer support."
+	word 5 "information":
+		1: "We provide information and content to vendors and service providers who support our business, such as by providing technical infrastructure services, analysing how our Products are used, providing customer service, facilitating payments or conducting surveys."
+		2: "We also provide information and content to research partners and academics to conduct research that advances scholarship and innovation that supports our business or mission and enhances discovery and innovation on topics of general social welfare, technological advancement, public interest, health and well being."
+		3: "For more information about information collected by third parties on our services, visit our Support Site."
+		4: "For example, we engage Service Providers to provide marketing, advertising, communications, security, infrastructure and IT services, to customize, personalize and optimize our service, to provide bank account or balance information, to process credit card transactions or other payment methods, to provide customer service, to analyze and enhance data including data about users' interactions with our service , and to process and administer consumer surveys."
+		5: "Our service may be provided through and/or utilize features such as voice controls operated by third party platforms, or contain links to sites operated by third parties whose policies regarding the handling of information may differ from ours."
 
 cluster 5:
-	word 1 "cookies":
-		0: "cookies are text files placed on your computer when you use a website or app . "
-		1: "cookies are not required for many parts of our services such as searching and looking at public profiles . "
-		2: "like cookies , these other technologies may store small amounts of data on your device . web beacons ( also known as clear gifs or pixel tags ) often work in conjunction with cookies . in many cases , declining cookies will impair the effectiveness of web beacons associated with those cookies . "
-		3: "essential cookies are strictly necessary to provide our website or online service . for example , we and our service providers may use these cookies to authenticate and identify our members when they use our websites and applications so we can provide our service to them . they also help us to enforce our terms of use , prevent fraud and maintain the security of our service . "
-		4: "advertising cookies and resettable device identifiers use information about your use of this and other websites and apps , your response to ads and emails , and to deliver ads that are more relevant to you and for analytics and optimization purposes . these types of ads are called `` interest-based advertising . '' the advertising cookies associated with our service belong to our service providers . "
-		5: "the cookies we use have defined expiration times , unless you visit our sites or use our services within that time , the cookies are automatically disabled and retained data is deleted . "
-		6: "because cookies allow you to take advantage of some essential features of our services , we recommend that you leave them turned on . for instance , if you block or otherwise reject our cookies , you will not be able to add items to your shopping basket , proceed to checkout , or use any of our services that require you to sign in . "
-		7: "cookies are small text files that transfer onto your device when you use a service . we use cookies and tracking to get information about what type of device you ’ re using to access our services and we record things like what sites you visit , your ip address and to make things easier for you , like remembering where you got to in a game or what emoji you selected . "
-		8: "some cookies are always on when you visit us , and you can ’ t turn them off unless you change your browser settings . we call these “ strictly necessary cookies ” . we use them to make sure our digital services work correctly and are meeting audience needs and interests . "
-		9: "some cookies are erased when you close the browser on your website or app . others stay longer , sometimes forever , and are saved onto your device so that they ’ re there when you come back . "
-		10: "our cookies and similar technologies have different functions . they may be technically necessary for the provision of our services , they help us optimise our services technically like monitoring of error messages and loading times , they help us improve your user experience like saving font size and form data entered and they allow us to show you more relevant advertisements . "
-		11: "analytics cookies such as google analytics collect information such as your ip address , device type and operating system , referring urls , location and pages visited . "
-	word 2 "small":
-		0: "like cookies , these other technologies may store small amounts of data on your device . web beacons ( also known as clear gifs or pixel tags ) often work in conjunction with cookies . in many cases , declining cookies will impair the effectiveness of web beacons associated with those cookies . "
-		1: "cookies are small text files that transfer onto your device when you use a service . we use cookies and tracking to get information about what type of device you ’ re using to access our services and we record things like what sites you visit , your ip address and to make things easier for you , like remembering where you got to in a game or what emoji you selected . "
-		2: "a cookie is a small file that can be placed on your device that allows us to recognise and remember you . "
-	word 3 "device":
-		0: "like cookies , these other technologies may store small amounts of data on your device . web beacons ( also known as clear gifs or pixel tags ) often work in conjunction with cookies . in many cases , declining cookies will impair the effectiveness of web beacons associated with those cookies . "
-		1: "advertising cookies and resettable device identifiers use information about your use of this and other websites and apps , your response to ads and emails , and to deliver ads that are more relevant to you and for analytics and optimization purposes . these types of ads are called `` interest-based advertising . '' the advertising cookies associated with our service belong to our service providers . "
-		2: "cookies are small text files that transfer onto your device when you use a service . we use cookies and tracking to get information about what type of device you ’ re using to access our services and we record things like what sites you visit , your ip address and to make things easier for you , like remembering where you got to in a game or what emoji you selected . "
-		3: "some cookies are erased when you close the browser on your website or app . others stay longer , sometimes forever , and are saved onto your device so that they ’ re there when you come back . "
-		4: "a cookie is a small file that can be placed on your device that allows us to recognise and remember you . "
-		5: "analytics cookies such as google analytics collect information such as your ip address , device type and operating system , referring urls , location and pages visited . "
-	word 4 "files":
-		0: "cookies are text files placed on your computer when you use a website or app . "
-		1: "cookies are not required for many parts of our services such as searching and looking at public profiles . "
-		2: "cookies are small text files that transfer onto your device when you use a service . we use cookies and tracking to get information about what type of device you ’ re using to access our services and we record things like what sites you visit , your ip address and to make things easier for you , like remembering where you got to in a game or what emoji you selected . "
-	word 5 "essential":
-		0: "essential cookies are strictly necessary to provide our website or online service . for example , we and our service providers may use these cookies to authenticate and identify our members when they use our websites and applications so we can provide our service to them . they also help us to enforce our terms of use , prevent fraud and maintain the security of our service . "
-		1: "because cookies allow you to take advantage of some essential features of our services , we recommend that you leave them turned on . for instance , if you block or otherwise reject our cookies , you will not be able to add items to your shopping basket , proceed to checkout , or use any of our services that require you to sign in . "
+	word 1 "profile":
+		1: "This includes your username, any information you share with a public audience, information in your public profile , and content you share on a Page, public account or any other public forum."
+		2: "We may also ask you to provide us with some additional information that will be publicly visible on our services, such as a profile picture or Bitmoji avatar."
+		3: "Please note that profiles are available to everyone who uses your account, so that anyone with access to your account can navigate to and use, edit or delete profiles."
+		4: "Anyone can see the public boards and Pins you create and profile information you give us."
+		5: "The following personal data will always be publicly available on our service your name and/or username, profile picture, who you follow and who follows you on our product, your recently played artists, and your public playlists."
+	word 2 "content":
+		1: "Information and content you provide."
+		2: "For example, we log when you're using and have last used our Products, and what posts, videos and other content you view on our Products."
+		3: "This includes your username, any information you share with a public audience, information in your public profile , and content you share on a Page, public account or any other public forum."
+		4: "For example, when you share a post or send a message to specific friends or accounts, they can download, screenshot or reshare that content to others across or off our Products, in person or in virtual reality experiences."
+		5: "People can also use our Products to create and share content about you with the audience they choose."
+	word 3 "public":
+		1: "For example, when you post on our application, you select the audience for the post, such as a group, all of your friends, the public or a customised list of people."
+		2: "This includes your username, any information you share with a public audience, information in your public profile , and content you share on a Page, public account or any other public forum."
+		3: "You, other people using our application, and we can provide access to or send public information to anyone on or off our Products, including in other of our Products, in search results or through tools and APIs."
+		4: "We may also ask you to provide us with some additional information that will be publicly visible on our services, such as a profile picture or Bitmoji avatar."
+		5: "We share your information with all product users, our business partners, and the general public Story submissions that are set to be viewable by Everyone and any content that you submit to an inherently public service, like Our Story and other crowd sourced services."
+	word 4 "social":
+		1: "Advertisers, app developers and publishers can send us information through our Business Tools that they use, including our social plugins such as the Like button , Login, our APIs and SDKs, or the pixel."
+		2: "Questions or comments from users submitted through public forums such as our blogs and our social media pages may be viewable by the public, including any personal data included in the questions or comments submitted by a user."
+		3: "We also obtain information from publicly available sources such as publicly available posts on social media platforms and information available through public databases associating IP addresses with internet service providers ISPs ."
+		4: "You may also choose to disclose your information by social plugins and similar technologies allow you to share information."
+		5: "For example, subject to your settings, we may notify others that you have updated your profile, posted content, took a social action, used a feature, made new connections or were mentioned in the news."
+	word 5 "friends":
+		1: "For example, when you post on our application, you select the audience for the post, such as a group, all of your friends, the public or a customised list of people."
+		2: "For example, when you share a post or send a message to specific friends or accounts, they can download, screenshot or reshare that content to others across or off our Products, in person or in virtual reality experiences."
+		3: "For example, when you play a game with your our application friends or use a our application Comment or Share button on a website, the game developer or website can receive information about your activities in the game or receive a comment or link that you share from the website on our application."
+		4: "Apps and websites that you use may receive your list of our application friends if you choose to share it with them."
+		5: "For example, we may collect information about how you communicate with other product users, such as their names, the time and date of your communications, the number of messages you exchange with your friends, which friends you exchange messages with the most, and your interactions with messages such as when you open a message or capture a screenshot ."
 
 cluster 6:
-	word 1 "habits":
-		0: "we analyse your personal information , including the products you view and buy , your browsing habits and other ways you interact with our website to evaluate the effectiveness of our advertising and help us provide more relevant offers , advice and information across a variety of marketing channels including online advertising and social media sites such as facebook . rest assured that we ’ ll only send you marketing material if you ’ ve agreed that we can . "
-		1: "we combine this with demographic data that we obtained when you signed up for the scheme , such as your gender , your age and where you live – this is particularly relevant when inviting you to events . this aggregated data is then compared against our other customers to understand your shopping habits in context . by doing this , we can tell you about products we already know you like and also suggest new products that we think you ’ d be interested in based on what people like you are buying . "
-	word 2 "process":
-		0: "we store and use your data outside your country . we process data both inside and outside of the united states and rely on legally-provided mechanisms to lawfully transfer data across borders . countries where we process data may have laws which are different from , and potentially not as protective as , the laws of your own country . "
-		1: "we process your information on the following legal bases : "
-		2: "we process personal data to the extent necessary for the interests of other people or the general public , such as in connection with legal or insurance claims , and to protect the rights and safety of others . "
-		3: "we process your personal data for various purposes and based on several different legal bases that allow this processing . "
-		4: "we process health information about you only where you volunteer and consent to this , for example if you specify any food allergies . "
-	word 3 "bases":
-		0: "we process your information on the following legal bases : "
-		1: "we process your personal data for various purposes and based on several different legal bases that allow this processing . "
-	word 4 "collect":
-		0: "we collect information about the actions you take when using the services . "
-		1: "we collect directly from you , when you sign up for our services and when you browse our sites or use our apps . we collect personal data we generate about you , e.g . personal data we use to authenticate you , or personal data in the form of your ip address or your preferences . "
-		2: "we collect certain technical data from you , such as url information , online identifiers including cookie data and ip addresses , information about the types of devices you are using such as unique device ids , network connection type ( e.g . wifi , 3g , lte , bluetooth ) , provider , network and device performance , browser type , language , information enabling digital rights management , operating system , and our application version . "
-		3: "we store the information we collect for as long as it is necessary for the purpose ( s ) for which we originally collected it . we may retain certain information for legitimate business purposes or as required by law . "
-		4: "we collect information you provide to us directly when you use the services . this includes : "
-		5: "we collect information with 5 means . "
-		6: "we combine or connect the personal data we collect from you with data from these other sources . where personal data is disclosed to us by third parties , we take steps to confirm that these third parties are otherwise legally permitted to disclose your personal data to us . we also receive access to personal data about you from other members of the our corporate family . "
-		7: "inferences we make based on other collected data , for purposes such as recommending content , advertising , and analytics . "
-	word 5 "work":
-		0: "we work to protect the security of your personal information during transmission by using encryption protocols and software . "
-		1: "we collect certain technical data from you , such as url information , online identifiers including cookie data and ip addresses , information about the types of devices you are using such as unique device ids , network connection type ( e.g . wifi , 3g , lte , bluetooth ) , provider , network and device performance , browser type , language , information enabling digital rights management , operating system , and our application version . "
-		2: "we work with different companies so that they can help us provide the products and services you require from us or we think you might be interested in . "
-		3: "we work with a number of insurance partners or ‘ underwriters ’ to help us provide these products to our customers , as our group is not regulated to provide these products by itself . these are known as branded insurance products . "
+	word 1 "security":
+		1: "We use the information that we have to verify accounts and activity, combat harmful conduct, detect and prevent spam and other bad experiences, maintain the integrity of our Products, and promote safety and security on and off our Products."
+		2: "This includes using personal data to maintain and enhance our users safety and security."
+		3: "We also obtain information from security service providers who provide us with information to secure our systems, prevent fraud and help us protect the security of your accounts."
+		4: "We use personal information to secure our systems, prevent fraud and help us protect the security of your accounts."
+		5: "These measures are designed to provide a level of security appropriate to the risks of processing your personal information."
+	word 2 "protect":
+		1: "We also obtain information from security service providers who provide us with information to secure our systems, prevent fraud and help us protect the security of your accounts."
+		2: "We use personal information to secure our systems, prevent fraud and help us protect the security of your accounts."
+		3: "A privacy protective identifier means we convert the original information such as an email address or phone number into a value to keep the original information from being revealed."
+		4: "We only share information if we believe that disclosure is reasonably necessary to comply with a law, regulation or legal request, to protect the safety, rights, or property of the public, any person, or Pinterest, or to detect, prevent, or otherwise address fraud, security or technical issues."
+		5: "We are committed to protecting our users personal data."
+	word 3 "secure":
+		1: "We also obtain information from security service providers who provide us with information to secure our systems, prevent fraud and help us protect the security of your accounts."
+		2: "We use personal information to secure our systems, prevent fraud and help us protect the security of your accounts."
+		3: "However, please note that no system is ever completely secure."
+		4: "We will take all steps reasonably necessary to ensure that your data is treated securely and in accordance with this privacy policy when it is transferred to third parties."
+		5: "Unfortunately, the transmission of information via the internet is not completely secure."
+	word 4 "safe":
+		1: "We use the information that we have to verify accounts and activity, combat harmful conduct, detect and prevent spam and other bad experiences, maintain the integrity of our Products, and promote safety and security on and off our Products."
+		2: "Recordings are encrypted and stored on users devices, and are only shared with us if submitted to customer support by the users in connection with safety incidents."
+		3: "We use your personal data for screening riders, drivers, and delivery persons before enabling their use of our services and at subsequent intervals, including through reviews of background checks, where permitted by law, to help prevent use of our services by unsafe drivers and/or riders."
+		4: "This includes using personal data to maintain and enhance our users safety and security."
+		5: "We use reasonable administrative, logical, physical and managerial measures to safeguard your personal information against loss, theft and unauthorized access, use and modification."
+	word 5 "unauthorised":
+		1: "We have implemented various policies including pseudonymisation, encryption, access, and retention policies to guard against unauthorised access and unnecessary retention of personal data in our systems."
+		2: "We take steps to protect your information from unauthorised access and against unlawful processing, accidental loss, destruction and damage."
+		3: "Once we have received your information, we will use strict procedures and security features to try to prevent unauthorised access."
+		4: "We maintain technical, physical, and administrative security measures designed to provide reasonable protection for your Personal Data against loss, misuse, unauthorised access, disclosure, and alteration."
+		5: "Our devices offer security features to protect them against unauthorised access and loss of data."
 
 cluster 7:
-	word 1 "aware":
-		0: "you must therefore ensure that all additional cardholders are aware that you are sharing their personal information with us and they are familiar with this privacy policy so they understand how their personal information will be used . we will only send information about our products or services to the main card holder . "
-		1: "please be aware that you can not opt out of receiving service messages from us , including security and legal notices . "
-		2: "you must be sure that all joint account holders are aware you are sharing their personal information with us for these purposes and they are familiar with this privacy policy , in particular they understand how their personal information will be used . "
-		3: "please be aware that you won ’ t be contacted more than once every six months for research purposes , unless you have signed up separately to our viewpoint panel and we never sell your personal data to other research companies . we will only ever share your data with reputable agencies in a safe and secure manner . all personal data is deleted as soon as it ’ s been used . keeping your data safe is our top priority . "
-	word 2 "deactivate":
-		0: "you can deactivate these messages at any time by changing the notification settings on your mobile device . "
-		1: "you can also deactivate your account . "
-	word 3 "familiar":
-		0: "you must therefore ensure that all additional cardholders are aware that you are sharing their personal information with us and they are familiar with this privacy policy so they understand how their personal information will be used . we will only send information about our products or services to the main card holder . "
-		1: "you must be sure that all joint account holders are aware you are sharing their personal information with us for these purposes and they are familiar with this privacy policy , in particular they understand how their personal information will be used . "
-	word 4 "inquiries":
-		0: "you acknowledge that according to their local legislation , such entities may be subject to laws , regulations , inquiries , investigations , or orders which may require the disclosure of information to the relevant authorities of the relevant country . your use of our services constitutes your consent to our transfer of such information to provide you our services . "
-		1: "please direct any inquiries or complaints regarding our compliance with the privacy shield principles to the point of contact listed in the “ contact us ” section below . "
-	word 5 "completed":
-		0: "you have the right to obtain from us without undue delay the rectification of inaccurate personal data concerning you . taking into account the purposes of the processing , you have the right to have incomplete personal data completed , including by means of providing a supplementary statement . "
-		1: "please contact us using the following details if you would like to discuss an application which has been completed using automated decision-making . "
+	word 1 "change":
+		1: "Also, when you comment on someone else's post or react to their content, your comment or reaction is visible to anyone who can see the other person's content, and that person can change the audience later."
+		2: "If the ownership or control of all or part of our Products or their assets changes, we may transfer your information to the new owner."
+		3: "We'll notify you before we make changes to this Policy and give you the opportunity to review the revised Policy before you choose to continue using our Products."
+		4: "Information about these settings, how to set or change these settings, and the effect of turning off these settings is described below."
+		5: "Your continued use of our service after any such updates take effect will constitute acknowledgement and as applicable acceptance of those changes."
+	word 2 "update":
+		1: "Settings menus in our app for riders give them the ability to set or update their location sharing preferences and their preferences for receiving mobile notifications from our app."
+		2: "You can request access to your personal information, or correct or update out of date or inaccurate personal information we hold about you."
+		3: "We will update this Privacy Statement from time to time in response to changing legal, regulatory or operational requirements."
+		4: "Your continued use of our service after any such updates take effect will constitute acknowledgement and as applicable acceptance of those changes."
+		5: " If you have an account and want to control how your offsite data is used to tailor your experience, you can visit your settings and update your Personalization preferences."
+	word 3 "preferences":
+		1: "If you would like to modify the information we and our advertising partners use to select these ads, you can do so in the app and through your device preferences."
+		2: "Settings menus in our app for riders give them the ability to set or update their location sharing preferences and their preferences for receiving mobile notifications from our app."
+		3: "For example, they help us to remember your preferences and prevent you from needing to re enter information you previously provided for example, during member sign up ."
+		4: " If you have an account and want to control how your offsite data is used to tailor your experience, you can visit your settings and update your Personalization preferences."
+		5: "You may change your communication preferences at any time."
+	word 4 "settings":
+		1: "Information about these settings, how to set or change these settings, and the effect of turning off these settings is described below."
+		2: "To opt out of interest based ads from our product in connection with a resettable device identifier on a mobile device, tablet, or streaming media devices, please configure the appropriate setting on your device usually found under "privacy" or "ads" in your device's settings ."
+		3: "You can opt in to this in your device operating system settings."
+		4: "If you have an account, many of these controls are built directly into our product or your settings."
+		5: "You can edit secret board settings."
+	word 5 "You":
+		1: "You can access and edit most of your basic account information right in our apps."
+		2: "You can request access to your personal information, or correct or update out of date or inaccurate personal information we hold about you."
+		3: "Your continued use of our service after any such updates take effect will constitute acknowledgement and as applicable acceptance of those changes."
+		4: "You can opt in to this in your device operating system settings."
+		5: " You can edit information in your profile at any time, decide whether your profile is available to search engines, or choose whether others can find your account using your email address."
 
 cluster 8:
-	word 1 "unlawful":
-		0: "furthermore , participants in our vero programme , proact program , and other third parties in the event of an investigation for fraud , intellectual property infringement , retail crime , stolen goods , product piracy or other unlawful activity , if we , in our sole discretion , deem the investigation of such incident necessary or useful . in such cases , we will disclose the seller 's name , address , city , postcode , country , telephone number , email address and company name to the third party and bind the third party by a worldwide non-disclosure agreement to treat the data as confidential . "
-		1: "furthermore , this allows us to better prevent , detect , mitigate and investigate fraud , security breaches and other prohibited or unlawful activities , including the assessment of corresponding risks . we will also grant access to personal data about you to other corporate family members for the aforementioned purposes . "
-		2: "prevention , detection , mitigation and investigation of fraud , security breaches and other prohibited or unlawful activities , including the assessment of corresponding risks through the use of captchas or the telephone number stored in your account for two-factor authentication , unless there is a statutory obligation to this effect . "
-		3: "complying with information requests from third parties based on any statutory information rights they have against us like in the event of an intellectual property infringement , product piracy , or other unlawful activity . "
-		4: "prevention , detection , mitigation and investigation of unlawful activities that may result in impairment of your vital interests or the vital interests of another natural person , unless there is a statutory obligation to this effect . "
-	word 2 "covers":
-		0: "this policy covers information on how we protect your personal data . this policy covers information on how we will facilitate your rights and respond to your questions . "
-		1: "this policy covers the services that are offered by our company . "
-		2: "this policy covers information about your rights , the choices available to you , and our obligations in the european union , in california , in australia , and elsewhere . this policy covers transparency about how we collect and use your personal data , including when and how it is shared . "
-	word 3 "device":
-		0: "to provide this demographic information , these companies collect cookie information to recognize your device . "
-		1: "to opt out of interest-based ads from our product in connection with a resettable device identifier on a mobile device , tablet , or streaming media devices , please configure the appropriate setting on your device ( usually found under `` privacy '' or `` ads '' in your device 's settings ) . you may still see our ads on your device , but they will not be tailored to your likely interests . "
-		2: "it is important for you to protect against unauthorised access to your password and to your computers , devices , and applications . we recommend using a unique password for your account that is not utilized for other online accounts . be sure to sign off when you finish using a shared computer . "
-		3: "second , your ip address and device id for security reasons ( we ’ ll link your mobile phone number with your device ) . "
-	word 4 "contract":
-		0: "we ’ ll always conduct a full review of our suppliers ’ processes and procedures including storage solutions for our data . to ensure adequacy when sending your data outside of the uk and eea , we put in place contracts based on the standard eu model contract clauses to guarantee adequacy , we also use alternative safeguards where standard eu model contract clauses are not suitable . "
-		1: "first , we use performance of a contract when we provide you with products or services , or communicate with you about them . this includes when we use your personal information to take and handle orders , deliver products and services , and process payments . "
-		2: "first , we process your personal data in order to fulfil our contract with you and to provide you with our services . this includes the following purposes . "
-		3: "to honor our contractual commitments to you . "
-		4: "much of our processing of personal data is to meet our contractual obligations to our users , or to take steps at users ’ request in anticipation of entering into a contract with them . for example , we handle personal data on this basis to create your account and provide our services . "
-		5: "this right only applies to personal data which you have given to us and which we use either with your agreement or to keep to a contract we have with you . "
-	word 5 "event":
-		0: "we and other organisations , including parties that accept us , may also share , access and use , including from other countries , necessary information , including , without limitation the information recorded by fraud prevention agencies , to help us and them assess and to manage risk , including , without limitation , to prevent fraud , money laundering and terrorist financing . "
-		1: "performance and functionality cookies help us to customize and enhance your online experience with our product . for example , they help us to remember your preferences and prevent you from needing to re-enter information you previously provided ( for example , during member sign up ) . "
-		2: "furthermore , participants in our vero programme , proact program , and other third parties in the event of an investigation for fraud , intellectual property infringement , retail crime , stolen goods , product piracy or other unlawful activity , if we , in our sole discretion , deem the investigation of such incident necessary or useful . in such cases , we will disclose the seller 's name , address , city , postcode , country , telephone number , email address and company name to the third party and bind the third party by a worldwide non-disclosure agreement to treat the data as confidential . "
-		3: "furthermore , this allows us to better prevent , detect , mitigate and investigate fraud , security breaches and other prohibited or unlawful activities , including the assessment of corresponding risks . we will also grant access to personal data about you to other corporate family members for the aforementioned purposes . "
-		4: "as we continue to develop our business , we might sell or buy other businesses or services . in such transactions , customer information generally is one of the transferred business assets but remains subject to the promises made in any pre-existing privacy notice , unless , of course , the customer consents otherwise . also , in the unlikely event that we or substantially all of our assets are acquired , customer information will of course be one of the transferred assets . "
-		5: "first , business transfers . as we develop our business , we might sell or buy businesses or assets . in the event of a corporate sale , merger , reorganization , bankruptcy , dissolution or similar event , your information may be part of the transferred assets . "
-		6: "prevention , detection , mitigation and investigation of fraud , security breaches and other prohibited or unlawful activities , including the assessment of corresponding risks through the use of captchas or the telephone number stored in your account for two-factor authentication , unless there is a statutory obligation to this effect . "
-		7: "complying with information requests from third parties based on any statutory information rights they have against us like in the event of an intellectual property infringement , product piracy , or other unlawful activity . "
-		8: "prevention , detection , mitigation and investigation of unlawful activities that may result in impairment of your vital interests or the vital interests of another natural person , unless there is a statutory obligation to this effect . "
-		9: "initiation , preparation and execution of a company acquisition , e.g . in the event of a merger with another company or takeover by another company . if such an event occurs , we will require the merged entity to comply with this user privacy notice with respect to your personal data . "
-		10: "communicate with you about products , services , offers , promotions , and events , and provide other news and information we think will be of interest to you ( for information about how to opt out of these communications , see “ your choices ” below ) , "
-		11: "in an emergency . we may share information if we believe it 's necessary to prevent imminent and serious bodily harm to a person . "
+	word 1 "children":
+		1: "We do not knowingly collect personal data from children under 13 years or under the applicable age limit."
+		2: "The Sites and Services are not directed to children under the age of 16."
+		3: "We do not knowingly collect information, including Personal Data, from children or other individuals who are not legally able to use our Sites and Services."
+		4: "Our websites and apps are not intended for children and we do not knowingly collect children s data."
+		5: "Our Europe Branch doesn't sell products for purchase by children."
+	word 2 "won":
+		1: "Information that others have shared about you isn't part of your account and won't be deleted."
+		2: "For example, you won t be able to send Snaps or upload photos from your camera roll unless we can access your camera or photos."
+		3: "This is a soft search and won t impact your credit score."
+		4: "Companies that help us with marketing but we won t share identifiable personal data with third parties for their own direct marketing unless you give us permission, and you can opt out any time , software companies that we use for emailing you like Front, or for processing and storing email communications with you like Intercom."
+		5: "We ll have access to your spreadsheet, but won t collect the information in it."
+	word 3 "knowingly":
+		1: "We do not knowingly collect personal data from children under 13 years or under the applicable age limit."
+		2: "We do not knowingly collect information, including Personal Data, from children or other individuals who are not legally able to use our Sites and Services."
+		3: "Our websites and apps are not intended for children and we do not knowingly collect children s data."
+		4: "Our products are for users age 13 and over and we do not knowingly collect personal information from children under the age of 13."
+		5: "We do not knowingly collect personal data from users who are considered children under applicable national laws."
+	word 4 "sell":
+		1: "We don't sell any of your information to anyone and we never will."
+		2: "Information about our customers is an important part of our business and we are not in the business of selling our customers' personal information to others."
+		3: "Our Europe Branch doesn't sell products for purchase by children."
+		4: "We'll never sell your personal information."
+		5: "The main rule is we will never sell your personal information to anyone."
+	word 5 "don":
+		1: "We don't sell any of your information to anyone and we never will."
+		2: "We provide advertisers with reports about the kinds of people seeing their ads and how their ads are performing, but we don't share information that personally identifies you information such as your name or email address that by itself can be used to contact you or identifies who you are unless you give us permission."
+		3: "We will still use your IP address, which is used to approximate your location, even if you don't choose to share your precise location."
+		4: "You don t have to post or upload personal data, though if you don t, it may limit your ability to grow and engage with your network over our services."
+		5: "we don t store your full address book."
 
 cluster 9:
-	word 1 "industry":
-		0: "our product uses industry-standard payment processor services ( for example , stripe ) to handle payment information . "
-		1: "we target and measure the performance of ads to members , visitors and others both on and off our services directly or through a variety of partners , using data described above ( e.g. , using job titles from a profile to infer industry , seniority , and compensation bracket , using graduation dates to infer age or using first names or pronoun usage to infer gender , using your feed activity to infer your interests , or using device data to recognize you as a member ) . "
-		2: "we adhere to self-regulatory principles for interest-based advertising and participate in industry opts-outs from such ads . this does not opt you out of receiving advertising , you will continue to get other ads by advertisers not listed with these self regulatory tools . "
-		3: "we utilize industry “ good practice ” standards to support the maintenance of a robust information security management system , and "
-		4: "we follow the payment card industry data security standard ( pci dss ) when handling credit card data . "
-		5: "our product currently do not respond to “ do not track ” signals and operate as described in this privacy policy whether or not a dnt signal is received , as there is no consistent industry standard for compliance . "
-	word 2 "measures":
-		0: "we use cookies and similar technologies that remain on your device only as long as your browser is active , as well as cookies and similar technologies that remain on your device longer . where possible , we take appropriate security measures to prevent unauthorised access to our cookies and similar technologies . a unique id ensures that only we and/or selected third parties have access to cookie data . "
-		1: "we have a strict process for assessing research requests and we only agree to take part in projects that have received ethical approval . where any third party has access to our premises or data , we have measures in place to ensure they access only the data we ’ ve authorised them to access and for purposes of the research only . "
-		2: "we take measures to help protect information about you from loss , theft , misuse and unauthorized access , disclosure , alteration , and destruction . "
-		3: "we maintain technical , physical , and administrative security measures designed to provide reasonable protection for your personal data against loss , misuse , unauthorised access , disclosure , and alteration . the security measures include firewalls , data encryption , physical access controls to our data centres , and information access authorisation controls . "
-		4: "we protect your personal data through technical and organisational security measures to minimise risks associated with data loss , misuse , unauthorised access and unauthorised disclosure and alteration . to this end we use firewalls and data encryption , for example , as well as physical access restrictions for our data centres and authorisation controls for data access . you can find further information on our data security in our security centre . "
-	word 3 "misuse":
-		0: "we take measures to help protect information about you from loss , theft , misuse and unauthorized access , disclosure , alteration , and destruction . "
-		1: "we maintain technical , physical , and administrative security measures designed to provide reasonable protection for your personal data against loss , misuse , unauthorised access , disclosure , and alteration . the security measures include firewalls , data encryption , physical access controls to our data centres , and information access authorisation controls . "
-		2: "we protect your personal data through technical and organisational security measures to minimise risks associated with data loss , misuse , unauthorised access and unauthorised disclosure and alteration . to this end we use firewalls and data encryption , for example , as well as physical access restrictions for our data centres and authorisation controls for data access . you can find further information on our data security in our security centre . "
-	word 4 "loss":
-		0: "we take measures to help protect information about you from loss , theft , misuse and unauthorized access , disclosure , alteration , and destruction . "
-		1: "we maintain technical , physical , and administrative security measures designed to provide reasonable protection for your personal data against loss , misuse , unauthorised access , disclosure , and alteration . the security measures include firewalls , data encryption , physical access controls to our data centres , and information access authorisation controls . "
-		2: "we protect your personal data through technical and organisational security measures to minimise risks associated with data loss , misuse , unauthorised access and unauthorised disclosure and alteration . to this end we use firewalls and data encryption , for example , as well as physical access restrictions for our data centres and authorisation controls for data access . you can find further information on our data security in our security centre . "
-		3: "we have implemented appropriate technical and organisational controls to protect your personal data against unauthorised processing and against accidental loss , damage or destruction . "
-	word 5 "variety":
-		0: "we serve you tailored ads both on and off our services . we offer you choices regarding personalized ads , but you can not opt-out of seeing other ads . we target and measure the performance of ads to members , visitors and others both on and off our services directly or through a variety of partners , using data from advertising technologies on and off our services , pixels , ad tags , cookies , and device identifiers . "
-		1: "we target and measure the performance of ads to members , visitors and others both on and off our services directly or through a variety of partners , using data described above ( e.g. , using job titles from a profile to infer industry , seniority , and compensation bracket , using graduation dates to infer age or using first names or pronoun usage to infer gender , using your feed activity to infer your interests , or using device data to recognize you as a member ) . "
-		2: "we target and measure the performance of ads to members , visitors and others both on and off our services directly or through a variety of partners , using information from advertising partners , vendors and publishers . "
-		3: "we hold variety of your data including the following information . "
+	word 1 "Privacy":
+		1: "This notice applies to all users of our apps, websites, features, or other services anywhere in the world, unless covered by a separate privacy notice, such as the Privacy Notice or Privacy Policy."
+		2: "We protect this information according to the practices described in this Privacy Statement, plus any additional restrictions imposed by the source of the data."
+		3: "Our legal basis for collecting and using the personal information described in this Privacy Statement will depend on the personal information concerned and the specific context in which we collect and use it."
+		4: "In connection with any reorganization, restructuring, merger or sale, or other transfer of assets, we will transfer information, including personal information, provided that the receiving party agrees to respect your personal information in a manner that is consistent with our Privacy Statement."
+		5: "Whenever in the course of sharing information we transfer personal information to countries outside of the European Economic Area and other regions with comprehensive data protection laws, we will ensure that the information is transferred in accordance with this Privacy Statement and as permitted by the applicable laws on data protection."
+	word 2 "privacy":
+		1: "As always, we encourage you to review the privacy policies of every third party service that you visit or use, including those third parties you interact with through our services."
+		2: "This notice applies to all users of our apps, websites, features, or other services anywhere in the world, unless covered by a separate privacy notice, such as the Privacy Notice or Privacy Policy."
+		3: "Please note that these third parties are responsible for their own privacy practices."
+		4: "Social plugins and social applications are operated by the social networks themselves, and are subject to their terms of use and privacy policies."
+		5: "These websites and platforms have separate and independent privacy or data policies, privacy statements, notices and terms of use, which we recommend you read carefully."
+	word 3 "Shield":
+		1: "Second, we use the EU approved Standard Contractual Clauses and where your personal data is transferred to third party providers based in the US, data may be transferred to them if they have self certified under the Privacy Shield framework in relation to the type of data being transferred, which requires them to provide similar protection to personal data shared between the EU and the US."
+		2: "These might be the use of model contracts in a form approved by regulators, or having our suppliers sign up to an independent privacy scheme approved by regulators like the US Privacy Shield scheme."
+		3: "We and certain of our controlled US affiliates participate in the EU US and Swiss US Privacy Shield Frameworks regarding the collection, use, and retention of personal information from European Union member countries, the United Kingdom, and Switzerland."
+		4: "We have certified with the Department of Commerce that we adhere to the Privacy Shield Principles."
+		5: "To learn more about the Privacy Shield Principles, visit our website."
+	word 4 "Policy":
+		1: "This notice applies to all users of our apps, websites, features, or other services anywhere in the world, unless covered by a separate privacy notice, such as the Privacy Notice or Privacy Policy."
+		2: "This Privacy Policy applies to our homepage, our brand apps and other related sites, apps, communications and services, including off site services, such as our ad services and the Apply with us and Share with us plugins, but excluding services that state that they are offered under a different privacy policy."
+		3: "As a Visitor or Member of our services, the collection, use and sharing of your personal data is subject to this Privacy Policy and other documents referenced in this Privacy Policy, as well as updates."
+		4: "You acknowledge that your continued use of our services after we publish or send a notice about our changes to this Privacy Policy means that the collection, use and sharing of your personal data is subject to the updated Privacy Policy, as of its effective date."
+		5: "We may share your data when our business is sold to others, but it must continue to be used in accordance with this Privacy Policy."
+	word 5 "Notice":
+		1: "This notice applies to all users of our apps, websites, features, or other services anywhere in the world, unless covered by a separate privacy notice, such as the Privacy Notice or Privacy Policy."
+		2: "For more information about how we use your data, if you use our community forum on our website, see our Community Forum Privacy Notice."
+		3: "If you have our business account, see our Business Customer Privacy Notice."
+		4: "To learn how our partners will use your information, please read Assurant s Privacy Notice which is phone insurance, Axa s Privacy Notice the travel insurance and LoungeKey s Privacy Notice which is airport lounge access."
+		5: "If you sign up for our Plus or Premium service and start using Credit Tracker, please read the Credit Tracker Privacy Notice."
 
 cluster 10:
-	word 1 "academic":
-		0: "we will share your personal data for activities such as statistical analysis and academic study but only in a pseudonymised format . "
-	word 2 "study":
-		0: "we will share your personal data for activities such as statistical analysis and academic study but only in a pseudonymised format . "
-	word 3 "political":
-		0: "we will not collect special categories of data from you - such as personal data concerning your race , political opinions , religion , health or sexual orientation - unless you have chosen to provide that type of personal data to us . "
-	word 4 "opinions":
-		0: "we will not collect special categories of data from you - such as personal data concerning your race , political opinions , religion , health or sexual orientation - unless you have chosen to provide that type of personal data to us . "
-	word 5 "sexual":
-		0: "we will not collect special categories of data from you - such as personal data concerning your race , political opinions , religion , health or sexual orientation - unless you have chosen to provide that type of personal data to us . "
+	word 1 "cookies":
+		1: "Like most online services and mobile applications, we may use cookies and other technologies, such as web beacons, web storage, and unique advertising identifiers, to collect information about your activity, browser, and device."
+		2: "Most web browsers are set to accept cookies by default."
+		3: "Keep in mind, though, that removing or rejecting cookies could affect the availability and functionality of our services."
+		4: "We use your information we ve collected from cookies and other technology to enhance our services and your experience with them."
+		5: "In some cases, we collect this data through cookies, pixels, tags, and similar tracking technologies that create and maintain unique identifiers."
+	word 2 "technologies":
+		1: "Like most online services and mobile applications, we may use cookies and other technologies, such as web beacons, web storage, and unique advertising identifiers, to collect information about your activity, browser, and device."
+		2: "In some cases, we collect this data through cookies, pixels, tags, and similar tracking technologies that create and maintain unique identifiers."
+		3: "We use cookies and similar technologies for authenticating users, remembering user preferences and settings, determining the popularity of content, delivering and measuring the effectiveness of advertising campaigns, analyzing site traffic and trends, and generally understanding the online behaviors and interests of people who interact with our services."
+		4: "These entities may use cookies, web beacons, SDKs, and other technologies to identify the devices used by visitors to our websites, as well as when they visit other online sites and services."
+		5: "We collect information about information collected via the use of cookies, web beacons and other technologies, including ad data such as information on the availability and delivery of ads, the site URL, as well as the date and time ."
+	word 3 "similar":
+		1: "In some cases, we collect this data through cookies, pixels, tags, and similar tracking technologies that create and maintain unique identifiers."
+		2: "We use cookies and similar technologies for authenticating users, remembering user preferences and settings, determining the popularity of content, delivering and measuring the effectiveness of advertising campaigns, analyzing site traffic and trends, and generally understanding the online behaviors and interests of people who interact with our services."
+		3: "When we use cookies or other similar technologies, we use session cookies that last until you close your browser or persistent cookies that last until you or your browser delete them ."
+		4: "We collect data through cookies and similar technologies."
+		5: "As further described in our Cookie Policy, we use cookies and similar technologies for example,, pixels and ad tags to collect data for example,, device IDs to recognize you and your device s on, off and across different services and devices where you have engaged with our services."
+	word 4 "Cookies":
+		1: "Cookies are small text files that are stored on browsers or devices by websites, apps, online media, and advertisements."
+		2: "Cookies are small data files that are commonly stored on your device when you browse and use websites and online services."
+		3: "Supplementary information can be found in the Statement on Cookies and Tracking Technologies and the Banking Regulations Notice."
+		4: "Please consult our Statement on Cookies and Tracking Technologies for more information."
+		5: "When you visit our Sites, use our Services, or visit a third party website for which we provide online services, we and our business partners and vendors may use cookies and other tracking technologies collectively, Cookies ."
+	word 5 "cookie":
+		1: "Like most online services and mobile applications, we may use cookies and other technologies, such as web beacons, web storage, and unique advertising identifiers, to collect information about your activity, browser, and device."
+		2: "Most web browsers are set to accept cookies by default."
+		3: "Keep in mind, though, that removing or rejecting cookies could affect the availability and functionality of our services."
+		4: "We use your information we ve collected from cookies and other technology to enhance our services and your experience with them."
+		5: "In some cases, we collect this data through cookies, pixels, tags, and similar tracking technologies that create and maintain unique identifiers."
 
 cluster 11:
-	word 1 "personal":
-		0: "profiles allow users to have a distinct , personalized product experience , built around the movies and shows of interest to them , as well as separate watch histories . please note that profiles are available to everyone who uses your account , so that anyone with access to your account can navigate to and use , edit or delete profiles . you should explain this to others with access to your account , and if you do not wish them to use or change your profile , be sure to let them know . "
-		1: "customers and partners may provide data to us . we receive personal data ( e.g. , your job title and work email address ) about you when you use the services of our customers and partners , such as employers or prospective employers and applicant tracking systems providing us job application data . "
-		2: "to personalize our services for you , such as by recommending or ranking relevant content and conversations on our services , we use the data we have about you such as data you provide , data we collect from your engagement with our services and inferences we make from the data we have about you . "
-		3: "advertising partners can associate personal data collected by the advertiser directly from you with hashed ids or device identifiers received from us . in such instances , we seek to contractually require such advertising partners to obtain your explicit , opt-in consent before doing so . "
-		4: "your employer can see how you use our product they provided for your work ( e.g . as a recruiter or sales agent ) and related information . we will not show them your job searches or personal messages . "
-		5: "shared information might include personal data and account information necessary to facilitate the transaction , personal data to help other participant ( s ) resolve disputes and detect and prevent fraud , and anonymous data and performance analytics to help merchants better understand the uses of our services and to help merchants enhance users ’ experiences . "
-		6: "personal data that we share with a third-party account or platform such as a social media account may in turn be shared with certain other parties , including the general public , depending on the account ’ s or platform ’ s privacy practices . "
-		7: "data controller means that we determine the purposes and means of the processing of personal data . "
-		8: "personal data is any information about you by which you can be identified or be identifiable . "
-		9: "process means any method or way that we handle personal data or sets of personal data , whether or not by automated means , such as collection , recording , organisation , structuring , storage , adaptation or alteration , retrieval , and consultation , disclosure by transmission , dissemination or otherwise making available , alignment or combination , restriction , erasure or destruction of personal data . "
-		10: "european data protection laws say we need to have a lawful basis for using your personal data . "
-		11: "analytics and profiling . we use your personal information for statistical analysis and to help us understand more about our customers . "
-		12: "marketing and advertising . we use your personal information to provide relevant marketing communications including by email , phone , sms , post or online advertising , relating to our products and services , and those of our suppliers and our group . "
-		13: "financial services . if you interact with our bank or financial services , your personal information is also used for our bank 's credit and capital management purposes and other purposes set out in the financial services section of this notice . "
-		14: "our europe branch shares customers ' personal information only as described below and with our website and the subsidiaries that we control that are either subject to this privacy notice or follow practices at least as protective as those described in this privacy notice . "
-		15: "consumers residing in california are afforded certain additional rights with respect to their personal information under the california consumer privacy act or and the “ shine the light ” law . if you are a california resident , this section applies to you . "
-		16: "under data protection law , we can only use your personal data if we have a ‘ legal basis ’ which is a genuine legal reason for doing so . "
-		17: "through pharmacies , opticians , hearing care and stores , we collect personal data about yourself , such as name , address , age , gender , contact details purchases , appointment information , prescription , and audiological data . "
-		18: "google crashlytics is used to help us monitor the functioning of our app and the way you engage with it . anonymised app usage information is shared with crashlytics for this purpose , but no personal data is shared . click here to read the crashlytics privacy policy . "
-		19: "if ownership of all or part of our business changes , or we undergo a reorganisation ( including a merger or transfer between our companies ) , we ’ ll transfer your personal information to the new owner or successor company , so we can continue to provide the services . "
-		20: "your personalization and data settings let you decide whether we show you interest-based ads on and off our product , how we personalize based on your inferred identity , whether we collect and use your precise location , whether we personalize your experience based on where you ’ ve been , and whether we keep track of the websites where you see our content "
-		21: "for users outside the european economic area ( eea ) : personalisation , measurement and improvement of our and third party advertisements in our online offerings , the online offerings of other our corporate family members or third parties . "
-		22: "for users within the european economic area ( eea ) : personalisation , measurement and improvement of our and third party advertisements in our online offerings , the online offerings of other corporate family members or third parties . "
-		23: "this personal data can be viewed online and collected by other people . "
-		24: "these transfers to third parties may constitute “ sale ” of your personal information under california law . "
-		25: "these contracts give your personal data the same protection it has in the eea . "
-	word 2 "social":
-		0: "advertisers , app developers and publishers can send us information through our business tools that they use , including our social plugins ( such as the like button ) , login , our apis and sdks , or the pixel . these partners provide information about your activities off our application – including information about your device , websites you visit , purchases you make , the ads you see and how you use their services "
-		1: "social plugins and social applications are operated by the social networks themselves , and are subject to their terms of use and privacy policies . "
-		2: "premium services customers can store information they have about you in our premium services , such as a resume or contact information or sales history . the data stored about you by these customers is subject to the policies of those customers . other enterprise services and features that use your data include teamlink and elevate ( social promotion of content ) . "
-		3: "any data that you include on your profile and any content you post or social action ( e.g. , likes , follows , comments , shares ) you take on our services will be seen by others , consistent with your settings . "
-		4: "regulated members may need to store communications outside of our service . some members ( or their employers ) need , for legal or professional compliance , to archive their communications and social media activity , and will use services of others to provide these archival services . "
-		5: "personal data that we share with a third-party account or platform such as a social media account may in turn be shared with certain other parties , including the general public , depending on the account ’ s or platform ’ s privacy practices . "
-		6: "sites means the websites , mobile apps , official social media platforms , or other online properties through which we offer the services and which has posted or linked to this privacy statement . "
-		7: "public details from your social media profile ( like facebook , instagram or twitter ) if you reach out to us via these platforms , and the contents of your messages or posts to us . "
-		8: "advertising companies , who help us place our group adverts online and on other media , social media providers - such as facebook , instagram and twitter , market research partners , who help us analyse customer behaviour , companies that deploy our email campaigns because they need to know your email address to carry out these services and companies that provide insights and analytics services so we can stock the right products , send the relevant marketing campaigns and understand our business and customers better . "
-		9: "companies who assess faults and repair products on our behalf , companies who administer competitions for us so they run smoothly , companies that enable us to collect your reviews and comments , both online and offline and companies that help us with our community and social goals , such as our active kids scheme . "
-		10: "through social media , when opted into marketing we obtain information posted publicly on social media sites and use it to help us understand how our different customers interact with us and what people think and feel about our brand . we do this in a way that doesn ’ t always identify individual customers e.g . we may look at which groups of customers are more likely to talk to us via social media or use social media to talk about our products . we share pseudonymised data with social media platforms such as facebook to enable us to deliver content and messages which may be of interest to you . "
-	word 3 "twitter":
-		0: "public details from your social media profile ( like facebook , instagram or twitter ) if you reach out to us via these platforms , and the contents of your messages or posts to us . "
-		1: "advertising companies , who help us place our group adverts online and on other media , social media providers - such as facebook , instagram and twitter , market research partners , who help us analyse customer behaviour , companies that deploy our email campaigns because they need to know your email address to carry out these services and companies that provide insights and analytics services so we can stock the right products , send the relevant marketing campaigns and understand our business and customers better . "
-		2: "advertising platforms , which include twitter , facebook and whose sdks are integrated within our product , may collect information for optimizing advertising campaigns outside of our product . "
-		3: "twitter also uses your contact information to market to you as your country ’ s laws allow , and to help others find your account if your settings permit , including through third-party services and client applications . "
-	word 4 "purchases":
-		0: "advertisers , app developers and publishers can send us information through our business tools that they use , including our social plugins ( such as the like button ) , login , our apis and sdks , or the pixel . these partners provide information about your activities off our application – including information about your device , websites you visit , purchases you make , the ads you see and how you use their services "
-		1: "information we receive about you ( including financial transaction data related to purchases made with our application ) can be accessed and preserved for an extended period when it is the subject of a legal request or obligation , governmental investigation or investigations of possible violations of our terms or policies , or otherwise to prevent harm . "
-		2: "online advertisers or third parties share information with us to measure , report on or improve the performance of ads on our product , or to figure out what kinds of ads to show you on or off of our product . this includes information about your visits to an advertiser 's site or purchases you made from them , or information about your interests from a third-party service , which we might use to help show you ads . "
-		3: "through pharmacies , opticians , hearing care and stores , we collect personal data about yourself , such as name , address , age , gender , contact details purchases , appointment information , prescription , and audiological data . "
-		4: "automatic filtering and , where necessary , manual review of messages sent through our messaging tools to prevent fraudulent or suspicious activity or violations of our user agreement or other rules and policies , including enforcing the prohibition of purchases and sales outside of us . "
-	word 5 "precise":
-		0: "your mobile device lets you choose how and whether your precise location , photos , contacts and other data is shared with us . "
-		1: "your personalization and data settings let you decide whether we show you interest-based ads on and off our product , how we personalize based on your inferred identity , whether we collect and use your precise location , whether we personalize your experience based on where you ’ ve been , and whether we keep track of the websites where you see our content "
-		2: "location data , including your general location data like ip address and the precise location data of your mobile device . please note that for most mobile devices , you can manage or disable the use of location services for all applications in the settings menu of your mobile device . "
-		3: "location data , including your general location data ( e.g. , ip address ) and the precise location data of your mobile device . please note that most mobile devices allow you to manage or disable the use of location services for all applications in the settings menu . "
+	word 1 "legal":
+		1: "This is a case by case determination that depends on things such as the nature of the data, why it is collected and processed, and relevant legal or operational retention needs."
+		2: "Information we receive about you including financial transaction data related to purchases made with our application can be accessed and preserved for an extended period when it is the subject of a legal request or obligation, governmental investigation or investigations of possible violations of our terms or policies, or otherwise to prevent harm."
+		3: "We use your information to enforce our Terms of Service and other usage policies and comply with legal requirements."
+		4: "There may be legal requirements to store your data and we may need to suspend those deletion practices if we receive valid legal process asking us to preserve content, if we receive reports of abuse or other Terms of Service violations, or if your account or content created by you is flagged by our automated systems for abuse or other Terms of Service violations."
+		5: "We may be required to use your personal information to comply with the law, like when we respond to valid legal process or need to take action to protect our users."
+	word 2 "data":
+		1: "We require each of these partners to have lawful rights to collect, use and share your data before providing us with any data."
+		2: "The face recognition templates that we create are data with special protections under EU law."
+		3: "We also impose strict restrictions on how our partners can use and disclose the data we provide."
+		4: "This is a case by case determination that depends on things such as the nature of the data, why it is collected and processed, and relevant legal or operational retention needs."
+		5: "Information we receive about you including financial transaction data related to purchases made with our application can be accessed and preserved for an extended period when it is the subject of a legal request or obligation, governmental investigation or investigations of possible violations of our terms or policies, or otherwise to prevent harm."
+	word 3 "personal":
+		1: "Because your privacy is important to us, we will ask you to verify your identity or provide additional information before we let you access or update your personal information."
+		2: "We may be required to use your personal information to comply with the law, like when we respond to valid legal process or need to take action to protect our users."
+		3: "We use your personal data for comparing photographs that we have on file against photographs of other users to prevent identity borrowing, and from public databases to verify user identity."
+		4: "We process personal data to the extent necessary for the interests of other people or the general public, such as in connection with legal or insurance claims, and to protect the rights and safety of others."
+		5: "We process personal data to fulfill our legal obligations."
+	word 4 "law":
+		1: "We require each of these partners to have lawful rights to collect, use and share your data before providing us with any data."
+		2: "The face recognition templates that we create are data with special protections under EU law."
+		3: "Finally, we may also retain certain information in backup for a limited period of time or as required by law."
+		4: "We may be required to use your personal information to comply with the law, like when we respond to valid legal process or need to take action to protect our users."
+		5: "For example, We are subject to laws and regulations in many cities and countries that require it to collect and retain data about our users trips and deliveries, and to provide copies of such data to the government or other authorities."
+	word 5 "long":
+		1: "We store other information for longer periods of time."
+		2: "If location information is associated with a Snap like those saved to Memories or posted to Our Story we ll retain that location as long as we store the Snap."
+		3: "Uber retains user data for as long as necessary for the purposes described above."
+		4: "We keep your personal data only as long as necessary to provide you with our service and for legitimate and essential business purposes, such as maintaining the performance of our product, making data driven business decisions about new features and offerings, complying with our legal obligations, and resolving disputes."
+		5: "We keep some of your personal data for as long as you are a user of our product."
 
 cluster 12:
-	word 1 "fourth":
-		0: "third , when you give us your consent to contact you via email , phone , post , message or via our chat function to send you marketing campaigns , or to invite you to participate in surveys about our services , or our partners ’ services . fourth , when you contact us directly via email , phone , post , message or via our chat function and finally , when you browse and use our sites before and after you create an account with us . "
-		1: "fourth , developers . developers using our sdk or api will have access to their end users ’ information , including message content , message metadata , and voice metadata . developers must use such information only to provide the sdk/api functionality within their applications and/or services . "
-		2: "fourth , your location if you ’ ve authorised tracking , so we can help protect you against fraud . "
-		3: "fourth show your profile picture in the app if you add one . "
-		4: "three , information required to make decisions about your applications for products and services we offer for example , insurance , loans or credit cards such as your medical history if applying for a life insurance product . fourth your account login details for our websites and apps , including your user name and chosen password and information about whether or not you want to receive marketing communications from us . "
-	word 2 "databases":
-		0: "fifth , agents , consultants and related third parties . like many businesses , we sometimes hire other companies or individuals to perform certain business-related functions . examples of such functions include mailing information , maintaining databases and processing payments . "
-		1: "seventh , information from other sources such as specialist companies that provide customer information . for example credit reference agencies such as experian , the royal mail , fraud prevention agencies , claims databases , marketing and research companies , social media providers , pay tv providers and the dvla , as well as information that is publicly available . finally , information captured by our cctv , automatic number plate recognition and body worn recording devices together ‘ cctv ’ if you visit any of our premises . "
-	word 3 "sixth":
-		0: "sixth , your contact details and details of the emails and other electronic communications you receive from us , and how you interact with them . for example whether the communication has been opened , if you have clicked on any links within that communication and the device you used . we do this because we want to make sure that our communications are useful for you , so if you don ’ t open them or don ’ t click on any links in them , we know we need to improve our services . "
-		1: "sixth , legal requirements . we may disclose your information if required to do so by law or in the good faith belief that such action is necessary to ( i ) comply with a legal obligation , ( ii ) protect and defend the rights or property of the company or related companies , ( iii ) protect the personal safety of users of our product or the public , or ( iv ) protect against legal liability . "
-	word 4 "finally":
-		0: "third , when you give us your consent to contact you via email , phone , post , message or via our chat function to send you marketing campaigns , or to invite you to participate in surveys about our services , or our partners ’ services . fourth , when you contact us directly via email , phone , post , message or via our chat function and finally , when you browse and use our sites before and after you create an account with us . "
-		1: "seventh , information from other sources such as specialist companies that provide customer information . for example credit reference agencies such as experian , the royal mail , fraud prevention agencies , claims databases , marketing and research companies , social media providers , pay tv providers and the dvla , as well as information that is publicly available . finally , information captured by our cctv , automatic number plate recognition and body worn recording devices together ‘ cctv ’ if you visit any of our premises . "
-		2: "finally third-party financial institutions with whom we partner to offer financial products to you , for them to provide joint content and services such as , registration , transactions and customer support . these third-party financial institution partners will use your personal data to send you marketing communications only if you have requested their services . "
-	word 5 "providers":
-		0: "seventh , information from other sources such as specialist companies that provide customer information . for example credit reference agencies such as experian , the royal mail , fraud prevention agencies , claims databases , marketing and research companies , social media providers , pay tv providers and the dvla , as well as information that is publicly available . finally , information captured by our cctv , automatic number plate recognition and body worn recording devices together ‘ cctv ’ if you visit any of our premises . "
-		1: "third party vendors who help us manage and maintain our group ’ s it infrastructure , logistics and delivery providers who enable us to deliver products you order on our websites . "
-		2: "these third-party service providers have access to personal information needed to perform their functions , but may not use it for other purposes . further , they must process the personal information in accordance with this privacy notice and as permitted by applicable data protection laws . "
-		3: "third-party providers are strictly forbidden to pass on personal data contained in your listings to other third parties . "
-		4: "third parties who are involved in judicial proceedings , our inc. corporate family members and external service providers "
+	word 1 "pharmacy":
+		1: "To process data about childeren, our opticians and pharmacy process children s data for appointments and processing prescriptions."
+		2: "If you ve previously had a prescription dispensed at our pharmacy, your record may contain your contact details from our pharmacy system."
+		3: "These may be retrieved when we look up your details in another area of our store, but rest assured we re unable to access any pharmacy details beyond your contact details."
+		4: "Your use of our pharmacy NHS services will remain unaffected."
+		5: "We share information with NHS bodies to fulfil our legal obligations as a provider of pharmacy, optical and hearing care services, or where we have a duty of care to do so."
+	word 2 "prescription":
+		1: "Through pharmacies, opticians, hearing care and stores, we collect Personal data about yourself, such as name, address, age, gender, contact details purchases, appointment information, prescription, and audiological data."
+		2: "To process data about childeren, our opticians and pharmacy process children s data for appointments and processing prescriptions."
+		3: "We may use it to contact you about orders you ve placed or appointments you ve booked or to send you reminders for example, about repeat prescriptions ."
+		4: "If you ve previously had a prescription dispensed at our pharmacy, your record may contain your contact details from our pharmacy system."
+		5: "We will never use information about your Pharmacy prescriptions for marketing, although we may use it to let you know about services we provide that might be useful and relevant to you."
+	word 3 "prescriptions":
+		1: "To process data about childeren, our opticians and pharmacy process children s data for appointments and processing prescriptions."
+		2: "We may use it to contact you about orders you ve placed or appointments you ve booked or to send you reminders for example, about repeat prescriptions ."
+		3: "We will never use information about your Pharmacy prescriptions for marketing, although we may use it to let you know about services we provide that might be useful and relevant to you."
+		4: "Electronic Prescription by using our NHS repeat prescription service, you are allowing your GP surgery to send your prescriptions electronically to our pharmacy."
+		5: "If you choose to get your order delivered, our centralised our pharmacy will handle your electronic prescriptions."
+	word 4 "NHS":
+		1: "Your use of our pharmacy NHS services will remain unaffected."
+		2: "If you re visiting a store for an eye test or other NHS clinical service, you should indicate your preference when asked."
+		3: "We share information with NHS bodies to fulfil our legal obligations as a provider of pharmacy, optical and hearing care services, or where we have a duty of care to do so."
+		4: "Where we provide NHS services in our pharmacies or our Opticians practices, we also have to comply with NHS Information Governance requirements."
+		5: "Electronic Prescription by using our NHS repeat prescription service, you are allowing your GP surgery to send your prescriptions electronically to our pharmacy."
+	word 5 "health":
+		1: "We may also share information with public health authorities where required or permitted by law."
+		2: "First, record any issues you want us to know about, like a gambling addiction or information about your health, so we understand how to best support you."
+		3: "If someone books an appointment on your behalf we ll ask them for basic details about you, which may include health details such as whether you have a family history of diabetes or glaucoma."
+		4: "As a healthcare provider, we re regulated by the General Pharmaceutical Council GPhC , General Optical Council GOC , Care Quality Commission CQC , Pharmaceutical Society of Northern Ireland and the Regulation Quality Improvement Authority in Northern Ireland."
+		5: "The SCR is a copy of key information from your GP record, and it provides authorised health care professionals with faster, secure access to information about you when you need care."
 
 cluster 13:
-	word 1 "provision":
-		0: "as described elsewhere in our user privacy notice and in the payments terms of use , we may share this data with other group companies in order to facilitate transactions and with service providers , including payment processors , credit agencies and bureaus . although the provision of any other personal data like address and shipping data is voluntary , it may be necessary for the use of our services , such as bidding , purchase and sales data to complete a transaction . "
-		1: "provision of our payment services in accordance with the payments terms of use . "
-		2: "provision of shared content and services such as registration for services , transaction processing and customer service with our other corporate family members or cooperating payment service providers . "
-		3: "processing of your precise location data to provide location-based services , provision of a single sign-on service allowing you to register or log-in to third party services using your log-in credentials . "
-	word 2 "referred":
-		0: "for those who participate in uber ’ s referral program , we share certain personal data of referred users , such as trip count , with the user who referred them , to the extent relevant to determining the referral bonus . "
-		1: "this activity is referred to as profiling . you have certain rights in relation to this type of processing . "
-	word 3 "bonus":
-		0: "for those who participate in uber ’ s referral program , we share certain personal data of referred users , such as trip count , with the user who referred them , to the extent relevant to determining the referral bonus . "
-		1: "offering of partner and bonus programmes and other co-branded marketing efforts , e.g . co-branded credit cards in collaboration with a third party credit card issuer . "
-	word 4 "rates":
-		0: "in addition , we use technologies such as web beacons and single-pixel gifs to record log data such as open rates for emails sent by the system . "
-		1: "evaluation of the quality and success of our email marketing campaigns through analysis of opening and click rates . "
-	word 5 "pharmaceutical":
-		0: "as a healthcare provider , we ’ re regulated by the general pharmaceutical council ( gphc ) , general optical council ( goc ) , care quality commission ( cqc ) , pharmaceutical society of northern ireland and the regulation quality improvement authority in northern ireland . all of which set out standards and codes of practice with which we need to comply . "
-		1: "as a pharmacy-based retailer , research is vital to our business . we work with leading universities , healthcare and pharmaceutical companies and other bodies carrying out healthcare research . this may involve providing anonymised and/or aggregated data about our dispensing activities . "
+	word 1 "address":
+		1: "We also collect contact information if you choose to upload, sync or import it from a device such as an address book or call log or SMS log history , which we use for things such as helping you and others find people you may know and for the other purposes listed below."
+		2: "For example, most of our services require you to set up an account, so we need to collect a few important details about you, such as your name, username, password, email address, phone number, and date of birth."
+		3: "This may include their name, email, phone number, login name and password, address, profile picture, payment or banking information including related payment verification information , driver s license and other government identification documents which may indicate document numbers as well as birth date, gender, and photo ."
+		4: "We collect information you provide to us including your name, email address, address or postal code, payment method s , and telephone number."
+		5: "We collect information about service activation information such as your email address or other contact information."
+	word 2 "number":
+		1: "This includes payment information, such as your credit or debit card number and other card information, other account and authentication information, and billing, delivery and contact details."
+		2: "We can also make your experience more seamless, for example, by automatically filling in your registration information such as your phone number from one of our produces when you sign up for an account on a different Product."
+		3: "For example, most of our services require you to set up an account, so we need to collect a few important details about you, such as your name, username, password, email address, phone number, and date of birth."
+		4: "This may include their name, email, phone number, login name and password, address, profile picture, payment or banking information including related payment verification information , driver s license and other government identification documents which may indicate document numbers as well as birth date, gender, and photo ."
+		5: "We collect information you provide to us including your name, email address, address or postal code, payment method s , and telephone number."
+	word 3 "details":
+		1: "This includes payment information, such as your credit or debit card number and other card information, other account and authentication information, and billing, delivery and contact details."
+		2: "When you subscribe to receive premium content, or buy something from a seller in our Products, the content creator or seller can receive your public information and other information that you share with them, as well as the information needed to complete the transaction, including shipping and contact details."
+		3: "For example, most of our services require you to set up an account, so we need to collect a few important details about you, such as your name, username, password, email address, phone number, and date of birth."
+		4: "We collect transaction information related to the use of our services, including the type of services requested or provided, order details, delivery information, date and time the service was provided, amount charged, distance traveled, and payment method."
+		5: "We collect information about details of your interactions with our customer service, such as the date, time and reason for contacting us, transcripts of any chat conversations, and if you call us, your phone number and call recordings."
+	word 4 "email":
+		1: "For example, most of our services require you to set up an account, so we need to collect a few important details about you, such as your name, username, password, email address, phone number, and date of birth."
+		2: "This may include their name, email, phone number, login name and password, address, profile picture, payment or banking information including related payment verification information , driver s license and other government identification documents which may indicate document numbers as well as birth date, gender, and photo ."
+		3: "We collect information you provide to us including your name, email address, address or postal code, payment method s , and telephone number."
+		4: "We collect information about service activation information such as your email address or other contact information."
+		5: "The third party compares the privacy protective identifier to identifiers in its database and there will be a match only if you have used the same identifier such as an email address with our product and the third party."
+	word 5 "payment":
+		1: "This includes payment information, such as your credit or debit card number and other card information, other account and authentication information, and billing, delivery and contact details."
+		2: "This may include their name, email, phone number, login name and password, address, profile picture, payment or banking information including related payment verification information , driver s license and other government identification documents which may indicate document numbers as well as birth date, gender, and photo ."
+		3: "We collect transaction information related to the use of our services, including the type of services requested or provided, order details, delivery information, date and time the service was provided, amount charged, distance traveled, and payment method."
+		4: "We use your personal data to offer, process, or facilitate payments for our services."
+		5: "In order to provide our services, we must collect and use certain personal data, including user profile data, which we use to establish and maintain user accounts, verify user identity, communicate with users about their trips, orders, and accounts, and enable users to make payments or receive earnings."
 
 cluster 14:
-	word 1 "colleagues":
-		0: "for safety and security , we use your personal information to help provide safe and secure environments for our customers to shop in , our colleagues to work in and for our businesses to be conducted . to enable this we use cctv , anpr technology , body worn recording devices , monitor online behaviour and carry out checks to help us ensure that our customers are genuine to prevent fraud and to help customers use our services appropriately . "
-		1: "our professional advisors , such as lawyers and consultants , security and fraud prevention companies to ensure the safety and security of our customers , colleagues and business and companies which run our contact centres because they need your personal information to identify and contact you . "
-	word 2 "overridden":
-		0: "legitimate interests . in many cases , we handle personal data on the ground that it furthers our legitimate interests in ways that are not overridden by the interests or fundamental rights and freedoms of the affected individuals . "
-		1: "our legitimate business interests don ’ t automatically override your interests - we won ’ t use your personal data for activities where our interests are overridden by the impact on you , unless we have your consent or are otherwise required or permitted to by law . "
-	word 3 "permissions":
-		0: "rest assured that we only use these permissions to provide the app and the services you request and use through it . "
-		1: "we respect the fact that your personal information is your information , and we ’ ll make it easy for you to update or change your personal details or marketing permissions . please help us to help you by letting us know if your contact details change , or if you spot any errors in the information we hold about you . "
-	word 4 "safety":
-		0: "for safety and security , we use your personal information to help provide safe and secure environments for our customers to shop in , our colleagues to work in and for our businesses to be conducted . to enable this we use cctv , anpr technology , body worn recording devices , monitor online behaviour and carry out checks to help us ensure that our customers are genuine to prevent fraud and to help customers use our services appropriately . "
-		1: "our professional advisors , such as lawyers and consultants , security and fraud prevention companies to ensure the safety and security of our customers , colleagues and business and companies which run our contact centres because they need your personal information to identify and contact you . "
-		2: "help protect the safety of our product and our users , which includes blocking suspected spammers , addressing abuse , and enforcing our user agreement and our other policies , "
-	word 5 "professional":
-		0: "our professional advisors , such as lawyers and consultants , security and fraud prevention companies to ensure the safety and security of our customers , colleagues and business and companies which run our contact centres because they need your personal information to identify and contact you . "
-		1: "professional or employment-related information or demographic information , but only if you explicitly provide it to us , such as by applying for a job or filling out a survey . "
+	word 1 "collect":
+		1: "We collect the content, communications and other information you provide when you use our Products, including when you sign up for an account, create or share content and message or communicate with others."
+		2: "We collect information about how you use our Products, such as the types of content that you view or engage with, the features you use, the actions you take, the people or accounts you interact with and the time, frequency and duration of your activities."
+		3: "We also collect information about how you use features such as our camera."
+		4: "When you interact with our services, we collect information that you provide to us."
+		5: "When you contact customer support or communicate with us in any other way, we ll collect whatever information you volunteer or that we need to resolve your question."
+	word 2 "We":
+		1: "We collect the content, communications and other information you provide when you use our Products, including when you sign up for an account, create or share content and message or communicate with others."
+		2: "We collect information about how you use our Products, such as the types of content that you view or engage with, the features you use, the actions you take, the people or accounts you interact with and the time, frequency and duration of your activities."
+		3: "We also collect information about how you use features such as our camera."
+		4: "We also receive and analyse content, communications and information that other people provide when they use our Products."
+		5: "We use the information we have to develop, test and improve our Products, including by conducting surveys and research, and testing and troubleshooting new products and features."
+	word 3 "data":
+		1: "For example, we use data that we have to investigate suspicious activity or breaches of our Terms or Policies, or to detect when someone needs help."
+		2: "We collect content you create on our services, such as custom stickers, and information about the content you create or provide, such as if the recipient has viewed the content and the metadata that is provided with the content."
+		3: "We operate, and process data, globally."
+		4: "We collect data provided by users to our product, such as during account creation."
+		5: "We collect data when users create or update their accounts."
+	word 4 "improve":
+		1: "We use the information we have to develop, test and improve our Products, including by conducting surveys and research, and testing and troubleshooting new products and features."
+		2: "We use your information to develop, operate, improve, deliver, maintain, and protect our products and services."
+		3: "we need to use your information to provide and improve our services, including protecting your account, delivering your Snaps, providing customer support, and helping you find friends and content we think you ll like."
+		4: "We use this data to enhance your use of our apps, including to improve pick up locations, enable safety features, and prevent and detect fraud."
+		5: "We may also use some data regarding the calls, texts, or other communications, including the date and time of the communications and the content of the communications for customer support services including to resolve disputes between users , for safety and security purposes, to improve our products and services, and for analytics."
+	word 5 "services":
+		1: "When you interact with our services, we collect information that you provide to us."
+		2: "When you use our services, we collect information about which of those services you ve used and how you ve used them."
+		3: "For example, we may collect information about how you interact with our services, such as which filters you view or apply to Snaps, which Stories you watch on Discover, whether you re using Spectacles, or which search queries you submit."
+		4: "We collect content you create on our services, such as custom stickers, and information about the content you create or provide, such as if the recipient has viewed the content and the metadata that is provided with the content."
+		5: "We collect information about your activity through our services."
+
+cluster 15:
+	word 1 "fraud":
+		1: "When we have a good faith belief that it is necessary to detect, prevent and address fraud, unauthorised use of the Products, breaches of our Terms or Policies, or other harmful or illegal activity, to protect ourselves including our rights, property or Products , you or others, including as part of investigations or regulatory enquiries, or to prevent death or imminent bodily harm."
+		2: "For example, if relevant, we provide information to and receive information from third party partners about the reliability of your account to prevent fraud, abuse and other harmful activity on and off our Products."
+		3: "We use your information to verify your identity and prevent fraud or other unauthorized or illegal activity."
+		4: "We use your device, location, profile, usage, and other data to prevent, detect, and combat fraud or unsafe activities."
+		5: "We use personal data to deactivate users who are identified as having engaged in fraud or activities that may otherwise harm our service, its users, and others."
+	word 2 "credit":
+		1: "Other services, such as commerce products, may require you to provide us with a debit or credit card number and its associated account information."
+		2: "We may share information about you with credit agencies and data processors for credit reference checks and anti fraud and compliance purposes."
+		3: "For example, if you use our Services to buy or sell goods using eBay Inc, or its affiliates, eBay , we may share Account Information with eBay in order to help protect your accounts from fraudulent activity, alert you if we detect such fraudulent activity on your accounts, or evaluate credit risk."
+		4: "If you choose to apply for our Credit, in order to process your application, we will supply your personal information to credit reference agencies CRAs and they will give us information about you, such as about your financial history."
+		5: "We do this to assess creditworthiness and product suitability, check your identity, manage your account, trace and recover debts and prevent criminal activity."
+	word 3 "agencies":
+		1: "We may share information about you with credit agencies and data processors for credit reference checks and anti fraud and compliance purposes."
+		2: "Please contact us if you want to receive further details of the relevant fraud prevention agencies."
+		3: "For more information on these Agencies, fraud prevention agencies and other third parties, click here."
+		4: "If you choose to apply for our Credit, in order to process your application, we will supply your personal information to credit reference agencies CRAs and they will give us information about you, such as about your financial history."
+		5: "When you sign up for our account, we search your record at credit reference agencies to verify your identity and check if we can offer you an overdraft and manage business risk."
+	word 4 "prevent":
+		1: "When we have a good faith belief that it is necessary to detect, prevent and address fraud, unauthorised use of the Products, breaches of our Terms or Policies, or other harmful or illegal activity, to protect ourselves including our rights, property or Products , you or others, including as part of investigations or regulatory enquiries, or to prevent death or imminent bodily harm."
+		2: "For example, if relevant, we provide information to and receive information from third party partners about the reliability of your account to prevent fraud, abuse and other harmful activity on and off our Products."
+		3: "We use your information to verify your identity and prevent fraud or other unauthorized or illegal activity."
+		4: "We use your device, location, profile, usage, and other data to prevent, detect, and combat fraud or unsafe activities."
+		5: "We use personal information to prevent, detect and investigate potentially prohibited or illegal activities, including fraud, and to enforce our terms such as determining whether and for which signup offers you are eligible and determining whether a particular device is permitted to use the account consistent with our Terms of Use ."
+	word 5 "prevention":
+		1: "This includes exchanging information with other companies and other organisations for the purposes of fraud protection and prevention."
+		2: "Please contact us if you want to receive further details of the relevant fraud prevention agencies."
+		3: "For more information on these Agencies, fraud prevention agencies and other third parties, click here."
+		4: "As part of our fraud prevention and risk management efforts, we also may share necessary Account Information with eBay in cases where we have placed a hold or other restriction on your account based on disputes, claims, chargebacks or other scenarios regarding the sale or purchase of goods."
+		5: "Also, as part of our fraud prevention and risk management efforts, we may share Account Information with eBay to enable them to operate their programmes for evaluating buyers or sellers."
+
+cluster 16:
+	word 1 "share":
+		1: "Learn how we share information with these partners."
+		2: "Public information can also be seen, accessed, reshared or downloaded through third party services such as search engines, APIs and offline media such as TV, and by apps, websites and other services that integrate with our Products."
+		3: "Also, when you download or use such third party services, they can access your public profile on our application, and any information that you share with them."
+		4: "Here are the types of third parties that we share information with ."
+		5: "We share information with law enforcement or in response to legal requests in the circumstances outlined below."
+	word 2 "parties":
+		1: "Partners receive your data when you visit or use their services, or through third parties that they work with."
+		2: "Here are the types of third parties that we share information with ."
+		3: "We may collect information about you from other users, our affiliates, and third parties."
+		4: "Advertisers, app developers, publishers, and other third parties may share information with us as well."
+		5: "We share your information with third parties."
+	word 3 "We":
+		1: "We also receive information about your online and offline actions and purchases from third party data providers who have the rights to provide us with your information."
+		2: "We share information with law enforcement or in response to legal requests in the circumstances outlined below."
+		3: "We also process information about you across the our application Companies for these purposes, as permitted by applicable law and in accordance with their Terms and Policies."
+		4: "We share information globally, both internally within the our application Companies and externally with our partners and with those you connect and share with around the world in accordance with this Policy."
+		5: "We may collect information about you from other users, our affiliates, and third parties."
+	word 4 "providers":
+		1: "We also receive information about your online and offline actions and purchases from third party data providers who have the rights to provide us with your information."
+		2: "We share your information with third party companies, service providers or individuals that we employ to process information on our behalf based on our instructions and for the purposes described in this Privacy Policy."
+		3: "We share your information with third party service providers which provide services on our behalf."
+		4: "The types of third party service providers whom we share your information with including Payment providers that includes online payment providers and fraud detection providers, IT service providers like cloud providers, Restaurant partners, Riders, Customer support partners and Marketing and advertising partners."
+		5: "You may have the right to obtain your personal information in an accessible and transferable format so that you can re use it for your own purposes across different service providers."
+	word 5 "information":
+		1: "We also receive information about your online and offline actions and purchases from third party data providers who have the rights to provide us with your information."
+		2: "Learn how we share information with these partners."
+		3: "Public information can also be seen, accessed, reshared or downloaded through third party services such as search engines, APIs and offline media such as TV, and by apps, websites and other services that integrate with our Products."
+		4: "Also, when you download or use such third party services, they can access your public profile on our application, and any information that you share with them."
+		5: "Here are the types of third parties that we share information with ."
+
+cluster 17:
+	word 1 "information":
+		1: "For example, we analyse information that we have about migration patterns during crises to aid relief efforts."
+		2: "See the Control Over Your Information section below for more information about Snap Inc."
+		3: "This may include information such as driver history or criminal record where permitted by law , and right to work."
+		4: "For example, if we determine by using such information that a driver is delaying a rider pickup in order to induce a cancellation, we will not charge the rider a cancellation fee and will adjust the amounts paid to the driver to omit such a fee."
+		5: "In addition our legitimate interests where we have carried out balancing tests which can be informed on 'How we use your personal information' section, potential disputes and guidelines issued by relevant data protection authorities."
+	word 2 "personal":
+		1: "In addition our legitimate interests where we have carried out balancing tests which can be informed on 'How we use your personal information' section, potential disputes and guidelines issued by relevant data protection authorities."
+	word 3 "data":
+		1: "We also use usage data to prevent matching of riders and drivers for whom there is higher risk of conflict for instance, because they have been the subject of prior complaints from other users ."
+		2: "Countries where we process data may have laws which are different from, and potentially not as protective as, the laws of your own country."
+		3: "In addition our legitimate interests where we have carried out balancing tests which can be informed on 'How we use your personal information' section, potential disputes and guidelines issued by relevant data protection authorities."
+		4: "We re registered with the UK data protection authority, the Information Commissioner s Office or ICO, under number ZA108184."
+		5: "EU data protection laws, like the GDPR, give us one month to respond."
+	word 4 "services":
+		1: "This also includes gender and/or occupation when required for certain services or programs, such as our Cash services or Women Rider Preferred ."
+		2: "Children under the age of 16 using these services must be accompanied by an adult at all times."
+		3: "Some are essential for us to provide the services you use or to fulfil our legal obligations."
+		4: "With regard to our payment services for sellers in the EU, we additionally point out that our S."
+		5: "Some of our services may have a higher age restriction and this will be shown at the point of registration."
+	word 5 "We":
+		1: "We use user ratings and feedback to encourage compliance with our Community Guidelines and as grounds for deactivating drivers and delivery persons with low ratings or who otherwise violated such guidelines in certain countries."
+		2: "We also use usage data to prevent matching of riders and drivers for whom there is higher risk of conflict for instance, because they have been the subject of prior complaints from other users ."
+		3: "We will provide notice of any such changes including when they will take effect in accordance with law."
+		4: "We may also collect your date of birth to verify your age when you purchase age restricted items."
+		5: "We do this as it's in our legitimate business interests."
+
+cluster 18:
+	word 1 "contact":
+		1: "You may also contact us using the contact information below, and we will consider your request in accordance with applicable laws."
+		2: "You can contact us or use other options to resolve any complaints."
+		3: "If you have questions or complaints regarding this Policy, please first contact us online."
+		4: "If contacting us does not resolve your complaint, you have more options."
+		5: "Residents in the Designated Countries and other regions may also have the right to contact our Data Protection Officer."
+	word 2 "complaint":
+		1: "We use data which can include your communications to investigate, respond to and resolve complaints and for Service issues such as bugs."
+		2: "You can contact us or use other options to resolve any complaints."
+		3: "If you have questions or complaints regarding this Policy, please first contact us online."
+		4: "If contacting us does not resolve your complaint, you have more options."
+		5: "Also we want to enable our customer support team to help you with any enquiries or complaints in the most efficient way possible and to provide a positive customer experience and hope to contact you for your views and feedback on our services or our partners services and/or products and to notify you if there are any important changes or developments to the Sites or our services, including letting you know that our services are operating in a new area, where you have asked us to do so."
+	word 3 "questions":
+		1: "we use your information to respond to your questions or comments."
+		2: "If you have questions or complaints regarding this Policy, please first contact us online."
+		3: "Please contact us if you have questions about our privacy practices that are not addressed in this Privacy Statement."
+		4: "Contact us if you do not have an Account or if you have questions about your Account information or other Personal Data."
+		5: "You may contact us if you have general questions or concerns about this Privacy Statement and supplemental notices or the way in which we handle your Personal Data."
+	word 4 "complaints":
+		1: "We use data which can include your communications to investigate, respond to and resolve complaints and for Service issues such as bugs."
+		2: "You can contact us or use other options to resolve any complaints."
+		3: "If you have questions or complaints regarding this Policy, please first contact us online."
+		4: "Also we want to enable our customer support team to help you with any enquiries or complaints in the most efficient way possible and to provide a positive customer experience and hope to contact you for your views and feedback on our services or our partners services and/or products and to notify you if there are any important changes or developments to the Sites or our services, including letting you know that our services are operating in a new area, where you have asked us to do so."
+		5: "Furthermore, to exercise our rights under contracts we ve entered into with you, like managing, collecting and recovering money you owe us and investigate and resolve complaints and other issues."
+	word 5 "object":
+		1: "You have the right to object to our use of your information."
+		2: "You can object to us processing your information."
+		3: "You have the right, at any time, to object to us processing your personal data on grounds relating to your particular situation."
+		4: "You have the right to object to your personal data being processed for direct marketing purposes,."
+		5: "You have the right to object to receiving these types of communications, which you can do by responding to our emails to unsubscribe or by contacting us using the contact details in this privacy policy."
+
+cluster 19:
+	word 1 "ads":
+		1: "For example, we use information collected about your use of our Products on your phone to better personalise the content including ads or features that you see when you use our Products on another device, such as your laptop or tablet, or to measure whether you took an action in response to an ad that we showed you on your phone on a different device."
+		2: "We use location related information such as your current location, where you live, the places you like to go, and the businesses and people you're near to provide, personalise and improve our Products, including ads, for you and others."
+		3: "We use the information we have about you including information about your interests, actions and connections to select and personalise ads, offers and other sponsored content that we show you."
+		4: "Learn more about how we select and personalise ads, and your choices over the data we use to select ads and other sponsored content for you in the application settings."
+		5: "We use the information we have including your activity off our Products, such as the websites you visit and ads you see to help advertisers and other partners measure the effectiveness and distribution of their ads and services, and understand the types of people who use their services and how people interact with their websites, apps and services."
+	word 2 "advertising":
+		1: "We use your information to provide and improve our advertising services, ad targeting, and ad measurement, including through the use of your precise location information again, if you ve given us permission to collect that information , both on and off our services."
+		2: "s advertising practices and your choices."
+		3: "If there is a match, we can then choose whether or not to send a given promotional communication to you on that third party site or app, and can optimize and better measure the effectiveness of online advertising."
+		4: "We use these types of technologies to deliver and tailor our marketing or advertising, and to understand interactions with our emails, marketing, and online ads on third party sites."
+		5: "These types of ads are called "interest based advertising."
+	word 3 "show":
+		1: "For example, we use information collected about your use of our Products on your phone to better personalise the content including ads or features that you see when you use our Products on another device, such as your laptop or tablet, or to measure whether you took an action in response to an ad that we showed you on your phone on a different device."
+		2: "We use the information we have about you including information about your interests, actions and connections to select and personalise ads, offers and other sponsored content that we show you."
+		3: "For example, we may use information collected on other websites to show you more relevant ads."
+		4: "We use your information to personalize our services by, among other things, suggesting friends, profile information, or Bitmoji stickers, or customizing the content we show you, including ads."
+		5: "We try to show you ads that we think will be relevant to your interests."
+	word 4 "relevant":
+		1: "For example, we may use information collected on other websites to show you more relevant ads."
+		2: "We may share information about you with service providers who perform services on our behalf, including to measure and optimize the performance of ads and deliver more relevant ads, including on third party websites and apps."
+		3: "We re constantly collecting and updating information about the things you might like and dislike, so we can provide you with more relevant content and advertisements."
+		4: "We try to show you ads that we think will be relevant to your interests."
+		5: "We may obtain certain data about you, such as cookie id, mobile device id, or email address, and inferences about your interests and preferences from certain advertisers and advertising partners that allow us to deliver more relevant ads and measure their effectiveness."
+	word 5 "measure":
+		1: "For example, we use information collected about your use of our Products on your phone to better personalise the content including ads or features that you see when you use our Products on another device, such as your laptop or tablet, or to measure whether you took an action in response to an ad that we showed you on your phone on a different device."
+		2: "We use the information we have including your activity off our Products, such as the websites you visit and ads you see to help advertisers and other partners measure the effectiveness and distribution of their ads and services, and understand the types of people who use their services and how people interact with their websites, apps and services."
+		3: "We may use this information, among other ways, to help target or measure the performance of ads."
+		4: "We use your information to provide and improve our advertising services, ad targeting, and ad measurement, including through the use of your precise location information again, if you ve given us permission to collect that information , both on and off our services."
+		5: "We may share information about you with service providers who perform services on our behalf, including to measure and optimize the performance of ads and deliver more relevant ads, including on third party websites and apps."
 
