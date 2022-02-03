@@ -8,3 +8,4 @@ vocab.npy
 stnce_embedding.json
 stnce_embedding_reverse.json
 verizon.npy
+clauses.npy
