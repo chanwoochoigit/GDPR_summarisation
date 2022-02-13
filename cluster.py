@@ -37,17 +37,23 @@ class Clustering():
             sentence_dict[raw] = emb.tolist()
             sentence_dict_reverse[str(emb.tolist())] = raw
 
+        #create sentence embedding dict[plain_text] = sentence_vector
         with open('stnce_embedding.json', 'w') as f:
             json.dump(sentence_dict, f)
 
+        #create reversed sentence embedding dict[sentence_vector] = plain_text
         with open('stnce_embedding_reverse.json', 'w') as f:
             json.dump(sentence_dict_reverse, f)
 
     def cluster_decode(self, X, pred, num_clusters):
         sent_cluster_dict = {}
-        for x, p in zip(X, pred):
-            sent_cluster_dict[str(sent_dict_reverse[str(x.tolist())])] = str(p)
-            # print(str(sent_dict_reverse[str(x.tolist())])+': '+str(p))
+        for x, p in zip(X, pred):   # convert sentence vector to plain text, and put it in a dictionary
+                                    # dict[plain_text] = cluster
+            try:
+                sent_cluster_dict[str(sent_dict_reverse[str(x.tolist())])] = str(p)
+                # print(str(sent_dict_reverse[str(x.tolist())])+': '+str(p))
+            except AttributeError:  # decoding list of centroids
+                sent_cluster_dict[str(sent_dict_reverse[str(x)])] = str(p)
 
         #decode encoded sentences and save to a dict -> dict[cluster_num] = decoded_vector
         cluster_dict = {}
@@ -59,7 +65,34 @@ class Clustering():
                     temp.append(k)
             cluster_dict[i] = temp
 
-        return sent_cluster_dict
+        return cluster_dict
+
+    def find_centers_kmeans(self,kmeans,sentences,num_clusters):
+        # collect centers and find the closest vector to get approximate center vector
+        # this process is required because a center vector is a mean of other vectors and not be able to be decoded
+        centers = kmeans.cluster_centers_
+        centers_decodable = {}
+        start = time.time()
+        for i, center in enumerate(centers):
+            print('finding appx. center for cluster {}/{} ... running time: {} seconds'.format(i, num_clusters, round(
+                time.time() - start, 4)))
+            distance = 1e+10  # base distance: to be updated so a random large number is given
+            for sent in sentences:
+                temp_dist = euclidean(center, sent)
+                if temp_dist < distance:
+                    print('from {} to {}'.format(distance, temp_dist))
+                    distance = temp_dist
+                    centers_decodable[i] = sent
+
+        #predicted clusters for centers are just cluster numbers in order, so just put list(0 - 20) as pred
+        return self.cluster_decode(list(centers_decodable.values()),list(range(num_clusters)),num_clusters)
+
+    def plot_kmeans(self, df, pred):
+        u_labels = np.unique(pred)
+        for i in u_labels:
+            plt.scatter(df[pred == i, 0], df[pred == i, 1], label=i)
+        plt.legend()
+        plt.show()
 
     def do_kmeans(self, sentences, num_clusters):
         X = np.asarray(sentences)
@@ -68,29 +101,23 @@ class Clustering():
         normed_X = normalize(X, axis=1, norm='l1')
         # K-Means Parameters
         kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(normed_X)
-
-        # collect centers and find the closest vector to get approximate center vector
-        # this process is required because a center vector is a mean of other vectors and not be able to be decoded
-        centers = kmeans.cluster_centers_
-        centers_decodable = {}
-        start = time.time()
-        for i, center in enumerate(centers):
-            print('finding appx. center for cluster {}/{} ... running time: {} seconds'.format(i, num_clusters, round(time.time()-start,4)))
-            distance = 1e+10    #base distance: to be updated so a random large number is given
-            for sent in sentences:
-                temp_dist = euclidean(center, sent)
-                if temp_dist < distance:
-                    distance = temp_dist
-                    centers_decodable[i] = sent
-
         pred = kmeans.predict(normed_X)
+
+        #plot kmeans for further checkup
+        # self.plot_kmeans(normed_X, pred)
+
+        #get centroids for further analysis: went differently than expected due to too complicated clustering
+        #difficult to perform clustering: time to use tf-idf or Mutual information
+        centers_decoded = self.find_centers_kmeans(kmeans,sentences,num_clusters)
 
         #decode clustered sentences to plain text
         cluster_dict = self.cluster_decode(X, pred, num_clusters)
 
+        with open('centers_decoded.json', 'w') as f:
+            json.dump(centers_decoded, f)
+
         with open('sent_cluster.json', 'w') as f:
             json.dump(cluster_dict, f)
-
 
     # perform elbow method to find optimal k: returns WSS score for k values from 1 to kmax
     def do_elbow(self, sentences, kmax):
@@ -390,7 +417,7 @@ embedded_sentences = list(sent_dict.values())
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""perform k-means clustering"""""""""""""
-knn.do_kmeans(embedded_sentences, 20)
+knn.do_kmeans(embedded_sentences, 50)
 # knn.do_elbow(embedded_sentences,150)
 # knn.do_silhoulette(embedded_sentences,100)
 """"""""""""""""""""""""""""""""""""""""""""""""""
