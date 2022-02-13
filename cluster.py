@@ -1,16 +1,18 @@
 import itertools
 import pickle
 import json
+import time
 from collections import defaultdict
 from math import log2
 import pandas as pd
 import numpy as np
-from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import normalize
+from scipy.spatial.distance import euclidean
+import nltk
 
 class Clustering():
 
@@ -41,22 +43,13 @@ class Clustering():
         with open('stnce_embedding_reverse.json', 'w') as f:
             json.dump(sentence_dict_reverse, f)
 
-    def do_kmeans(self, sentences, k):
-        X = np.asarray(sentences)
-
-        #normalise vector to make cosine similarity effect
-        normed_X = normalize(X, axis=1, norm='l1')
-        num_clusters = k
-        # K-Means Parameters
-        kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(normed_X)
-        pred = kmeans.predict(normed_X)
-
+    def cluster_decode(self, X, pred, num_clusters):
         sent_cluster_dict = {}
-
         for x, p in zip(X, pred):
             sent_cluster_dict[str(sent_dict_reverse[str(x.tolist())])] = str(p)
             # print(str(sent_dict_reverse[str(x.tolist())])+': '+str(p))
 
+        #decode encoded sentences and save to a dict -> dict[cluster_num] = decoded_vector
         cluster_dict = {}
         for i in range(num_clusters):
             print('processing...{}/{}'.format(i, num_clusters))
@@ -65,6 +58,35 @@ class Clustering():
                 if str(v) == str(i):
                     temp.append(k)
             cluster_dict[i] = temp
+
+        return sent_cluster_dict
+
+    def do_kmeans(self, sentences, num_clusters):
+        X = np.asarray(sentences)
+
+        #normalise vector to make cosine similarity effect
+        normed_X = normalize(X, axis=1, norm='l1')
+        # K-Means Parameters
+        kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(normed_X)
+
+        # collect centers and find the closest vector to get approximate center vector
+        # this process is required because a center vector is a mean of other vectors and not be able to be decoded
+        centers = kmeans.cluster_centers_
+        centers_decodable = {}
+        start = time.time()
+        for i, center in enumerate(centers):
+            print('finding appx. center for cluster {}/{} ... running time: {} seconds'.format(i, num_clusters, round(time.time()-start,4)))
+            distance = 1e+10    #base distance: to be updated so a random large number is given
+            for sent in sentences:
+                temp_dist = euclidean(center, sent)
+                if temp_dist < distance:
+                    distance = temp_dist
+                    centers_decodable[i] = sent
+
+        pred = kmeans.predict(normed_X)
+
+        #decode clustered sentences to plain text
+        cluster_dict = self.cluster_decode(X, pred, num_clusters)
 
         with open('sent_cluster.json', 'w') as f:
             json.dump(cluster_dict, f)
@@ -158,11 +180,9 @@ class EvalCluster():
         return words_nostop
 
     def stem_data(self, words_preprocessed):
-        # these libraries stay here as it takes longer to import
-        from nltk import PorterStemmer
         nltk.download('punkt')
 
-        ps = PorterStemmer()
+        ps = nltk.PorterStemmer()
         words_stemmed = []
         for word in words_preprocessed:
             words_stemmed.append(ps.stem(word))
@@ -370,7 +390,7 @@ embedded_sentences = list(sent_dict.values())
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""perform k-means clustering"""""""""""""
-# knn.do_kmeans(embedded_sentences, 20)
+knn.do_kmeans(embedded_sentences, 20)
 # knn.do_elbow(embedded_sentences,150)
 # knn.do_silhoulette(embedded_sentences,100)
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -380,5 +400,5 @@ eval = EvalCluster()
 # eval.create_corpus()
 # eval.run_calculation(20)
 # eval.sort_result(num_classes=20)
-eval.validate_result(num_keywords=5, max_sentences=5)
+# eval.validate_result(num_keywords=5, max_sentences=5)
 """"""""""""""""""""""""""""""""""""""""""""""""""
