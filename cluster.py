@@ -104,20 +104,20 @@ class Clustering():
         pred = kmeans.predict(normed_X)
 
         #plot kmeans for further checkup
-        # self.plot_kmeans(normed_X, pred)
+        self.plot_kmeans(normed_X, pred)
 
-        #get centroids for further analysis: went differently than expected due to too complicated clustering
-        #difficult to perform clustering: time to use tf-idf or Mutual information
-        centers_decoded = self.find_centers_kmeans(kmeans,sentences,num_clusters)
-
-        #decode clustered sentences to plain text
-        cluster_dict = self.cluster_decode(X, pred, num_clusters)
-
-        with open('centers_decoded.json', 'w') as f:
-            json.dump(centers_decoded, f)
-
-        with open('sent_cluster.json', 'w') as f:
-            json.dump(cluster_dict, f)
+        # #get centroids for further analysis: went differently than expected due to too complicated clustering
+        # #difficult to perform clustering: time to use tf-idf or Mutual information
+        # centers_decoded = self.find_centers_kmeans(kmeans,sentences,num_clusters)
+        #
+        # #decode clustered sentences to plain text
+        # cluster_dict = self.cluster_decode(X, pred, num_clusters)
+        #
+        # with open('centers_decoded.json', 'w') as f:
+        #     json.dump(centers_decoded, f)
+        #
+        # with open('sent_cluster.json', 'w') as f:
+        #     json.dump(cluster_dict, f)
 
     # perform elbow method to find optimal k: returns WSS score for k values from 1 to kmax
     def do_elbow(self, sentences, kmax):
@@ -125,7 +125,9 @@ class Clustering():
         normed_X = normalize(X, axis=1, norm='l1')
 
         sse = []
+        start = time.time()
         for k in range(1, kmax + 1):
+            print('finding the optimum cluster number ... {}/{} | running time: {} seconds'.format(k,kmax,round(time.time()-start,4)))
             kmeans = KMeans(n_clusters=k).fit(normed_X)
             centroids = kmeans.cluster_centers_
             pred_clusters = kmeans.predict(normed_X)
@@ -150,8 +152,10 @@ class Clustering():
         normed_X = normalize(X, axis=1, norm='l1')
 
         sil = []
+        start = time.time()
         # dissimilarity would not be defined for a single cluster, thus, minimum number of clusters should be 2
         for k in range(2, kmax + 1):
+            print('finding the optimum cluster number ... {}/{} | running time: {} seconds'.format(k,kmax,round(time.time()-start,4)))
             kmeans = KMeans(n_clusters=k).fit(normed_X)
             labels = kmeans.labels_
             sil.append(silhouette_score(normed_X, labels, metric='euclidean'))
@@ -394,18 +398,12 @@ class UtilityFunct():
 
         return formatted
 
-
-"""""""""""""use alice clauses for experiment"""""""""""""
+"""""""""""init knn module and encode clauses"""""""""""
 knn = Clustering()
-# alice_csv = pd.read_csv('training_data/alice/data_alice.csv')
-# alice_clause = alice_csv['clause'].to_list()
-#
-# uf = UtilityFunct()
-#
-# sentences = uf.split_sentences(alice_clause)
-#
+# with open('clauses_v2.pkl', 'rb') as f:
+#     sentences = pickle.load(f)
 # knn.do_sentenceBERT(sentences)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""load embedded sentences to be processed"""""""""
 with open('stnce_embedding.json', 'r') as f:
@@ -417,9 +415,9 @@ embedded_sentences = list(sent_dict.values())
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""perform k-means clustering"""""""""""""
-knn.do_kmeans(embedded_sentences, 50)
+knn.do_kmeans(embedded_sentences, 100)
 # knn.do_elbow(embedded_sentences,150)
-# knn.do_silhoulette(embedded_sentences,100)
+# knn.do_silhoulette(embedded_sentences,150)
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""evaluate k-means"""""""""""""""""
