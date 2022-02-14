@@ -8,12 +8,14 @@ import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
-from sklearn.cluster import KMeans, MiniBatchKMeans, DBSCAN, Birch, AffinityPropagation, MeanShift, OPTICS, AgglomerativeClustering
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import normalize
 from scipy.spatial.distance import euclidean
 from sklearn.decomposition import PCA
 from sklearn.mixture import GaussianMixture
+from sklearn.cluster import KMeans, MiniBatchKMeans, DBSCAN, Birch, \
+                            AffinityPropagation, MeanShift, OPTICS, \
+                            AgglomerativeClustering
 import hdbscan
 import nltk
 
@@ -64,7 +66,7 @@ class Clustering():
         #decode encoded sentences and save to a dict -> dict[cluster_num] = decoded_vector
         cluster_dict = {}
         for i in range(num_clusters):
-            print('processing...{}/{}'.format(i, num_clusters))
+            print('saving decoded sentence vectors ... {}/{}'.format(i, num_clusters))
             temp = []
             for k, v in sent_cluster_dict.items():
                 if str(v) == str(i):
@@ -73,25 +75,43 @@ class Clustering():
 
         return cluster_dict
 
-    def find_centers_kmeans(self,kmeans,sentences,num_clusters):
-        # collect centers and find the closest vector to get approximate center vector
-        # this process is required because a center vector is a mean of other vectors and not be able to be decoded
-        centers = kmeans.cluster_centers_
-        centers_decodable = {}
-        start = time.time()
-        for i, center in enumerate(centers):
-            print('finding appx. center for cluster {}/{} ... running time: {} seconds'.format(i, num_clusters, round(
-                time.time() - start, 4)))
-            distance = 1e+10  # base distance: to be updated so a random large number is given
-            for sent in sentences:
-                temp_dist = euclidean(center, sent)
-                if temp_dist < distance:
-                    print('from {} to {}'.format(distance, temp_dist))
-                    distance = temp_dist
-                    centers_decodable[i] = sent
+    def generate_pca_key(self, principle_comp):
+        # create pseudo-unique keys to create kv table
+        return str(principle_comp[0]/principle_comp[1]*principle_comp[2])[3:]
 
-        #predicted clusters for centers are just cluster numbers in order, so just put list(0 - 20) as pred
-        return self.cluster_decode(list(centers_decodable.values()),list(range(num_clusters)),num_clusters)
+    # return nearest point in a dataset
+    def find_nearest_point(self, data, point):
+        distance = 1e+10
+        nearest = point
+        for d in data:
+            temp_dist = euclidean(d, point)
+            if temp_dist < distance:
+                print('from {} to {}'.format(distance, temp_dist))
+                distance = temp_dist
+                nearest = d
+
+        return nearest
+
+    # def find_centers_kmeans(self, pca2vector, kmeans, sentences, num_clusters):
+    #     # collect centers and find the closest vector to get approximate center vector
+    #     # this process is required because a center vector is a mean of other vectors and not be able to be decoded
+    #     centers = kmeans.cluster_centers_
+    #     centers_decodable = {}
+    #     start = time.time()
+    #     for i, center in enumerate(centers):
+    #         print('finding appx. center for cluster {}/{} ... running time: {} seconds'.format(i, num_clusters, round(
+    #             time.time() - start, 4)))
+    #         center = pca2vector[self.generate_pca_key(center)]
+    #         distance = 1e+10  # base distance: to be updated so a random large number is given
+    #         for sent in sentences:
+    #             temp_dist = euclidean(center, sent)
+    #             if temp_dist < distance:
+    #                 print('from {} to {}'.format(distance, temp_dist))
+    #                 distance = temp_dist
+    #                 centers_decodable[i] = sent
+    #
+    #     #predicted clusters for centers are just cluster numbers in order, so just put list(0 - 20) as pred
+    #     return self.cluster_decode(list(centers_decodable.values()),list(range(num_clusters)),num_clusters)
 
     def plot_labels(self, df, pred, algorithm):
         u_labels = np.unique(pred)
@@ -101,7 +121,7 @@ class Clustering():
         plt.savefig('clustering_results/{}.png'.format(algorithm))
 
     # perform unsupervised clustering and compare results for different clustering algorithms
-    def perform_clustering(self, sentences, clusterer, metric, num_clusters=None):
+    def perform_clustering(self, sentences, clusterer, metric, num_clusters=None, pca2vector=None):
         # prepare data
         X = np.asarray(sentences)
         normed_X = normalize(X, axis=1, norm='l2') # normalise vector to make cosine similarity effect
@@ -112,13 +132,38 @@ class Clustering():
             if num_clusters is not None:
                 kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(normed_X)
                 labels = kmeans.predict(normed_X)
+
+                if pca2vector is not None:
+
+                    # get centroids and nearest points for further analysis
+
+                    centers = kmeans.cluster_centers_
+                    pseudo_centers = []
+                    for c in centers:  # get nearest point from each center
+                        pseudo_c = self.find_nearest_point(sentences, c)
+                        pseudo_centers.append(pca2vector[self.generate_pca_key(pseudo_c)])
+                    centers_decoded = self.cluster_decode(pseudo_centers, labels, num_clusters)
+                    with open('cluster_centers.json', 'w') as f:
+                        json.dump(centers_decoded, f)
+
+                    pca_decoded = []
+                    for pca in X:
+                        pca_decoded.append(pca2vector[self.generate_pca_key(pca)])
+                    # decode clustered sentences to plain text
+                    cluster_dict = self.cluster_decode(pca_decoded, labels, num_clusters)
+                    with open('sentences_clustered.json', 'w') as f:
+                        json.dump(cluster_dict, f)
+
+                else:
+                    'pca2vector dictionary not given! skipping decoding process ...'
+
             else:
                 raise SyntaxError('num_cluster not entered for Kmeans!')
 
         elif clusterer == 'kmeans_mini':
             if num_clusters is not None:
-                kmeans = KMeans(n_clusters=num_clusters).fit(normed_X)
-                labels = kmeans.predict(normed_X)
+                minik = MiniBatchKMeans(n_clusters=num_clusters).fit(normed_X)
+                labels = minik.predict(normed_X)
             else:
                 raise SyntaxError('num_cluster not entered for Kmeans!')
 
@@ -177,18 +222,7 @@ class Clustering():
         # plot kmeans for further checkup
         self.plot_labels(normed_X, labels, clusterer)
 
-        # #get centroids for further analysis: went differently than expected due to too complicated clustering
-        # #difficult to perform clustering: time to use tf-idf or Mutual information
-        # centers_decoded = self.find_centers_kmeans(kmeans,sentences,num_clusters)
 
-        # #decode clustered sentences to plain text
-        # cluster_dict = self.cluster_decode(X, pred, num_clusters)
-        #
-        # with open('centers_decoded.json', 'w') as f:
-        #     json.dump(centers_decoded, f)
-        #
-        # with open('sent_cluster.json', 'w') as f:
-        #     json.dump(cluster_dict, f)
         return sil
 
 
@@ -231,8 +265,13 @@ class Clustering():
 
         pca = PCA(n_components=n_components, random_state=42)
         pca_sentences = pca.fit_transform(sentences)
-        return pca_sentences
-        # return dict(zip(map(str,sentences),pca_sentences))
+
+        #create a dictionary that converts principle components to sentence vectors for later
+        pca2vector = {}
+        for pca, vector in zip(pca_sentences, sentences):
+            pca2vector[self.generate_pca_key(pca)] = vector
+
+        return pca_sentences, pca2vector
 
     def do_silhoulette(self, sentences, kmax):
         X = np.asarray(sentences)
@@ -502,7 +541,7 @@ def main():
 
     """""""""""""""do pca on embedded sentences"""""""""""""""
     # clu.find_best_ncomp_for_pca(embedded_sentences)
-    pca_sentences = clu.do_pca(n_components=3,sentences=embedded_sentences)   #90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
+    pca_sentences, pca2vector = clu.do_pca(n_components=3,sentences=embedded_sentences)   #90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
 
     """""perform elbow method / silhouette method to find optimal k for kmeans"""""
     # clu.do_elbow(pca_sentences,50)
@@ -510,22 +549,24 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""
-    algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian','birch','affinity','meanshift','optics','agglomerative']
-    algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
     distance_metric = 'euclidean'
-    k=10
-    clustering_result = {}
-    for al in algorithms_competitive:
-        sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
-        if sil == 999:
-            sil = 'failed'
-        clustering_result[al] = sil
-
-    sorted_clustering_result = {k: float(v) for k, v in sorted(clustering_result.items(), key=lambda item: item[1],reverse=True)}
-
-    for item in sorted_clustering_result.items():
-        print(item)
+    k = 10
+    # algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian','birch','affinity','meanshift','optics','agglomerative']
+    # algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
+    # clustering_result = {}
+    # for al in algorithms_competitive:
+    #     sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
+    #     if sil == 999:
+    #         sil = 'failed'
+    #     clustering_result[al] = sil
+    #
+    # sorted_clustering_result = {k: float(v) for k, v in sorted(clustering_result.items(), key=lambda item: item[1],reverse=True)}
+    #
+    # for item in sorted_clustering_result.items():
+    #     print(item)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+    clu.perform_clustering(pca_sentences, 'kmeans', num_clusters=k, metric=distance_metric, pca2vector=pca2vector)
 
     """""""""""""""""evaluate k-means"""""""""""""""""
     eval = EvalCluster()
