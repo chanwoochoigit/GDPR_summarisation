@@ -8,12 +8,14 @@ import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, DBSCAN, Birch, AffinityPropagation, MeanShift, OPTICS, AgglomerativeClustering
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import normalize
 from scipy.spatial.distance import euclidean
-import nltk
 from sklearn.decomposition import PCA
+from sklearn.mixture import GaussianMixture
+import hdbscan
+import nltk
 
 class Clustering():
 
@@ -48,6 +50,9 @@ class Clustering():
 
     def cluster_decode(self, X, pred, num_clusters):
         sent_cluster_dict = {}
+        with open('stnce_embedding_reverse.json', 'r') as f:
+            sent_dict_reverse = json.load(f)
+
         for x, p in zip(X, pred):   # convert sentence vector to plain text, and put it in a dictionary
                                     # dict[plain_text] = cluster
             try:
@@ -88,24 +93,81 @@ class Clustering():
         #predicted clusters for centers are just cluster numbers in order, so just put list(0 - 20) as pred
         return self.cluster_decode(list(centers_decodable.values()),list(range(num_clusters)),num_clusters)
 
-    def plot_kmeans(self, df, pred):
+    def plot_labels(self, df, pred, algorithm):
         u_labels = np.unique(pred)
         for i in u_labels:
             plt.scatter(df[pred == i, 0], df[pred == i, 1], label=i)
         plt.legend()
-        plt.show()
+        plt.savefig('clustering_results/{}.png'.format(algorithm))
 
-    def do_kmeans(self, sentences, num_clusters):
+    # perform unsupervised clustering and compare results for different clustering algorithms
+    def perform_clustering(self, sentences, clusterer, metric, num_clusters=None):
+        # prepare data
         X = np.asarray(sentences)
+        normed_X = normalize(X, axis=1, norm='l2') # normalise vector to make cosine similarity effect
+        labels = []
+        sil = 999
+        if clusterer == 'kmeans':
+            if num_clusters is not None:
+                kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(normed_X)
+                labels = kmeans.predict(normed_X)
+            else:
+                raise SyntaxError('num_cluster not entered for Kmeans!')
 
-        #normalise vector to make cosine similarity effect
-        normed_X = normalize(X, axis=1, norm='l1')
-        # K-Means Parameters
-        kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(normed_X)
-        pred = kmeans.predict(normed_X)
+        elif clusterer == 'dbscan':
+            dbs = DBSCAN(eps=0.99,min_samples=5,metric=metric)
+            labels = dbs.fit_predict(normed_X)
 
-        #plot kmeans for further checkup
-        self.plot_kmeans(normed_X, pred)
+        elif clusterer == 'hdbscan':
+            hdb = hdbscan.HDBSCAN(metric=metric,min_samples=5, min_cluster_size=num_clusters)
+            labels = hdb.fit_predict(normed_X)
+
+        elif clusterer == 'gaussian':
+            gm = GaussianMixture(n_components=num_clusters)
+            gm.fit(normed_X)
+            labels = gm.predict(normed_X)
+
+        elif clusterer == 'birch':
+            if num_clusters is not None:
+                birch = Birch(threshold=0.03, n_clusters=num_clusters)
+                birch.fit(normed_X)
+                labels = birch.predict(normed_X)
+            else:
+                raise SyntaxError('num_cluster not entered for Birch!')
+
+        elif clusterer == 'affinity':
+            aff = AffinityPropagation(damping=0.7,random_state=42)
+            aff.fit(normed_X)
+            labels = aff.predict(normed_X)
+
+        elif clusterer == 'meanshift':
+            ms = MeanShift()
+            ms.fit(normed_X)
+            labels = ms.predict(normed_X)
+
+        elif clusterer == 'optics':
+            optics = OPTICS(eps=0.75, min_samples=10)
+            labels = optics.fit_predict(normed_X)
+
+        elif clusterer == 'agglomerative':
+            agg = AgglomerativeClustering(n_clusters=num_clusters)
+            labels = agg.fit_predict(normed_X)
+
+        elif clusterer is None:
+            raise ValueError('please enter a clustering algorithm!')
+
+        else:
+            raise ValueError('chosen clusterer not supported')
+
+        print(len(set(labels))) # get number of clusters for algorithms not requiring num_cluster param
+        try:
+            sil = silhouette_score(normed_X, labels)
+            print(sil)
+        except ValueError:
+            print('clustering failed miserably! There is only a single cluster.')
+
+        # plot kmeans for further checkup
+        self.plot_labels(normed_X, labels, clusterer)
 
         # #get centroids for further analysis: went differently than expected due to too complicated clustering
         # #difficult to perform clustering: time to use tf-idf or Mutual information
@@ -119,11 +181,13 @@ class Clustering():
         #
         # with open('sent_cluster.json', 'w') as f:
         #     json.dump(cluster_dict, f)
+        return sil
+
 
     # perform elbow method to find optimal k: returns WSS score for k values from 1 to kmax
     def do_elbow(self, sentences, kmax):
         X = np.asarray(sentences)
-        normed_X = normalize(X, axis=1, norm='l1')
+        normed_X = normalize(X, axis=1, norm='l2')
 
         sse = []
         start = time.time()
@@ -164,7 +228,7 @@ class Clustering():
 
     def do_silhoulette(self, sentences, kmax):
         X = np.asarray(sentences)
-        normed_X = normalize(X, axis=1, norm='l1')
+        normed_X = normalize(X, axis=1, norm='l2')
 
         sil = []
         start = time.time()
@@ -413,37 +477,52 @@ class UtilityFunct():
 
         return formatted
 
-"""""""""""init knn module and encode clauses"""""""""""
-knn = Clustering()
-# with open('clauses_v2.pkl', 'rb') as f:
-#     sentences = pickle.load(f)
-# knn.do_sentenceBERT(sentences)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def main():
+    """""""""""init knn module and encode clauses"""""""""""
+    clu = Clustering()
+    # with open('clauses_v2.pkl', 'rb') as f:
+    #     sentences = pickle.load(f)
+    # clu.do_sentenceBERT(sentences)
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"""""""""load embedded sentences to be processed"""""""""
-with open('stnce_embedding.json', 'r') as f:
-    sent_dict = json.load(f)
-with open('stnce_embedding_reverse.json', 'r') as f:
-    sent_dict_reverse = json.load(f)
+    """""""""load embedded sentences to be processed"""""""""
+    with open('stnce_embedding.json', 'r') as f:
+        sent_dict = json.load(f)
 
-embedded_sentences = list(sent_dict.values())
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    embedded_sentences = list(sent_dict.values())
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"""""""""""""""do pca on embedded sentences"""""""""""""""
-# knn.find_best_ncomp_for_pca(embedded_sentences)
-pca_sentences = knn.do_pca(n_components=10,sentences=embedded_sentences)   #90% pca: 120, 85% pca:160
+    """""""""""""""do pca on embedded sentences"""""""""""""""
+    # clu.find_best_ncomp_for_pca(embedded_sentences)
+    pca_sentences = clu.do_pca(n_components=160,sentences=embedded_sentences)   #90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
 
+    """""perform elbow method / silhouette method to find optimal k for kmeans"""""
+    # clu.do_elbow(pca_sentences,50)
+    # clu.do_silhoulette(pca_sentences,150)
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"""""""""""""perform k-means clustering"""""""""""""
-knn.do_kmeans(pca_sentences, 20)
-# knn.do_elbow(embedded_sentences,50)
-# knn.do_silhoulette(embedded_sentences,50)
-""""""""""""""""""""""""""""""""""""""""""""""""""
+    """""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""
+    algorithms = ['kmeans','dbscan','gaussian','birch','affinity','meanshift','optics','agglomerative']
+    distance_metric = 'canberra'
+    k=4
+    clustering_result = {}
+    for al in algorithms:
+        sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
+        if sil == 999:
+            sil = 'failed'
+        clustering_result[al] = sil
 
-"""""""""""""""""evaluate k-means"""""""""""""""""
-eval = EvalCluster()
-# eval.create_corpus()
-# eval.run_calculation(20)
-# eval.sort_result(num_classes=20)
-# eval.validate_result(num_keywords=5, max_sentences=5)
-""""""""""""""""""""""""""""""""""""""""""""""""""
+    for key in clustering_result.keys():
+        print('{}: {}\n'.format(key,clustering_result[key]))
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+    """""""""""""""""evaluate k-means"""""""""""""""""
+    eval = EvalCluster()
+    # eval.create_corpus()
+    # eval.run_calculation(20)
+    # eval.sort_result(num_classes=20)
+    # eval.validate_result(num_keywords=5, max_sentences=5)
+    """"""""""""""""""""""""""""""""""""""""""""""""""
+
+if __name__ == '__main__':
+    main()
