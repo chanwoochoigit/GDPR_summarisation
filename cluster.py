@@ -142,7 +142,7 @@ class Clustering():
                     for c in centers:  # get nearest point from each center
                         pseudo_c = self.find_nearest_point(sentences, c)
                         pseudo_centers.append(pca2vector[self.generate_pca_key(pseudo_c)])
-                    centers_decoded = self.cluster_decode(pseudo_centers, labels, num_clusters)
+                    centers_decoded = self.cluster_decode(pseudo_centers, list(range(10)), num_clusters)
                     with open('cluster_centers.json', 'w') as f:
                         json.dump(centers_decoded, f)
 
@@ -294,11 +294,14 @@ class Clustering():
 
 class EvalCluster():
 
+    def __init__(self, num_classes):
+        self.num_classes = num_classes
+
     def init_nd_dict(self):
         return defaultdict(lambda : defaultdict(dict))
 
     def create_corpus(self):
-        with open('sent_cluster.json', 'r') as f:
+        with open('sentences_clustered.json', 'r') as f:
             clusters = json.load(f)
         docs_processed = self.init_nd_dict()
         for c in clusters.keys():
@@ -402,14 +405,14 @@ class EvalCluster():
 
         return N11, N10, N01, N00
 
-    def run_calculation(self, num_classes):
+    def run_calculation(self):
         corpus = self.load_corpus()
         result = self.init_nd_dict()
-
+        start = time.time()
         for i, cls in enumerate(corpus.keys()):
             for doc in corpus[cls]:
-                print('class: {}/{}---------------------------------------------------'.format(i+1, num_classes))
-                print('calculating mutual information...{}/{}'.format(doc, len(corpus[cls].keys())))
+                print('class: {}/{}---------------------------------------------------'.format(i+1, self.num_classes))
+                print('calculating mutual information...{}/{} | running time: {} seconds'.format(doc, len(corpus[cls].keys()), round(time.time()-start,4)))
                 for word in corpus[cls][doc]:
                     score = self.calc_mi(word, cls)
                     result[word][cls] = score
@@ -432,7 +435,7 @@ class EvalCluster():
     def sort_dict_by_value(self, dict_to_sort):
         return dict(sorted(dict_to_sort.items(), key=lambda item: item[1], reverse=True))
 
-    def sort_result(self, num_classes):
+    def sort_result(self):
         with open('mi_scores.json', 'r') as f:
             to_display = json.load(f)
         to_sort = self.init_nd_dict()
@@ -443,7 +446,7 @@ class EvalCluster():
 
         result = self.init_nd_dict()
 
-        for i in range(num_classes):
+        for i in range(self.num_classes):
             result[i] = self.format_ranked_result(self.sort_dict_by_value(to_sort[str(i)]))
 
         with open('ranked_result_cluster.json', 'w') as f:
@@ -461,7 +464,7 @@ class EvalCluster():
                 superwords[i][j] = list(results[str(i)].keys())[j]
         # print(superwords)
 
-        with open('sent_cluster.json', 'r') as f:
+        with open('sentences_clustered.json', 'r') as f:
             clusters = json.load(f)
 
         super_sentences = self.init_nd_dict()
@@ -527,9 +530,10 @@ class UtilityFunct():
 def main():
     """""""""""init knn module and encode clauses"""""""""""
     clu = Clustering()
+    ut = UtilityFunct()
     # with open('clauses_v2.pkl', 'rb') as f:
     #     sentences = pickle.load(f)
-    # clu.do_sentenceBERT(sentences)
+    # clu.do_sentenceBERT(ut.split_sentences(sentences))
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""load embedded sentences to be processed"""""""""
@@ -539,40 +543,44 @@ def main():
     embedded_sentences = list(sent_dict.values())
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-    """""""""""""""do pca on embedded sentences"""""""""""""""
+    """"""""""""""""""""""""""""""""""""""""""""""do pca on embedded sentences"""""""""""""""""""""""""""""""""""""""""""""
     # clu.find_best_ncomp_for_pca(embedded_sentences)
     pca_sentences, pca2vector = clu.do_pca(n_components=3,sentences=embedded_sentences)   #90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
 
     """""perform elbow method / silhouette method to find optimal k for kmeans"""""
     # clu.do_elbow(pca_sentences,50)
     # clu.do_silhoulette(pca_sentences,50)
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-    """""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""
+    """""""""""""""""""""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""""""""""""""""""
     distance_metric = 'euclidean'
     k = 10
-    # algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian','birch','affinity','meanshift','optics','agglomerative']
-    # algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
-    # clustering_result = {}
+    algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian',
+                  'birch','affinity','meanshift','optics','agglomerative']
+    algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
+    clustering_result = {}
     # for al in algorithms_competitive:
     #     sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
-    #     if sil == 999:
-    #         sil = 'failed'
     #     clustering_result[al] = sil
     #
     # sorted_clustering_result = {k: float(v) for k, v in sorted(clustering_result.items(), key=lambda item: item[1],reverse=True)}
     #
     # for item in sorted_clustering_result.items():
     #     print(item)
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+    ##go further with kmeans cos it's the best atm
     clu.perform_clustering(pca_sentences, 'kmeans', num_clusters=k, metric=distance_metric, pca2vector=pca2vector)
+    with open('cluster_centers.json', 'r') as f:
+        centers = json.load(f)
+    for item in centers.items():
+        print(item)
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""evaluate k-means"""""""""""""""""
-    eval = EvalCluster()
+    # eval = EvalCluster(num_classes=10)
     # eval.create_corpus()
-    # eval.run_calculation(20)
-    # eval.sort_result(num_classes=20)
+    # eval.run_calculation()
+    # eval.sort_result()
     # eval.validate_result(num_keywords=5, max_sentences=5)
     """"""""""""""""""""""""""""""""""""""""""""""""""
 
