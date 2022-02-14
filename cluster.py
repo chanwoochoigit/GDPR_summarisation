@@ -13,6 +13,7 @@ from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import normalize
 from scipy.spatial.distance import euclidean
 import nltk
+from sklearn.decomposition import PCA
 
 class Clustering():
 
@@ -109,7 +110,7 @@ class Clustering():
         # #get centroids for further analysis: went differently than expected due to too complicated clustering
         # #difficult to perform clustering: time to use tf-idf or Mutual information
         # centers_decoded = self.find_centers_kmeans(kmeans,sentences,num_clusters)
-        #
+
         # #decode clustered sentences to plain text
         # cluster_dict = self.cluster_decode(X, pred, num_clusters)
         #
@@ -146,6 +147,20 @@ class Clustering():
         plt.savefig('elbow.png')
         plt.show()
 
+    def find_best_ncomp_for_pca(self, sentences):
+        pca = PCA()
+        pca_sentences = pca.fit_transform(sentences)
+        plt.plot(np.cumsum(pca.explained_variance_ratio_), linewidth=2)
+        plt.xlabel('Components')
+        plt.ylabel('Explained Variances')
+        plt.show()
+
+    def do_pca(self, n_components,sentences):
+
+        pca = PCA(n_components=n_components, random_state=42)
+        pca_sentences = pca.fit_transform(sentences)
+        return pca_sentences
+        # return dict(zip(map(str,sentences),pca_sentences))
 
     def do_silhoulette(self, sentences, kmax):
         X = np.asarray(sentences)
@@ -414,10 +429,15 @@ with open('stnce_embedding_reverse.json', 'r') as f:
 embedded_sentences = list(sent_dict.values())
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"""""""""""""""do pca on embedded sentences"""""""""""""""
+# knn.find_best_ncomp_for_pca(embedded_sentences)
+pca_sentences = knn.do_pca(n_components=10,sentences=embedded_sentences)   #90% pca: 120, 85% pca:160
+
+
 """""""""""""perform k-means clustering"""""""""""""
-knn.do_kmeans(embedded_sentences, 100)
-# knn.do_elbow(embedded_sentences,150)
-# knn.do_silhoulette(embedded_sentences,150)
+knn.do_kmeans(pca_sentences, 20)
+# knn.do_elbow(embedded_sentences,50)
+# knn.do_silhoulette(embedded_sentences,50)
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""evaluate k-means"""""""""""""""""
