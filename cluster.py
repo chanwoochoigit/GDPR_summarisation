@@ -31,6 +31,7 @@ class Clustering():
 
         return sentences
 
+    # process chunks of sentences, remove unsupported punctuation and split them
     def do_sentenceBERT(self, sentences):
         model = SentenceTransformer('stsb-mpnet-base-v2')
         sentence_embeddings = model.encode(sentences)
@@ -50,6 +51,7 @@ class Clustering():
         with open('stnce_embedding_reverse.json', 'w') as f:
             json.dump(sentence_dict_reverse, f)
 
+    #convert sentence vectors to plain text and save it to dict[cluster] = sentence
     def cluster_decode(self, X, pred, num_clusters):
         sent_cluster_dict = {}
         with open('stnce_embedding_reverse.json', 'r') as f:
@@ -75,44 +77,36 @@ class Clustering():
 
         return cluster_dict
 
+    # generate key for pca-ed sentence vectors to decode afterwards
     def generate_pca_key(self, principle_comp):
         # create pseudo-unique keys to create kv table
         return str(principle_comp[0]/principle_comp[1]*principle_comp[2])[3:]
 
-    # return nearest point in a dataset
-    def find_nearest_point(self, data, point):
-        distance = 1e+10
-        nearest = point
-        for d in data:
-            temp_dist = euclidean(d, point)
-            if temp_dist < distance:
-                print('from {} to {}'.format(distance, temp_dist))
-                distance = temp_dist
-                nearest = d
+    # return 3 nearest points in a dataset
+    def find_nearest_points(self, data, point):
+        d1 = euclidean(data[0], point)   #nearest
+        d2 = euclidean(data[1], point)
+        d3 = euclidean(data[2], point)  #farthest
+        d1, d2, d3 = sorted([d1, d2, d3])  # sort from nearest to farthest
+        p1, p2, p3 = None, None, None   # init positions with nearest distances
 
-        return nearest
+        for i in range(3,len(data)):
+            temp_dist = euclidean(data[i],point)
+            if temp_dist < d1:
+                print('updating d1 from {} to {}'.format(d1, temp_dist))
+                d1 = temp_dist
+                p1 = data[i]
+            elif d1 < temp_dist < d2:
+                print('updating d2 from {} to {}'.format(d2, temp_dist))
+                d2 = temp_dist
+                p2 = data[i]
+            elif d2 < temp_dist < d3:
+                print('updating d3 from {} to {}'.format(d3, temp_dist))
+                p3 = data[i]
 
-    # def find_centers_kmeans(self, pca2vector, kmeans, sentences, num_clusters):
-    #     # collect centers and find the closest vector to get approximate center vector
-    #     # this process is required because a center vector is a mean of other vectors and not be able to be decoded
-    #     centers = kmeans.cluster_centers_
-    #     centers_decodable = {}
-    #     start = time.time()
-    #     for i, center in enumerate(centers):
-    #         print('finding appx. center for cluster {}/{} ... running time: {} seconds'.format(i, num_clusters, round(
-    #             time.time() - start, 4)))
-    #         center = pca2vector[self.generate_pca_key(center)]
-    #         distance = 1e+10  # base distance: to be updated so a random large number is given
-    #         for sent in sentences:
-    #             temp_dist = euclidean(center, sent)
-    #             if temp_dist < distance:
-    #                 print('from {} to {}'.format(distance, temp_dist))
-    #                 distance = temp_dist
-    #                 centers_decodable[i] = sent
-    #
-    #     #predicted clusters for centers are just cluster numbers in order, so just put list(0 - 20) as pred
-    #     return self.cluster_decode(list(centers_decodable.values()),list(range(num_clusters)),num_clusters)
+        return p1,p2,p3
 
+    # plot clustering result based on labels(clusters) generated
     def plot_labels(self, df, pred, algorithm):
         u_labels = np.unique(pred)
         for i in u_labels:
@@ -136,13 +130,18 @@ class Clustering():
                 if pca2vector is not None:
 
                     # get centroids and nearest points for further analysis
-
                     centers = kmeans.cluster_centers_
                     pseudo_centers = []
                     for c in centers:  # get nearest point from each center
-                        pseudo_c = self.find_nearest_point(sentences, c)
-                        pseudo_centers.append(pca2vector[self.generate_pca_key(pseudo_c)])
-                    centers_decoded = self.cluster_decode(pseudo_centers, list(range(10)), num_clusters)
+                        pc1, pc2, pc3 = self.find_nearest_points(sentences, c)  #pc is short for pseudo-center
+                        for pc in [pc1,pc2,pc3]:
+                            pseudo_centers.append(pca2vector[self.generate_pca_key(pc)])
+
+                    # there are 3 pseudo-centers for each cluster, so labels should be 0,0,0, 1,1,1, 2,2,2, ...
+                    cluster_labels = []
+                    [cluster_labels.append([x] * 3) for x in range(10)]
+                    cluster_labels = list(itertools.chain.from_iterable(cluster_labels))
+                    centers_decoded = self.cluster_decode(pseudo_centers, cluster_labels, num_clusters)
                     with open('cluster_centers.json', 'w') as f:
                         json.dump(centers_decoded, f)
 
@@ -210,7 +209,7 @@ class Clustering():
             raise ValueError('please enter a clustering algorithm!')
 
         else:
-            raise ValueError('chosen clusterer not supported')
+            raise ValueError('chosen clusterer not supported on current version!')
 
         print(len(set(labels))) # get number of clusters for algorithms not requiring num_cluster param
         try:
@@ -253,14 +252,17 @@ class Clustering():
         plt.savefig('elbow.png')
         plt.show()
 
+    # get cumulative sum to find num of principal components and corresponding variance
     def find_best_ncomp_for_pca(self, sentences):
         pca = PCA()
-        pca_sentences = pca.fit_transform(sentences)
+        pca.fit(sentences)
         plt.plot(np.cumsum(pca.explained_variance_ratio_), linewidth=2)
         plt.xlabel('Components')
         plt.ylabel('Explained Variances')
         plt.show()
 
+    # perform pca on sentence vectors
+    # returns: pca-ed sentence vectors and a dict of K(key generated from pca):V(sentence vector)
     def do_pca(self, n_components,sentences):
 
         pca = PCA(n_components=n_components, random_state=42)
@@ -273,7 +275,8 @@ class Clustering():
 
         return pca_sentences, pca2vector
 
-    def do_silhoulette(self, sentences, kmax):
+    # perform silhouette analysis to find optimal value of k
+    def do_silhouette(self, sentences, kmax):
         X = np.asarray(sentences)
         normed_X = normalize(X, axis=1, norm='l2')
 
@@ -549,7 +552,7 @@ def main():
 
     """""perform elbow method / silhouette method to find optimal k for kmeans"""""
     # clu.do_elbow(pca_sentences,50)
-    # clu.do_silhoulette(pca_sentences,50)
+    clu.do_silhouette(pca_sentences,50)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""""""""""""""""""
