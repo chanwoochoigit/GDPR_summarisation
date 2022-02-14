@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
-from sklearn.cluster import KMeans, DBSCAN, Birch, AffinityPropagation, MeanShift, OPTICS, AgglomerativeClustering
+from sklearn.cluster import KMeans, MiniBatchKMeans, DBSCAN, Birch, AffinityPropagation, MeanShift, OPTICS, AgglomerativeClustering
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import normalize
 from scipy.spatial.distance import euclidean
@@ -107,6 +107,7 @@ class Clustering():
         normed_X = normalize(X, axis=1, norm='l2') # normalise vector to make cosine similarity effect
         labels = []
         sil = 999
+
         if clusterer == 'kmeans':
             if num_clusters is not None:
                 kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(normed_X)
@@ -114,8 +115,15 @@ class Clustering():
             else:
                 raise SyntaxError('num_cluster not entered for Kmeans!')
 
+        elif clusterer == 'kmeans_mini':
+            if num_clusters is not None:
+                kmeans = KMeans(n_clusters=num_clusters).fit(normed_X)
+                labels = kmeans.predict(normed_X)
+            else:
+                raise SyntaxError('num_cluster not entered for Kmeans!')
+
         elif clusterer == 'dbscan':
-            dbs = DBSCAN(eps=0.99,min_samples=5,metric=metric)
+            dbs = DBSCAN(eps=0.3,min_samples=9,metric=metric)
             labels = dbs.fit_predict(normed_X)
 
         elif clusterer == 'hdbscan':
@@ -136,7 +144,7 @@ class Clustering():
                 raise SyntaxError('num_cluster not entered for Birch!')
 
         elif clusterer == 'affinity':
-            aff = AffinityPropagation(damping=0.7,random_state=42)
+            aff = AffinityPropagation(damping=0.9,random_state=42)
             aff.fit(normed_X)
             labels = aff.predict(normed_X)
 
@@ -146,7 +154,7 @@ class Clustering():
             labels = ms.predict(normed_X)
 
         elif clusterer == 'optics':
-            optics = OPTICS(eps=0.75, min_samples=10)
+            optics = OPTICS(eps=0.8, min_samples=10)
             labels = optics.fit_predict(normed_X)
 
         elif clusterer == 'agglomerative':
@@ -494,26 +502,29 @@ def main():
 
     """""""""""""""do pca on embedded sentences"""""""""""""""
     # clu.find_best_ncomp_for_pca(embedded_sentences)
-    pca_sentences = clu.do_pca(n_components=160,sentences=embedded_sentences)   #90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
+    pca_sentences = clu.do_pca(n_components=3,sentences=embedded_sentences)   #90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
 
     """""perform elbow method / silhouette method to find optimal k for kmeans"""""
     # clu.do_elbow(pca_sentences,50)
-    # clu.do_silhoulette(pca_sentences,150)
+    # clu.do_silhoulette(pca_sentences,50)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""
-    algorithms = ['kmeans','dbscan','gaussian','birch','affinity','meanshift','optics','agglomerative']
-    distance_metric = 'canberra'
-    k=4
+    algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian','birch','affinity','meanshift','optics','agglomerative']
+    algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
+    distance_metric = 'euclidean'
+    k=10
     clustering_result = {}
-    for al in algorithms:
+    for al in algorithms_competitive:
         sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
         if sil == 999:
             sil = 'failed'
         clustering_result[al] = sil
 
-    for key in clustering_result.keys():
-        print('{}: {}\n'.format(key,clustering_result[key]))
+    sorted_clustering_result = {k: float(v) for k, v in sorted(clustering_result.items(), key=lambda item: item[1],reverse=True)}
+
+    for item in sorted_clustering_result.items():
+        print(item)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""evaluate k-means"""""""""""""""""
