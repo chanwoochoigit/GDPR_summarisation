@@ -1,4 +1,5 @@
 import itertools
+import logging
 import pickle
 import json
 import time
@@ -18,6 +19,14 @@ from sklearn.cluster import KMeans, MiniBatchKMeans, DBSCAN, Birch, \
                             AgglomerativeClustering
 import hdbscan
 import nltk
+from logging.handlers import RotatingFileHandler
+
+# set logging
+log_name = 'cluster.py.log'
+logging.basicConfig(filename=log_name, format='%(levelname)s:%(message)s', level=logging.DEBUG)
+log = logging.getLogger()
+handler = RotatingFileHandler(log_name, maxBytes=1048576)
+log.addHandler(handler)
 
 class Clustering():
 
@@ -35,8 +44,8 @@ class Clustering():
     def do_sentenceBERT(self, sentences):
         model = SentenceTransformer('stsb-mpnet-base-v2')
         sentence_embeddings = model.encode(sentences)
-        # print('Sample BERT embedding vector - length', len(sentence_embeddings[0]))
-        # print('Sample BERT embedding vector - note includes negative values', sentence_embeddings[0])
+        # log.debug('Sample BERT embedding vector - length', len(sentence_embeddings[0]))
+        # log.debug('Sample BERT embedding vector - note includes negative values', sentence_embeddings[0])
         sentence_dict = {}
         sentence_dict_reverse = {}
         for raw, emb in zip(sentences, sentence_embeddings):
@@ -61,14 +70,14 @@ class Clustering():
                                     # dict[plain_text] = cluster
             try:
                 sent_cluster_dict[str(sent_dict_reverse[str(x.tolist())])] = str(p)
-                # print(str(sent_dict_reverse[str(x.tolist())])+': '+str(p))
+                # log.debug(str(sent_dict_reverse[str(x.tolist())])+': '+str(p))
             except AttributeError:  # decoding list of centroids
                 sent_cluster_dict[str(sent_dict_reverse[str(x)])] = str(p)
 
         #decode encoded sentences and save to a dict -> dict[cluster_num] = decoded_vector
         cluster_dict = {}
         for i in range(num_clusters):
-            print('saving decoded sentence vectors ... {}/{}'.format(i, num_clusters))
+            log.debug('saving decoded sentence vectors ... {}/{}'.format(i, num_clusters))
             temp = []
             for k, v in sent_cluster_dict.items():
                 if str(v) == str(i):
@@ -84,27 +93,37 @@ class Clustering():
 
     # return 3 nearest points in a dataset
     def find_nearest_points(self, data, point):
-        d1 = euclidean(data[0], point)   #nearest
-        d2 = euclidean(data[1], point)
-        d3 = euclidean(data[2], point)  #farthest
-        d1, d2, d3 = sorted([d1, d2, d3])  # sort from nearest to farthest
-        p1, p2, p3 = None, None, None   # init positions with nearest distances
+                                #calculate distance from nearest to furthest
+        d1, d2, d3, d4, d5 = euclidean(data[0], point), \
+                             euclidean(data[1], point),\
+                             euclidean(data[2], point), \
+                             euclidean(data[3], point), \
+                             euclidean(data[4], point)
 
-        for i in range(3,len(data)):
+        d1, d2, d3, d4, d5 = sorted([d1, d2, d3, d4, d5])   # sort from nearest to farthest
+        p1, p2, p3, p4, p5 = None, None, None, None, None   # init positions with nearest distances
+
+        for i in range(5,len(data)):
             temp_dist = euclidean(data[i],point)
             if temp_dist < d1:
-                print('updating d1 from {} to {}'.format(d1, temp_dist))
+                log.debug('updating d1 from {} to {}'.format(d1, temp_dist))
                 d1 = temp_dist
                 p1 = data[i]
             elif d1 < temp_dist < d2:
-                print('updating d2 from {} to {}'.format(d2, temp_dist))
+                log.debug('updating d2 from {} to {}'.format(d2, temp_dist))
                 d2 = temp_dist
                 p2 = data[i]
             elif d2 < temp_dist < d3:
-                print('updating d3 from {} to {}'.format(d3, temp_dist))
+                log.debug('updating d3 from {} to {}'.format(d3, temp_dist))
                 p3 = data[i]
+            elif d3 < temp_dist < d4:
+                log.debug('updating d4 from {} to {}'.format(d4, temp_dist))
+                p4 = data[i]
+            elif d4 < temp_dist < d5:
+                log.debug('updating d5 from {} to {}'.format(d4, temp_dist))
+                p5 = data[i]
 
-        return p1,p2,p3
+        return [p1,p2,p3,p4,p5]
 
     # plot clustering result based on labels(clusters) generated
     def plot_labels(self, df, pred, algorithm):
@@ -133,13 +152,13 @@ class Clustering():
                     centers = kmeans.cluster_centers_
                     pseudo_centers = []
                     for c in centers:  # get nearest point from each center
-                        pc1, pc2, pc3 = self.find_nearest_points(sentences, c)  #pc is short for pseudo-center
-                        for pc in [pc1,pc2,pc3]:
+                        pcs = self.find_nearest_points(sentences, c)  #pc is short for pseudo-center
+                        for pc in pcs:
                             pseudo_centers.append(pca2vector[self.generate_pca_key(pc)])
 
-                    # there are 3 pseudo-centers for each cluster, so labels should be 0,0,0, 1,1,1, 2,2,2, ...
+                    # there are 5 pseudo-centers for each cluster, so labels should be 0,0,0,0,0, 1,1,1,1,1  2,2,2,2,2 ...
                     cluster_labels = []
-                    [cluster_labels.append([x] * 3) for x in range(10)]
+                    [cluster_labels.append([x] * 5) for x in range(10)]
                     cluster_labels = list(itertools.chain.from_iterable(cluster_labels))
                     centers_decoded = self.cluster_decode(pseudo_centers, cluster_labels, num_clusters)
                     with open('cluster_centers.json', 'w') as f:
@@ -211,12 +230,12 @@ class Clustering():
         else:
             raise ValueError('chosen clusterer not supported on current version!')
 
-        print(len(set(labels))) # get number of clusters for algorithms not requiring num_cluster param
+        log.debug(len(set(labels))) # get number of clusters for algorithms not requiring num_cluster param
         try:
             sil = silhouette_score(normed_X, labels)
-            print(sil)
+            log.debug(sil)
         except ValueError:
-            print('clustering failed miserably! There is only a single cluster.')
+            log.debug('clustering failed miserably! There is only a single cluster.')
 
         # plot kmeans for further checkup
         self.plot_labels(normed_X, labels, clusterer)
@@ -233,7 +252,7 @@ class Clustering():
         sse = []
         start = time.time()
         for k in range(1, kmax + 1):
-            print('finding the optimum cluster number ... {}/{} | running time: {} seconds'.format(k,kmax,round(time.time()-start,4)))
+            log.debug('finding the optimum cluster number ... {}/{} | running time: {} seconds'.format(k,kmax,round(time.time()-start,4)))
             kmeans = KMeans(n_clusters=k).fit(normed_X)
             centroids = kmeans.cluster_centers_
             pred_clusters = kmeans.predict(normed_X)
@@ -284,7 +303,7 @@ class Clustering():
         start = time.time()
         # dissimilarity would not be defined for a single cluster, thus, minimum number of clusters should be 2
         for k in range(2, kmax + 1):
-            print('finding the optimum cluster number ... {}/{} | running time: {} seconds'.format(k,kmax,round(time.time()-start,4)))
+            log.debug('finding the optimum cluster number ... {}/{} | running time: {} seconds'.format(k,kmax,round(time.time()-start,4)))
             kmeans = KMeans(n_clusters=k).fit(normed_X)
             labels = kmeans.labels_
             sil.append(silhouette_score(normed_X, labels, metric='euclidean'))
@@ -294,6 +313,15 @@ class Clustering():
         plt.plot(x, y)
         plt.savefig('silhouette.png')
         plt.show()
+
+    def format_cluster_centres(self):
+        with open('cluster_centers.json', 'r') as f:
+            centres = json.load(f)
+        with open('supersentences_from_cluster_centres.txt', 'w') as f:
+            for key in centres.keys():
+                f.write('{}:\n'.format(key))
+                for sentence in centres[key]:
+                    f.write('### {}\n'.format(sentence))
 
 class EvalCluster():
 
@@ -414,8 +442,8 @@ class EvalCluster():
         start = time.time()
         for i, cls in enumerate(corpus.keys()):
             for doc in corpus[cls]:
-                print('class: {}/{}---------------------------------------------------'.format(i+1, self.num_classes))
-                print('calculating mutual information...{}/{} | running time: {} seconds'.format(doc, len(corpus[cls].keys()), round(time.time()-start,4)))
+                log.debug('class: {}/{}---------------------------------------------------'.format(i+1, self.num_classes))
+                log.debug('calculating mutual information...{}/{} | running time: {} seconds'.format(doc, len(corpus[cls].keys()), round(time.time()-start,4)))
                 for word in corpus[cls][doc]:
                     score = self.calc_mi(word, cls)
                     result[word][cls] = score
@@ -465,7 +493,7 @@ class EvalCluster():
         for i in list(results.keys()):
             for j in range(num_keywords):
                 superwords[i][j] = list(results[str(i)].keys())[j]
-        # print(superwords)
+        # log.debug(superwords)
 
         with open('sentences_clustered.json', 'r') as f:
             clusters = json.load(f)
@@ -487,7 +515,7 @@ class EvalCluster():
         self.format_supersentences(superwords, super_sentences, max_sentences)  #format the "supersentences" to be human-readable to a file
 
     def format_supersentences(self, superwords, super_sentences, max_sentences):
-        with open('supersentences_per_cluster.txt', 'a') as f:
+        with open('supersentences_per_cluster.txt', 'w') as f:
             for cluster in super_sentences.keys():
                 f.write('cluster ' + str(cluster) + ':\n')
 
@@ -552,7 +580,7 @@ def main():
 
     """""perform elbow method / silhouette method to find optimal k for kmeans"""""
     # clu.do_elbow(pca_sentences,50)
-    clu.do_silhouette(pca_sentences,50)
+    # clu.do_silhouette(pca_sentences,50)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""""""""""""""""""
@@ -566,21 +594,23 @@ def main():
     #     sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
     #     clustering_result[al] = sil
     #
+    #### sort dictinoary by value
     # sorted_clustering_result = {k: float(v) for k, v in sorted(clustering_result.items(), key=lambda item: item[1],reverse=True)}
     #
     # for item in sorted_clustering_result.items():
-    #     print(item)
+    #     log.debug(item)
 
-    ##go further with kmeans cos it's the best atm
-    clu.perform_clustering(pca_sentences, 'kmeans', num_clusters=k, metric=distance_metric, pca2vector=pca2vector)
-    with open('cluster_centers.json', 'r') as f:
-        centers = json.load(f)
-    for item in centers.items():
-        print(item)
+    # ##go further with kmeans cos it's the best atm
+    # clu.perform_clustering(pca_sentences, 'kmeans', num_clusters=k, metric=distance_metric, pca2vector=pca2vector)
+    # with open('cluster_centers.json', 'r') as f:
+    #     centers = json.load(f)
+    # for item in centers.items():
+    #     log.debug(item)
+    clu.format_cluster_centres()
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""evaluate k-means"""""""""""""""""
-    # eval = EvalCluster(num_classes=10)
+    eval = EvalCluster(num_classes=10)
     # eval.create_corpus()
     # eval.run_calculation()
     # eval.sort_result()
