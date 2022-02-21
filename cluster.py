@@ -19,6 +19,7 @@ from sklearn.cluster import KMeans, MiniBatchKMeans, DBSCAN, Birch, \
                             AgglomerativeClustering
 import hdbscan
 import nltk
+from nltk.tokenize import word_tokenize
 from logging.handlers import RotatingFileHandler
 
 # set logging
@@ -160,6 +161,8 @@ class Clustering():
                     cluster_labels = []
                     [cluster_labels.append([x] * 5) for x in range(10)]
                     cluster_labels = list(itertools.chain.from_iterable(cluster_labels))
+                    log.debug('pseudo centres length: {}'.format(len(pseudo_centers)))
+                    log.debug('cluster labels length: {}'.format(len(cluster_labels)))
                     centers_decoded = self.cluster_decode(pseudo_centers, cluster_labels, num_clusters)
                     with open('cluster_centers.json', 'w') as f:
                         json.dump(centers_decoded, f)
@@ -314,6 +317,16 @@ class Clustering():
         plt.savefig('silhouette.png')
         plt.show()
 
+    # perform silhouette analysis for defined single value k
+    def do_silhouette_single(self, sentences, k):
+        X = np.asarray(sentences)
+        normed_X = normalize(X, axis=1, norm='l2')
+
+        # dissimilarity would not be defined for a single cluster, thus, minimum number of clusters should be 2
+        kmeans = KMeans(n_clusters=k).fit(normed_X)
+        labels = kmeans.labels_
+        return silhouette_score(normed_X, labels, metric='euclidean')
+
     def format_cluster_centres(self):
         with open('cluster_centers.json', 'r') as f:
             centres = json.load(f)
@@ -321,7 +334,7 @@ class Clustering():
             for key in centres.keys():
                 f.write('{}:\n'.format(key))
                 for sentence in centres[key]:
-                    f.write('### {}\n'.format(sentence))
+                    f.write('{}\n'.format(sentence))
 
 class EvalCluster():
 
@@ -358,16 +371,19 @@ class EvalCluster():
 
         return word_list
 
+    def remove_punctuations(self, string):
+        punctuations = [',','.', '?', ';',':','-','_',')','(',']','[','`','~','"','<','>','"']
+        for p in punctuations:
+            string = string.replace(p,'')
+        return string
+
     def remove_stopwords(self, words):
-        stopwords = []
         with open('stopwords.txt', 'r') as f:
-            temp = f.readlines()
-        for word in temp:
-            if word != ' ' or word != '\n':
-                stopwords.append(word.replace('\n',''))
+            stopwords = f.read().split('\n')
+        # temp.remove('')
         words_nostop = []
-        word_list = self.str_to_words(words)
-        [words_nostop.append(x) for x in word_list if x not in stopwords and x != '']
+        # word_list = self.str_to_words(words)
+        [words_nostop.append(x.lower()) for x in words if x not in stopwords]
         return words_nostop
 
     def stem_data(self, words_preprocessed):
@@ -483,7 +499,7 @@ class EvalCluster():
         with open('ranked_result_cluster.json', 'w') as f:
             json.dump(result, f)
 
-    def validate_result(self, num_keywords, max_sentences):
+    def validate_result(self, num_keywords, num_max_sentences):
         superwords = self.init_nd_dict()
 
         with open('ranked_result_cluster.json', 'r') as f:
@@ -502,7 +518,7 @@ class EvalCluster():
 
         for cluster in clusters.keys():             #for each cluster
             sentences = clusters[cluster]
-            temps = [[], [], [], [], []]
+            temps = np.zeros((num_max_sentences,0)).tolist()            # list of supersentences of a cluster
 
             for s in sentences:
                 for i in range(num_keywords):
@@ -512,23 +528,34 @@ class EvalCluster():
             for i in range(num_keywords):
                 super_sentences[cluster][superwords[cluster][i]] = temps[i]  # save the list of sentences in a dict
 
-        self.format_supersentences(superwords, super_sentences, max_sentences)  #format the "supersentences" to be human-readable to a file
+        self.format_supersentences(superwords, super_sentences, num_max_sentences)  #format the "supersentences" to be human-readable to a file
 
     def format_supersentences(self, superwords, super_sentences, max_sentences):
         with open('supersentences_per_cluster.txt', 'w') as f:
             for cluster in super_sentences.keys():
-                f.write('cluster ' + str(cluster) + ':\n')
+                f.write('cls\n')
 
                 for i in range(max_sentences):
-                    f.write('\tword {} "{}":'.format(i+1, superwords[cluster][i]) + '\n')
+                    # f.write('{}'.format(superwords[cluster][i]) + '\n')
                     target_word = superwords[cluster][i]
                     sentences = super_sentences[cluster][target_word]
                     for j, s in enumerate(sentences):
                         if j == max_sentences:
                             break
-                        f.write('\t\t{}: "{}"\n'.format(j+1, s))
+                        f.write('{}\n'.format(s))
 
-                f.write('\n')
+    def rank_words(self, documents):
+        clusters_ranked = {}
+        for i, doc in enumerate(documents):
+            words_ranked = defaultdict(int)
+            words_uniq = list(set(doc))
+            for word in words_uniq:
+                for j in range(len(doc)):
+                    if word == doc[j]:
+                        words_ranked[word] += 1
+            clusters_ranked[i] = {k: float(v) for k, v in sorted(words_ranked.items(), key=lambda item: item[1], reverse=True)}
+
+        return clusters_ranked
 
 class UtilityFunct():
 
@@ -536,12 +563,14 @@ class UtilityFunct():
         splitted = []
         for s in sentences:
             #remove unsupported punctuations
-            splitted.append(s.replace('-',' ').replace('!','').replace('[',' ').replace(']',' ').replace(':',' ').replace(';',' ')\
+            splitted.append(s.replace('-',' ').replace('!','').replace('[',' ').replace(']',' ').replace(':',' ').replace(';',' or ')\
                             .replace('(a)',' ').replace('(b)','').replace('(c)','').replace('(d)','').replace('(e)','') \
+                            .replace('(','').replace(')','').replace('\n','.')\
                             .replace('\u2019',' ').replace('\u2013',' ').replace('\u2014',' ').replace('\u201d',' ')
                             .replace('\u201c',' ').replace('\u2018', ' ').replace('\u202f', ' ').replace('\u00e0', ' ')
                             .replace('\u00e9',' ').replace('\u00a0', ' ').replace('(', ' ').replace(')',' ').replace('_',' ')
-                            .replace('   ',' ').replace('  ',' ').replace('    ',' ').replace('U.S.','USA').replace('E.U.','eu').replace('e.g.','for example,')
+                            .replace('   ',' ').replace('  ',' ').replace('    ',' ').replace('U.S.','USA').replace('E.U.','eu').replace('e.g.','for example,')\
+                            .replace('(Japan)','japan')
                             .replace('. ','.').replace('.','. ')
                             .split('. '))
 
@@ -562,8 +591,8 @@ def main():
     """""""""""init knn module and encode clauses"""""""""""
     clu = Clustering()
     ut = UtilityFunct()
-    # with open('clauses_v2.pkl', 'rb') as f:
-    #     sentences = pickle.load(f)
+    # sentences = pd.read_csv('training_data/alice/data_alice.csv')['clause']
+    # print(sentences)
     # clu.do_sentenceBERT(ut.split_sentences(sentences))
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -575,8 +604,24 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """"""""""""""""""""""""""""""""""""""""""""""do pca on embedded sentences"""""""""""""""""""""""""""""""""""""""""""""
-    # clu.find_best_ncomp_for_pca(embedded_sentences)
-    pca_sentences, pca2vector = clu.do_pca(n_components=3,sentences=embedded_sentences)   #90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
+    # clu.find_best_ncomp_for_pca(embedded_sentences) by variance
+    pca_sentences, pca2vector = clu.do_pca(n_components=100,sentences=embedded_sentences)   #90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
+
+    # # find best ncomp by silhouette scores
+    # sil = []
+    # k = 30
+    # for i, n in enumerate(range(3,200)):
+    #     log.debug('doing silhouette scores on various ncomp ... {}/{}'.format(i, len(list(range(3,200)))))
+    #     pca_sentences, pca2vector = clu.do_pca(n_components=n,
+    #                                            sentences=embedded_sentences)  # 90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
+    #     sil.append(clu.do_silhouette_single(pca_sentences, k))
+    #
+    # y = sil
+    # x = range(3,200)
+    # plt.plot(x, y)
+    # plt.savefig('silhouette_by_ncomps_k={}.png'.format(k))
+    # plt.show()
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""perform elbow method / silhouette method to find optimal k for kmeans"""""
     # clu.do_elbow(pca_sentences,50)
@@ -584,38 +629,52 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""""""""""""""""""
-    distance_metric = 'euclidean'
-    k = 10
-    algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian',
-                  'birch','affinity','meanshift','optics','agglomerative']
-    algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
-    clustering_result = {}
-    # for al in algorithms_competitive:
-    #     sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
-    #     clustering_result[al] = sil
+    # distance_metric = 'euclidean'
+    # k = 20
+    # algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian',
+    #                'birch','affinity','meanshift','optics','agglomerative']
+    # algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
+    # clustering_result = {}
+    # for al in algorithms:
+    #      sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
+    #      clustering_result[al] = sil
     #
-    #### sort dictinoary by value
+    # ### sort dictinoary by value
     # sorted_clustering_result = {k: float(v) for k, v in sorted(clustering_result.items(), key=lambda item: item[1],reverse=True)}
     #
     # for item in sorted_clustering_result.items():
     #     log.debug(item)
 
-    # ##go further with kmeans cos it's the best atm
+    #go further with kmeans cos it's the best atm
     # clu.perform_clustering(pca_sentences, 'kmeans', num_clusters=k, metric=distance_metric, pca2vector=pca2vector)
     # with open('cluster_centers.json', 'r') as f:
     #     centers = json.load(f)
     # for item in centers.items():
     #     log.debug(item)
-    clu.format_cluster_centres()
+    # clu.format_cluster_centres()
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""evaluate k-means"""""""""""""""""
-    eval = EvalCluster(num_classes=10)
-    # eval.create_corpus()
-    # eval.run_calculation()
-    # eval.sort_result()
-    # eval.validate_result(num_keywords=5, max_sentences=5)
+    ec = EvalCluster(num_classes=20)
+    # ec.create_corpus()
+    # ec.run_calculation()
+    # ec.sort_result()
+    ec.validate_result(num_keywords=10, num_max_sentences=10)
     """"""""""""""""""""""""""""""""""""""""""""""""""
+
+    """""""""""""""analyse kmeans result"""""""""""""""
+    cluster_sentences = {}
+    with open('supersentences_per_cluster.txt', 'r') as f:
+        sentences = f.read().split('cls\n')
+    sentences.remove('')
+    words_clean = []
+    for s_chunk in sentences:
+        words = word_tokenize(ec.remove_punctuations(s_chunk))
+        words_clean.append(ec.stem_data(ec.remove_stopwords(words)))
+
+    docs_words_ranked = ec.rank_words(words_clean)
+    for key in docs_words_ranked.keys():
+        print(list(docs_words_ranked[key].items())[:10])
 
 if __name__ == '__main__':
     main()
