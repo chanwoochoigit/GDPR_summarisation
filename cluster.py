@@ -653,7 +653,8 @@ def main():
     # ec.run_calculation(corpus=corpus, salt='original')
     # ec.sort_result('mi_scores_original.json', 'original')
     ec.validate_result('ranked_result_cluster_original.json',
-                       num_max_sentences=3)
+                       num_keywords=7,
+                       num_max_sentences=1)
     """"""""""""""""""""""""""""""""""""""""""""""""""
 
 
