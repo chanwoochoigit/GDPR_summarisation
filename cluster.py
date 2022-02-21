@@ -18,8 +18,8 @@ from sklearn.cluster import KMeans, MiniBatchKMeans, DBSCAN, Birch, \
                             AffinityPropagation, MeanShift, OPTICS, \
                             AgglomerativeClustering
 import hdbscan
-import nltk
 from nltk.tokenize import word_tokenize
+from nltk import PorterStemmer
 from logging.handlers import RotatingFileHandler
 
 # set logging
@@ -344,17 +344,14 @@ class EvalCluster():
     def init_nd_dict(self):
         return defaultdict(lambda : defaultdict(dict))
 
-    def create_corpus(self):
-        with open('sentences_clustered.json', 'r') as f:
-            clusters = json.load(f)
+    def create_corpus(self, sentences_clustered):
         docs_processed = self.init_nd_dict()
-        for c in clusters.keys():
-            for i, doc in enumerate(clusters[c]):
-                # processed = self.stem_data(self.remove_stopwords(doc.replace('.','').replace(',','')))
-                processed = self.remove_stopwords(doc.replace('.', '').replace(',', ''))
+        for c in sentences_clustered.keys():
+            for i, doc in enumerate(sentences_clustered[c]):
+                processed = self.stem_data(self.remove_stopwords(word_tokenize(self.remove_punctuations(doc))))
                 docs_processed[c][i] = processed
-        with open('corpus.json', 'w') as f:
-            json.dump(docs_processed, f)
+
+        return docs_processed
 
     def load_corpus(self):
         with open('corpus.json', 'r') as f:
@@ -387,17 +384,15 @@ class EvalCluster():
         return words_nostop
 
     def stem_data(self, words_preprocessed):
-        nltk.download('punkt')
-
-        ps = nltk.PorterStemmer()
+        ps = PorterStemmer()
         words_stemmed = []
         for word in words_preprocessed:
             words_stemmed.append(ps.stem(word))
         return words_stemmed
 
     # calculate mutual information given all 4 counts
-    def calc_mi(self, term, cls):
-        N11, N10, N01, N00 = self.get_Ns(term, cls)
+    def calc_mi(self, corpus, term, cls):
+        N11, N10, N01, N00 = self.get_Ns(corpus, term, cls)
 
         N = N11 + N10 + N01 + N00
 
@@ -421,8 +416,7 @@ class EvalCluster():
         return aa + bb + cc + dd
 
     # get counts to calculate mutual information and Chi-squared
-    def get_Ns(self, term, cls):
-        corpus = self.load_corpus()
+    def get_Ns(self, corpus, term, cls):
         classes = corpus.keys()
 
         # find "non-current" class
@@ -452,8 +446,7 @@ class EvalCluster():
 
         return N11, N10, N01, N00
 
-    def run_calculation(self):
-        corpus = self.load_corpus()
+    def run_calculation(self, corpus, salt):
         result = self.init_nd_dict()
         start = time.time()
         for i, cls in enumerate(corpus.keys()):
@@ -461,10 +454,10 @@ class EvalCluster():
                 log.debug('class: {}/{}---------------------------------------------------'.format(i+1, self.num_classes))
                 log.debug('calculating mutual information...{}/{} | running time: {} seconds'.format(doc, len(corpus[cls].keys()), round(time.time()-start,4)))
                 for word in corpus[cls][doc]:
-                    score = self.calc_mi(word, cls)
+                    score = self.calc_mi(corpus, word, cls)
                     result[word][cls] = score
 
-        with open('{}.json'.format('mi_scores'), 'w') as f:
+        with open('{}.json'.format('mi_scores_'+salt), 'w') as f:
             json.dump(result, f)
 
         return result
@@ -482,13 +475,14 @@ class EvalCluster():
     def sort_dict_by_value(self, dict_to_sort):
         return dict(sorted(dict_to_sort.items(), key=lambda item: item[1], reverse=True))
 
-    def sort_result(self):
-        with open('mi_scores.json', 'r') as f:
-            to_display = json.load(f)
+    def sort_result(self, mi_result_path, save_name_salt):
+        with open(mi_result_path, 'r') as f:
+            mi_result = json.load(f)
+
         to_sort = self.init_nd_dict()
-        for word in to_display.keys():
-            for corpus in to_display[word]:
-                score = to_display[word][corpus]
+        for word in mi_result.keys():
+            for corpus in mi_result[word]:
+                score = mi_result[word][corpus]
                 to_sort[corpus][word] = score
 
         result = self.init_nd_dict()
@@ -496,53 +490,50 @@ class EvalCluster():
         for i in range(self.num_classes):
             result[i] = self.format_ranked_result(self.sort_dict_by_value(to_sort[str(i)]))
 
-        with open('ranked_result_cluster.json', 'w') as f:
+        with open('ranked_result_cluster_{}.json'.format(save_name_salt), 'w') as f:
             json.dump(result, f)
 
-    def validate_result(self, num_keywords, num_max_sentences):
+    def validate_result(self, ranked_cluster_path, num_keywords=10, num_max_sentences=5):
         superwords = self.init_nd_dict()
 
-        with open('ranked_result_cluster.json', 'r') as f:
+        with open(ranked_cluster_path) as f:
             results = json.load(f)
 
-        # choose 5 "strongest" words and store them in a dict
+        # choose n "strongest" words and store them in a dict
         for i in list(results.keys()):
             for j in range(num_keywords):
                 superwords[i][j] = list(results[str(i)].keys())[j]
-        # log.debug(superwords)
+        log.debug(superwords)
 
         with open('sentences_clustered.json', 'r') as f:
             clusters = json.load(f)
 
         super_sentences = self.init_nd_dict()
 
-        for cluster in clusters.keys():             #for each cluster
-            sentences = clusters[cluster]
-            temps = np.zeros((num_max_sentences,0)).tolist()            # list of supersentences of a cluster
+        for cluster in clusters.keys():                     #for each cluster
+            sentences_in_this_cluster = clusters[cluster]
 
-            for s in sentences:
-                for i in range(num_keywords):
-                    if superwords[cluster][i] in s and s not in temps[i]:   # if each superword is in any of the sentences in the same cluster
-                        temps[i].append(s)                                  # where the superword belongs, append it to a list
+            for s in sentences_in_this_cluster:
+                for superword in superwords[cluster].values():
+                    if superword in s and s not in super_sentences[cluster][superword]:   # if each superword is in any of the sentences in the same cluster
+                        try:
+                            super_sentences[cluster][superword].append(s)  # save the list of sentences in a dict
+                        except:
+                            super_sentences[cluster][superword] = [s]  # save the list of sentences in a dict
 
-            for i in range(num_keywords):
-                super_sentences[cluster][superwords[cluster][i]] = temps[i]  # save the list of sentences in a dict
+        self.format_supersentences(super_sentences, num_max_sentences)  #format the "supersentences" to be human-readable to a file
 
-        self.format_supersentences(superwords, super_sentences, num_max_sentences)  #format the "supersentences" to be human-readable to a file
-
-    def format_supersentences(self, superwords, super_sentences, max_sentences):
+    def format_supersentences(self, super_sentences, max_sentences):
         with open('supersentences_per_cluster.txt', 'w') as f:
             for cluster in super_sentences.keys():
-                f.write('cls\n')
+                f.write('cluster {}:\n'.format(cluster))
 
-                for i in range(max_sentences):
-                    # f.write('{}'.format(superwords[cluster][i]) + '\n')
-                    target_word = superwords[cluster][i]
-                    sentences = super_sentences[cluster][target_word]
-                    for j, s in enumerate(sentences):
+                for word in super_sentences[cluster].keys():
+                    f.write('\t{}:'.format(word) + '\n')
+                    for j, s in enumerate(super_sentences[cluster][word]):
                         if j == max_sentences:
                             break
-                        f.write('{}\n'.format(s))
+                        f.write('\t\t{}\n'.format(s))
 
     def rank_words(self, documents):
         clusters_ranked = {}
@@ -656,25 +647,15 @@ def main():
 
     """""""""""""""""evaluate k-means"""""""""""""""""
     ec = EvalCluster(num_classes=20)
-    # ec.create_corpus()
-    # ec.run_calculation()
-    # ec.sort_result()
-    ec.validate_result(num_keywords=10, num_max_sentences=10)
+    # with open('sentences_clustered.json','r') as f:
+    #     sc = json.load(f)
+    # corpus = ec.create_corpus(sc)
+    # ec.run_calculation(corpus=corpus, salt='original')
+    # ec.sort_result('mi_scores_original.json', 'original')
+    ec.validate_result('ranked_result_cluster_original.json',
+                       num_max_sentences=3)
     """"""""""""""""""""""""""""""""""""""""""""""""""
 
-    """""""""""""""analyse kmeans result"""""""""""""""
-    cluster_sentences = {}
-    with open('supersentences_per_cluster.txt', 'r') as f:
-        sentences = f.read().split('cls\n')
-    sentences.remove('')
-    words_clean = []
-    for s_chunk in sentences:
-        words = word_tokenize(ec.remove_punctuations(s_chunk))
-        words_clean.append(ec.stem_data(ec.remove_stopwords(words)))
-
-    docs_words_ranked = ec.rank_words(words_clean)
-    for key in docs_words_ranked.keys():
-        print(list(docs_words_ranked[key].items())[:10])
 
 if __name__ == '__main__':
     main()
