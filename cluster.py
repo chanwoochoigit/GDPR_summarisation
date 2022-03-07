@@ -7,6 +7,7 @@ from collections import defaultdict
 from math import log2
 import pandas as pd
 import numpy as np
+from scipy.spatial.distance import euclidean
 from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
 from sklearn.metrics import silhouette_score
@@ -42,14 +43,21 @@ class Clustering():
         return sentences
 
     # process chunks of sentences, remove unsupported punctuation and split them
-    def do_sentenceBERT(self, sentences):
-        model = SentenceTransformer('stsb-mpnet-base-v2')
-        sentence_embeddings = model.encode(sentences)
+    def do_sentenceBERT(self, sentences, labels):
+        model = SentenceTransformer('snt_tsfm_model/')
+
+        worth_sentences = []   #only get important sentences
+        for i, s in enumerate(sentences):
+            if labels[i] == 'worth_reading':
+                worth_sentences.append(s)
+
+        sentence_embeddings = model.encode(worth_sentences)
         # log.debug('Sample BERT embedding vector - length', len(sentence_embeddings[0]))
         # log.debug('Sample BERT embedding vector - note includes negative values', sentence_embeddings[0])
+
         sentence_dict = {}
         sentence_dict_reverse = {}
-        for raw, emb in zip(sentences, sentence_embeddings):
+        for raw, emb in zip(worth_sentences, sentence_embeddings):
             sentence_dict[raw] = emb.tolist()
             sentence_dict_reverse[str(emb.tolist())] = raw
 
@@ -131,7 +139,7 @@ class Clustering():
         u_labels = np.unique(pred)
         for i in u_labels:
             plt.scatter(df[pred == i, 0], df[pred == i, 1], label=i)
-        plt.legend()
+        plt.legend(bbox_to_anchor=(1.14,1.05), loc='upper right')
         plt.savefig('clustering_results/{}.png'.format(algorithm))
 
     # perform unsupervised clustering and compare results for different clustering algorithms
@@ -550,41 +558,127 @@ class EvalCluster():
 
 class UtilityFunct():
 
-    def split_sentences(self, sentences):
+    def format_worthy_sentences(self, sentences, labels):
         splitted = []
-        for s in sentences:
+        labels_extended = []    # each element in "sentences" is a set of multiple setences: therefore when they are split,
+                                # the labels should be duplicated accordingly
+
+        for i, s in enumerate(sentences):
             #remove unsupported punctuations
-            splitted.append(s.replace('-',' ').replace('!','').replace('[',' ').replace(']',' ').replace(':',' ').replace(';',' or ')\
+            sentence_chunk = s.replace('-',' ').replace('!','').replace('[',' ').replace(']',' ').replace(':',' ').replace(';',' or ')\
                             .replace('(a)',' ').replace('(b)','').replace('(c)','').replace('(d)','').replace('(e)','') \
                             .replace('(','').replace(')','').replace('\n','.')\
-                            .replace('\u2019',' ').replace('\u2013',' ').replace('\u2014',' ').replace('\u201d',' ')
-                            .replace('\u201c',' ').replace('\u2018', ' ').replace('\u202f', ' ').replace('\u00e0', ' ')
-                            .replace('\u00e9',' ').replace('\u00a0', ' ').replace('(', ' ').replace(')',' ').replace('_',' ')
+                            .replace('\u2019',' ').replace('\u2013',' ').replace('\u2014',' ').replace('\u201d',' ')\
+                            .replace('\u201c',' ').replace('\u2018', ' ').replace('\u202f', ' ').replace('\u00e0', ' ')\
+                            .replace('\u00e9',' ').replace('\u00a0', ' ').replace('(', ' ').replace(')',' ').replace('_',' ')\
                             .replace('   ',' ').replace('  ',' ').replace('    ',' ').replace('U.S.','USA').replace('E.U.','eu').replace('e.g.','for example,')\
-                            .replace('(Japan)','japan')
-                            .replace('. ','.').replace('.','. ')
-                            .split('. '))
+                            .replace('(Japan)','japan')\
+                            .replace('. ','.').replace('.','. ')\
+                            .split('. ')
+
+            splitted.append(sentence_chunk)
+
+            for j in range(len(sentence_chunk)):
+                labels_extended.append(labels[i])
+
 
         splitted = list(itertools.chain.from_iterable(splitted))
 
         formatted = []
         for sentence in splitted:
-            if sentence == '': continue
+            if '.' not in sentence:
+                formatted.append(str(sentence)+'.')
             else:
-                if '.' not in sentence:
-                    formatted.append(str(sentence)+'.')
-                else:
-                    formatted.append(str(sentence))
+                formatted.append(str(sentence))
 
-        return formatted
+        log.info('[individual] sentences length: {}\n[individual] labels length: {}'.format(len(formatted),
+                                                                                            len(labels_extended)))
+
+        return formatted, labels_extended
+
+class Temp():
+
+    def __init__(self):
+        self.model = SentenceTransformer('snt_tsfm_model/')
+        self.key_topics = [
+        'what data do we collect',
+        'how do we collect your data',
+        'how we will use your data',
+        'how do we store your data',
+        'marketing and third party use',
+        'what are your data protection rights',
+        'what are cookies',
+        'how do we use cookies',
+        'what types of cookies do we use',
+        'how to manage your cookies',
+        'changes to our privacy policy',
+        'how to contact us',
+        'how to contact the appropriate authorities and data protection officer'
+    ]
+
+    def cluster_by_distance(self, sentences):
+        key_topics_encoded = self.model.encode(self.key_topics)
+        sentences_encoded = self.model.encode(sentences)
+
+        cluster_result = defaultdict(dict)
+
+        # dictinary that generates string ids for each sentence vector
+        id2vector = dict(zip(list(map(self.generate_unique_id_from_sentence_vector, sentences_encoded)), sentences_encoded))
+        id2sent = dict(zip(list(map(self.generate_unique_id_from_sentence_vector, sentences_encoded)), sentences))
+
+        for i, t in enumerate(key_topics_encoded):
+            cluster_id = 'c'+str(i)
+            for s in sentences_encoded:
+                distance = euclidean(t,s)
+                if len(cluster_result[cluster_id]) <= 5:
+                    sentence_id = self.generate_unique_id_from_sentence_vector(s)
+                    cluster_result[cluster_id][sentence_id] = distance
+
+                if len(cluster_result[cluster_id]) > 5:
+                    # sort items by distance
+                    cluster_result[cluster_id] = {k: v for k, v in sorted(cluster_result[cluster_id].items(), key=lambda item: item[1])}
+
+                    #remove last item (because its distance is the largest
+                    cluster_result[cluster_id].popitem()
+
+        #convert back vectors to human-readable sentences
+        for cluster in cluster_result.keys():
+            for sid in cluster_result[cluster].keys():
+                cluster_result[cluster][sid] = {'text':id2sent[sid],
+                                                'distance':cluster_result[cluster][sid]}
+
+            cluster_result[cluster] = {'topic':self.key_topics[int(cluster[1:])],
+                                       'members':cluster_result[cluster]}
+        return cluster_result
+
+    def generate_unique_id_from_sentence_vector(self, vector):
+        product = 1
+        for i in range(10):
+            product *= vector[i]
+        return str(product).split('e')[0][-8:]
 
 def main():
+
+    """""""download sentence transformer model and save"""""""
+    # model = SentenceTransformer('stsb-mpnet-base-v2')
+    # model.save('snt_tsfm_model/')
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
     """""""""""init knn module and encode clauses"""""""""""
     clu = Clustering()
     ut = UtilityFunct()
-    # sentences = pd.read_csv('training_data/alice/data_alice.csv')['clause']
-    # print(sentences)
-    # clu.do_sentenceBERT(ut.split_sentences(sentences))
+    sentences_raw = pd.read_csv('training_data/alice/data_alice.csv')['clause']
+    labels_raw = pd.read_csv('training_data/alice/data_alice.csv')['class']
+    sentences, labels = ut.format_worthy_sentences(sentences_raw, labels_raw)
+
+    temp = Temp()
+    result = temp.cluster_by_distance(sentences)
+    for cluster in result.keys():
+        log.info('topic: {}\n'.format(result[cluster]['topic']))
+        for member in result[cluster].items():
+            log.info(member)
+
+    # clu.do_sentenceBERT(sentences, labels)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""load embedded sentences to be processed"""""""""
@@ -595,8 +689,8 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """"""""""""""""""""""""""""""""""""""""""""""do pca on embedded sentences"""""""""""""""""""""""""""""""""""""""""""""
-    # clu.find_best_ncomp_for_pca(embedded_sentences) by variance
-    pca_sentences, pca2vector = clu.do_pca(n_components=100,sentences=embedded_sentences)   #90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
+    # clu.find_best_ncomp_for_pca(embedded_sentences)
+    # pca_sentences, pca2vector = clu.do_pca(n_components=10,sentences=embedded_sentences)   #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
 
     # # find best ncomp by silhouette scores
     # sil = []
@@ -626,17 +720,17 @@ def main():
     #                'birch','affinity','meanshift','optics','agglomerative']
     # algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
     # clustering_result = {}
-    # for al in algorithms:
+    # for al in algorithms_competitive:
     #      sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
     #      clustering_result[al] = sil
-    #
+
     # ### sort dictinoary by value
     # sorted_clustering_result = {k: float(v) for k, v in sorted(clustering_result.items(), key=lambda item: item[1],reverse=True)}
     #
     # for item in sorted_clustering_result.items():
     #     log.debug(item)
-
-    #go further with kmeans cos it's the best atm
+    #
+    # # go further with kmeans cos it's the best atm
     # clu.perform_clustering(pca_sentences, 'kmeans', num_clusters=k, metric=distance_metric, pca2vector=pca2vector)
     # with open('cluster_centers.json', 'r') as f:
     #     centers = json.load(f)
@@ -652,9 +746,9 @@ def main():
     # corpus = ec.create_corpus(sc)
     # ec.run_calculation(corpus=corpus, salt='original')
     # ec.sort_result('mi_scores_original.json', 'original')
-    ec.validate_result('ranked_result_cluster_original.json',
-                       num_keywords=7,
-                       num_max_sentences=1)
+    # ec.validate_result('ranked_result_cluster_original.json',
+    #                    num_keywords=7,
+    #                    num_max_sentences=1)
     """"""""""""""""""""""""""""""""""""""""""""""""""
 
 
