@@ -293,7 +293,7 @@ class Clustering():
 
     # perform pca on sentence vectors
     # returns: pca-ed sentence vectors and a dict of K(key generated from pca):V(sentence vector)
-    def do_pca(self, n_components,sentences):
+    def do_pca(self, n_components, sentences):
 
         pca = PCA(n_components=n_components, random_state=42)
         pca_sentences = pca.fit_transform(sentences)
@@ -596,27 +596,28 @@ class UtilityFunct():
 
         return formatted, labels_extended
 
-class Temp():
+#pre-determined centroid clustering
+class PDC():
 
     def __init__(self):
         self.model = SentenceTransformer('snt_tsfm_model/')
         self.key_topics = [
-        'what data do we collect',
-        'how do we collect your data',
-        'how we will use your data',
-        'how do we store your data',
-        'marketing and third party use',
-        'what are your data protection rights',
-        'what are cookies',
-        'how do we use cookies',
-        'what types of cookies do we use',
-        'how to manage your cookies',
-        'changes to our privacy policy',
-        'how to contact us',
-        'how to contact the appropriate authorities and data protection officer'
+        'we collect personal identification information name email phone number etc',
+        'we collect your data when you register online place order voluntarily complete survey provide feedback use or view via cookies',
+        'we use your data to process order and manage account email you with special offers share your data with partner companies',
+        'we securely store your data at keep your data until once this period time expired delete by',
+        'we send you information about products and services you might like marketing third party use opt out later right to stop no longer wish marketing',
+        'your data protection rights you have right to access rectify edit erase delete restrict processing object data portable transfer',
+        'cookies are text files placed on your computer when you visit our website we collect through cookies',
+        'we use your cookies to keep you signed in understand how you use our website',
+        'we use different types of cookies functionality advertising authentication security performance analytics research',
+        'you can set your browser not to accept cookies remove cookies some of features not function',
+        'we keep its privacy policy under review and change last updated on',
+        'how to contact us if you have questions do not hesitate to contact us',
+        'how to contact the appropriate authorities and data protection officer report complaint contact'
     ]
 
-    def cluster_by_distance(self, sentences):
+    def cluster_by_distance_get_n_best(self, sentences, n_best=5):
         key_topics_encoded = self.model.encode(self.key_topics)
         sentences_encoded = self.model.encode(sentences)
 
@@ -627,14 +628,14 @@ class Temp():
         id2sent = dict(zip(list(map(self.generate_unique_id_from_sentence_vector, sentences_encoded)), sentences))
 
         for i, t in enumerate(key_topics_encoded):
-            cluster_id = 'c'+str(i)
+            cluster_id = str(i)
             for s in sentences_encoded:
                 distance = euclidean(t,s)
-                if len(cluster_result[cluster_id]) <= 5:
+                if len(cluster_result[cluster_id]) <= n_best:
                     sentence_id = self.generate_unique_id_from_sentence_vector(s)
                     cluster_result[cluster_id][sentence_id] = distance
 
-                if len(cluster_result[cluster_id]) > 5:
+                if len(cluster_result[cluster_id]) > n_best:
                     # sort items by distance
                     cluster_result[cluster_id] = {k: v for k, v in sorted(cluster_result[cluster_id].items(), key=lambda item: item[1])}
 
@@ -657,6 +658,51 @@ class Temp():
             product *= vector[i]
         return str(product).split('e')[0][-8:]
 
+    def run_clustering_with_predetermined_centroids(self, sentences, n_best=10):
+        key_topics_encoded = self.model.encode(self.key_topics)
+        sentences_encoded = self.model.encode(sentences)
+
+        # dictionary that converts sentence id to vector
+        id2vector = dict(zip(list(map(self.generate_unique_id_from_sentence_vector, sentences_encoded)), sentences_encoded))
+
+        # find distance from each centroid to all sentences
+        distances_n_best = defaultdict(dict)
+
+        for i, t in enumerate(key_topics_encoded):
+            cluster_id = str(i)
+            for s in sentences_encoded:
+                distance = euclidean(t,s)
+
+                if len(distances_n_best[cluster_id]) <= n_best:
+                    sentence_id = self.generate_unique_id_from_sentence_vector(s)
+                    distances_n_best[cluster_id][sentence_id] = distance
+
+                if len(distances_n_best[cluster_id]) > n_best:
+                    # sort items by distance
+                    distances_n_best[cluster_id] = {k: v for k, v in
+                                                  sorted(distances_n_best[cluster_id].items(), key=lambda item: item[1])}
+
+                    # remove last item (because its distance is the largest
+                    distances_n_best[cluster_id].popitem()
+
+        # for each sentence (sid) find distance to each centroid
+        clustered = defaultdict(dict)
+        for cid in distances_n_best.keys():
+            for sentence_id in distances_n_best[cid].keys():
+                distance = distances_n_best[cid][sentence_id]
+                clustered[sentence_id][cid] = distance
+
+        # sort by distance to find the closest centroid from each sentence (sid)
+        for sentence_id in clustered.keys():
+            # sort result by distance
+            clustered[sentence_id] = {k: v for k, v in sorted(clustered[sentence_id].items(), key=lambda item: item[1])}
+            # remove all others except for the closest one
+            clustered[sentence_id] = next(iter(clustered[sentence_id]))
+
+        # return cluster allocation result and the original sentence vectors
+        return clustered, np.asarray(list(map(id2vector.get,list(clustered.keys()))))
+
+
 def main():
 
     """""""download sentence transformer model and save"""""""
@@ -664,43 +710,52 @@ def main():
     # model.save('snt_tsfm_model/')
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-    """""""""""init knn module and encode clauses"""""""""""
+    """""""""""""""""""""""""init knn module and encode clauses"""""""""""""""""""""""""
     clu = Clustering()
     ut = UtilityFunct()
     sentences_raw = pd.read_csv('training_data/alice/data_alice.csv')['clause']
     labels_raw = pd.read_csv('training_data/alice/data_alice.csv')['class']
     sentences, labels = ut.format_worthy_sentences(sentences_raw, labels_raw)
-
-    temp = Temp()
-    result = temp.cluster_by_distance(sentences)
-    for cluster in result.keys():
-        log.info('topic: {}\n'.format(result[cluster]['topic']))
-        for member in result[cluster].items():
-            log.info(member)
-
     # clu.do_sentenceBERT(sentences, labels)
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+    """""""""""""""""""""""""""""do Pre-Deteremined centroid clustering"""""""""""""""""""""""""""""
+    pdc = PDC()
+    # result = pdc.cluster_by_distance_get_n_best(sentences,10)
+    # for cluster in result.keys():
+    #     log.info('topic: {}'.format(result[cluster]['topic']))
+    #     for member in result[cluster]['members'].keys():
+    #         log.info('{}: {}'.format(member, result[cluster]['members'][member]))
+    #     log.info('\n')
+
+    pdc_clustered_dict, sentence_vectors = pdc.run_clustering_with_predetermined_centroids(sentences, n_best=10)
+    pca_vectors, _ = clu.do_pca(n_components=100, sentences=sentence_vectors)
+    labels = list(map(int, list(pdc_clustered_dict.values())))
+    clu.plot_labels(pca_vectors, labels, 'pdc') #plot clustering results
+    sil = silhouette_score(pca_vectors, labels)
+    log.info(sil)
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""load embedded sentences to be processed"""""""""
-    with open('stnce_embedding.json', 'r') as f:
-        sent_dict = json.load(f)
-
-    embedded_sentences = list(sent_dict.values())
+    # with open('stnce_embedding.json', 'r') as f:
+    #     sent_dict = json.load(f)
+    #
+    # embedded_sentences = list(sent_dict.values())
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """"""""""""""""""""""""""""""""""""""""""""""do pca on embedded sentences"""""""""""""""""""""""""""""""""""""""""""""
     # clu.find_best_ncomp_for_pca(embedded_sentences)
-    # pca_sentences, pca2vector = clu.do_pca(n_components=10,sentences=embedded_sentences)   #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
+    # pca_sentences, pca2vector = clu.do_pca(n_components=100,sentences=embedded_sentences)   #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
 
-    # # find best ncomp by silhouette scores
+    # find best ncomp by silhouette scores
     # sil = []
     # k = 30
     # for i, n in enumerate(range(3,200)):
     #     log.debug('doing silhouette scores on various ncomp ... {}/{}'.format(i, len(list(range(3,200)))))
     #     pca_sentences, pca2vector = clu.do_pca(n_components=n,
-    #                                            sentences=embedded_sentences)  # 90% var: 160, 85%:120 80%: 90 75% 70 70%: 56
+    #                                            sentences=embedded_sentences)  #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
     #     sil.append(clu.do_silhouette_single(pca_sentences, k))
-    #
+
     # y = sil
     # x = range(3,200)
     # plt.plot(x, y)
@@ -715,7 +770,7 @@ def main():
 
     """""""""""""""""""""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""""""""""""""""""
     # distance_metric = 'euclidean'
-    # k = 20
+    # k = 13
     # algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian',
     #                'birch','affinity','meanshift','optics','agglomerative']
     # algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
@@ -723,6 +778,7 @@ def main():
     # for al in algorithms_competitive:
     #      sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
     #      clustering_result[al] = sil
+    # log.info(clustering_result)
 
     # ### sort dictinoary by value
     # sorted_clustering_result = {k: float(v) for k, v in sorted(clustering_result.items(), key=lambda item: item[1],reverse=True)}
@@ -740,7 +796,7 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""evaluate k-means"""""""""""""""""
-    ec = EvalCluster(num_classes=20)
+    ec = EvalCluster(num_classes=13)
     # with open('sentences_clustered.json','r') as f:
     #     sc = json.load(f)
     # corpus = ec.create_corpus(sc)
