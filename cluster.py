@@ -150,7 +150,7 @@ class Clustering():
                         pseudo_centers.append(pca2vector[self.generate_pca_key(pc)])
 
                     # decode cluster centres and write out to a json file
-                    cluster_labels = list(range(10))
+                    cluster_labels = list(range(num_clusters))
                     log.info('pseudo centres length: {}'.format(len(pseudo_centers)))
                     log.info('cluster labels length: {}'.format(len(cluster_labels)))
                     centers_decoded = self.cluster_decode(pseudo_centers, cluster_labels, num_clusters)
@@ -738,13 +738,17 @@ class PPReporter():
         options = Options()
         driver = webdriver.Firefox(options=options)
         driver.get(url)
-        body = driver.find_element(By.TAG_NAME, 'body')
-        clauses = body.text.split('\n')
+        time.sleep(2.5)
+        body = driver.find_element(By.XPATH, '/html/body').text
+        clauses = body.split('\n')
         driver.close()
 
         clauses_splitted = []
         for c in clauses:
             clauses_splitted.append([e+'.' for e in c.split('. ') if e])   #split by '. ' and add the full stop back to the sentence
+
+        if clauses_splitted == [[]]:
+            clauses_splitted = clauses
 
         clauses_splitted = list(itertools.chain.from_iterable(clauses_splitted))
 
@@ -896,7 +900,7 @@ def main():
     # for item in sorted_clustering_result.items():
     #     log.info(item)
 
-    # do further analysis and report using kmeans because it gives the best silhouette score
+    # ###do further analysis and report using kmeans because it gives the best silhouette score
     # clu.perform_clustering(pca_sentences, 'kmeans', num_clusters=k, metric=distance_metric, pca2vector=pca2vector)
     # with open('cluster_centers.json', 'r') as f:
     #     centers = json.load(f)
@@ -920,14 +924,19 @@ def main():
     """""""""""""""""""""""""""""""""generate report on PP using a url & evaluate"""""""""""""""""""""""""""""""""
     sample_url = 'https://stackoverflow.com/legal/privacy-policy'
     sample_url_2 = 'https://www.rightmove.co.uk/this-site/privacy-policy.html'
+    sample_url_3 = 'https://privacy.patreon.com/policies'
+    sample_url_4 = 'https://www.ebay.com/help/policies/member-behaviour-policies/user-privacy-notice-privacy-policy?id=4260'
+    sample_url_5 = 'https://static.zara.net/static/pdfs/US/privacy-policy/privacy-policy-en_US-20131125.pdf'
+    sample_url_6 = 'https://www.selfridges.com/GB/en/features/info/our-corporate-policies/privacy-cookie-policy/'
+
     pdc = PDC()
     ppr = PPReporter()
 
-    raw_text_pdc = ppr.generate_report(url=sample_url_2,
+    raw_text_pdc = ppr.generate_report(url=sample_url_3,
                                        mode='pdc',
                                        n_best=2)
 
-    raw_text_kms = ppr.generate_report( url=sample_url_2,
+    raw_text_kms = ppr.generate_report( url=sample_url_3,
                                         mode='kmeans',
                                         n_best=2)
 
@@ -947,7 +956,7 @@ def main():
 
     score_rand = ppr.evaluate_report(random_14)
 
-    log.info('report eval score:\n\trandom:{}\n\tpdc:{}\n\tkms:{}\n\tgdpr:{}'.format(
+    print('report eval score:\n\trandom:{}\n\tpdc:{}\n\tkms:{}\n\tgdpr:{}'.format(
                                                                                         round(score_rand,4),
                                                                                         round(score_pdc,4),
                                                                                         round(score_kms,4),
