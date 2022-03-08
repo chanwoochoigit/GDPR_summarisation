@@ -1,0 +1,21 @@
+0:general
+1:sharing private data with third party vendors, service providers and partner bodies
+2:private data use to prevent and investigate fraud, security and auauthorised use
+3:sharing data with authorities and other users
+4:cookies use
+5:personal data user for advertisements
+6:general data collection and use
+7:types of data the company collects - what do they collect from you
+8:data retention, storage, removal and deletion
+9:personal data share when legally required from authorities
+10:no willing to sell, do not collect data from children
+11:your right to delete/withdraw data you shared with the app
+12:purposes of collecting your data
+13:user's content and permission
+14:contacting the team & general purposes for using personal data
+15:sharing and using financial data such as banking history to prevent financial issues including fraud and abuse
+16:the company use your information to contact you
+17:preferences and user account modification
+18:warning to read third party vendor's privacy notice when visiting it redirected
+19:types of data the company collects from users
+
