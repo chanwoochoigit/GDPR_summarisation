@@ -629,7 +629,7 @@ class PDC():
         'we use your data to process order and manage account email you with special offers share your data with partner '
         'companies send your data to credit reference agencies to prevent fraud abuse misuse',
 
-        'we securely store retain your data at keep your data safe until once this period time expired we delete'
+        'we securely store retain maintain keep hold your data at until once this period time expired we delete'
         ' your data by months years',
 
         'we send you information about products and services you might like recommend marketing third party use opt out '
@@ -747,6 +747,13 @@ class PDC():
 
 class PPReporter():
 
+    def is_title(self, sentence):
+        lower_count = 0
+        for char in sentence.replace(' ',''):
+            if char.islower():
+                lower_count += 1
+        return lower_count == 0
+
     def generate_report_pdc(self, url, n_best=1):
         # get Selenium work to get all the text from url and split by \n
         options = Options()
@@ -756,20 +763,24 @@ class PPReporter():
         clauses = body.text.split('\n')
         driver.close()
 
-        # clauses_splitted = []
-        # for c in clauses:
-        #     clauses_splitted.append([e+'.' for e in c.split('. ') if e])   #split by '. ' and add the full stop back to the sentence
-        #
-        # clauses_splitted = list(itertools.chain.from_iterable(clauses_splitted))
+        clauses_splitted = []
+        for c in clauses:
+            clauses_splitted.append([e+'.' for e in c.split('. ') if e])   #split by '. ' and add the full stop back to the sentence
+
+        clauses_splitted = list(itertools.chain.from_iterable(clauses_splitted))
 
         # remove empty clauses
         try:
-            clauses.remove('')
+            clauses_splitted.remove('')
         except:
             pass
 
+        # remove titles
+        clauses_no_titles = []
+        [clauses_no_titles.append(c) for c in clauses_splitted if not self.is_title(c)]
+
         pdc = PDC()
-        report = pdc.get_n_best_from_predefined_centroids(sentences=clauses,
+        report = pdc.get_n_best_from_predefined_centroids(sentences=clauses_no_titles,
                                                           n_best=n_best)
 
         with open('pp_report.txt', 'w') as f:
@@ -887,8 +898,9 @@ def main():
 
     """""""""""""""""generate report on PP by url"""""""""""""""""
     sample_url = 'https://stackoverflow.com/legal/privacy-policy'
+    sample_url_2 = 'https://www.propertyguru.com.sg/customer-service/privacy'
     ppr = PPReporter()
-    ppr.generate_report_pdc(sample_url, n_best=2)
+    ppr.generate_report_pdc(sample_url_2, n_best=2)
 
 
 if __name__ == '__main__':
