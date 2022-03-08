@@ -2,6 +2,7 @@ import itertools
 import logging
 import pickle
 import json
+import random
 import time
 from collections import defaultdict
 from math import log2
@@ -104,39 +105,20 @@ class Clustering():
         # create pseudo-unique keys to create kv table
         return str(principle_comp[0]/principle_comp[1]*principle_comp[2])[3:]
 
-    # return 3 nearest points in a dataset
-    def find_nearest_points(self, data, point):
+    # return the nearest point in a dataset from a given point
+    def find_nearest_point(self, data, point):
                                 #calculate distance from nearest to furthest
-        d1, d2, d3, d4, d5 = euclidean(data[0], point), \
-                             euclidean(data[1], point),\
-                             euclidean(data[2], point), \
-                             euclidean(data[3], point), \
-                             euclidean(data[4], point)
+        d = euclidean(data[0], point)
+        p = None    #init data point outside of for loop
 
-        d1, d2, d3, d4, d5 = sorted([d1, d2, d3, d4, d5])   # sort from nearest to farthest
-        p1, p2, p3, p4, p5 = None, None, None, None, None   # init positions with nearest distances
-
-        for i in range(5,len(data)):
+        for i in range(len(data)):
             temp_dist = euclidean(data[i],point)
-            if temp_dist < d1:
-                log.info('updating d1 from {} to {}'.format(d1, temp_dist))
-                d1 = temp_dist
-                p1 = data[i]
-            elif d1 < temp_dist < d2:
-                log.info('updating d2 from {} to {}'.format(d2, temp_dist))
-                d2 = temp_dist
-                p2 = data[i]
-            elif d2 < temp_dist < d3:
-                log.info('updating d3 from {} to {}'.format(d3, temp_dist))
-                p3 = data[i]
-            elif d3 < temp_dist < d4:
-                log.info('updating d4 from {} to {}'.format(d4, temp_dist))
-                p4 = data[i]
-            elif d4 < temp_dist < d5:
-                log.info('updating d5 from {} to {}'.format(d4, temp_dist))
-                p5 = data[i]
+            if temp_dist < d:
+                log.info('updating d1 from {} to {}'.format(d, temp_dist))
+                d = temp_dist
+                p = data[i]
 
-        return [p1,p2,p3,p4,p5]
+        return p
 
     # plot clustering result based on labels(clusters) generated
     def plot_labels(self, df, pred, algorithm):
@@ -151,7 +133,6 @@ class Clustering():
         # prepare data
         X = np.asarray(sentences)
         normed_X = normalize(X, axis=1, norm='l2') # normalise vector to make cosine similarity effect
-        labels = []
         sil = 999
 
         if clusterer == 'kmeans':
@@ -162,30 +143,28 @@ class Clustering():
                 if pca2vector is not None:
 
                     # get centroids and nearest points for further analysis
-                    centers = kmeans.cluster_centers_
+                    centroids = kmeans.cluster_centers_
                     pseudo_centers = []
-                    for c in centers:  # get nearest point from each center
-                        pcs = self.find_nearest_points(sentences, c)  #pc is short for pseudo-center
-                        for pc in pcs:
-                            pseudo_centers.append(pca2vector[self.generate_pca_key(pc)])
+                    for c in centroids:  # get nearest point from each centroid because centroid is a synthesised point
+                        pc = self.find_nearest_point(sentences, c)  #pc is short for pseudo-centre
+                        pseudo_centers.append(pca2vector[self.generate_pca_key(pc)])
 
-                    # there are 5 pseudo-centers for each cluster, so labels should be 0,0,0,0,0, 1,1,1,1,1  2,2,2,2,2 ...
-                    cluster_labels = []
-                    [cluster_labels.append([x] * 5) for x in range(10)]
-                    cluster_labels = list(itertools.chain.from_iterable(cluster_labels))
+                    # decode cluster centres and write out to a json file
+                    cluster_labels = list(range(10))
                     log.info('pseudo centres length: {}'.format(len(pseudo_centers)))
                     log.info('cluster labels length: {}'.format(len(cluster_labels)))
                     centers_decoded = self.cluster_decode(pseudo_centers, cluster_labels, num_clusters)
                     with open('cluster_centers.json', 'w') as f:
                         json.dump(centers_decoded, f)
 
-                    pca_decoded = []
-                    for pca in X:
-                        pca_decoded.append(pca2vector[self.generate_pca_key(pca)])
-                    # decode clustered sentences to plain text
-                    cluster_dict = self.cluster_decode(pca_decoded, labels, num_clusters)
-                    with open('sentences_clustered.json', 'w') as f:
-                        json.dump(cluster_dict, f)
+                    ## get all sentences clustered to examine if clustering is working fine (by human eyes)
+                    # pca_decoded = []
+                    # for pca in X:
+                    #     pca_decoded.append(pca2vector[self.generate_pca_key(pca)])
+                    # # decode clustered sentences to plain text
+                    # cluster_dict = self.cluster_decode(pca_decoded, labels, num_clusters)
+                    # with open('sentences_clustered.json', 'w') as f:
+                    #     json.dump(cluster_dict, f)
 
                 else:
                     'pca2vector dictionary not given! skipping decoding process ...'
@@ -754,7 +733,7 @@ class PPReporter():
                 lower_count += 1
         return lower_count == 0
 
-    def generate_report_pdc(self, url, n_best=1):
+    def generate_report(self, mode, url, n_best=1):
         # get Selenium work to get all the text from url and split by \n
         options = Options()
         driver = webdriver.Firefox(options=options)
@@ -779,18 +758,58 @@ class PPReporter():
         clauses_no_titles = []
         [clauses_no_titles.append(c) for c in clauses_splitted if not self.is_title(c)]
 
-        pdc = PDC()
-        report = pdc.get_n_best_from_predefined_centroids(sentences=clauses_no_titles,
-                                                          n_best=n_best)
+        if mode == 'pdc':
 
-        with open('pp_report.txt', 'w') as f:
+            pdc = PDC()
+            report = pdc.get_n_best_from_predefined_centroids(sentences=clauses_no_titles,
+                                                              n_best=n_best)
+
+            # format the result and write out as a report
+            with open('pp_report_pdc.txt', 'w') as f:
+                for cluster in report.keys():
+                    f.write('[cluster {}]\n\n'.format(cluster))
+                    f.write('\ttopic: {}\n\n'.format(report[cluster]['topic']))
+                    for sid in report[cluster]['members'].keys():
+                        f.write('\t\tclause found: "{}"\n'.format(report[cluster]['members'][sid]['text']))
+                        f.write('\t\trelevance: {}\n\n'.format(round(report[cluster]['members'][sid]['distance'],6)))
+                f.write('[END OF REPORT]\n')
+
+            # return a list of raw clauses for later evaluation purposes
+            raw_text = []
             for cluster in report.keys():
-                f.write('[cluster {}]\n\n'.format(cluster))
-                f.write('\ttopic: {}\n\n'.format(report[cluster]['topic']))
                 for sid in report[cluster]['members'].keys():
-                    f.write('\t\tclause found: "{}"\n'.format(report[cluster]['members'][sid]['text']))
-                    f.write('\t\trelevance: {}\n\n'.format(round(report[cluster]['members'][sid]['distance'],6)))
-            f.write('[END OF REPORT]\n')
+                    raw_text.append(report[cluster]['members'][sid]['text'])
+
+        elif mode == 'kmeans':
+            with open('cluster_centers.json', 'r') as f:
+                centers_dict = json.load(f)
+
+            # only return the sentences & flatten the list because it's 2d (2d arrays are not accepted by SentenceTransformer
+            return list(itertools.chain.from_iterable(list(centers_dict.values())))
+
+        else:
+            raise ValueError('entered wrong mode! it should be either pdc or kmeans.')
+
+        return raw_text
+
+    # take a list of unencoded sentences and do evaluation on the summary report
+    def evaluate_report(self, report_sentences):
+        pdc = PDC()
+        titles = pdc.model.encode(pdc.key_topics_titles)
+        rs_encoded = pdc.model.encode(report_sentences)
+
+        ssd = 0
+        for t in titles:
+            t_distance = 1e+10
+            for rs in rs_encoded:
+                d = euclidean(t,rs)
+                if d < t_distance:
+                    t_distance = d
+            ssd += t_distance ** 2  # add squared minimal distance
+
+        # log.info('report score: {}'.format(round(ssd,2)))
+        return ssd
+
 
 def main():
 
@@ -858,8 +877,10 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""""""""""""""""""
-    # distance_metric = 'euclidean'
-    # k = 14
+    distance_metric = 'euclidean'
+    k = 14
+
+    ## run clustering and compare results using many clustering algorithms
     # algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian',
     #                'birch','affinity','meanshift','optics','agglomerative']
     # algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
@@ -874,8 +895,8 @@ def main():
     #
     # for item in sorted_clustering_result.items():
     #     log.info(item)
-    #
-    # # go further with kmeans cos it's the best atm
+
+    # do further analysis and report using kmeans because it gives the best silhouette score
     # clu.perform_clustering(pca_sentences, 'kmeans', num_clusters=k, metric=distance_metric, pca2vector=pca2vector)
     # with open('cluster_centers.json', 'r') as f:
     #     centers = json.load(f)
@@ -884,8 +905,8 @@ def main():
     # clu.format_cluster_centres()
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-    """""""""""""""""evaluate k-means"""""""""""""""""
-    ec = EvalCluster(num_classes=13)
+    """"""""""""""""" 'evaluate' k-means by printing out the n best sentences in each cluster """""""""""""""""
+    # ec = EvalCluster(num_classes=14)
     # with open('sentences_clustered.json','r') as f:
     #     sc = json.load(f)
     # corpus = ec.create_corpus(sc)
@@ -894,14 +915,45 @@ def main():
     # ec.validate_result('ranked_result_cluster_original.json',
     #                    num_keywords=7,
     #                    num_max_sentences=1)
-    """"""""""""""""""""""""""""""""""""""""""""""""""
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-    """""""""""""""""generate report on PP by url"""""""""""""""""
+    """""""""""""""""""""""""""""""""generate report on PP using a url & evaluate"""""""""""""""""""""""""""""""""
     sample_url = 'https://stackoverflow.com/legal/privacy-policy'
-    sample_url_2 = 'https://www.propertyguru.com.sg/customer-service/privacy'
+    sample_url_2 = 'https://www.rightmove.co.uk/this-site/privacy-policy.html'
+    pdc = PDC()
     ppr = PPReporter()
-    ppr.generate_report_pdc(sample_url_2, n_best=2)
 
+    raw_text_pdc = ppr.generate_report(url=sample_url_2,
+                                       mode='pdc',
+                                       n_best=2)
+
+    raw_text_kms = ppr.generate_report( url=sample_url_2,
+                                        mode='kmeans',
+                                        n_best=2)
+
+    # direct sample from gdpr for benchmarking
+    raw_text_gdpr = pdc.key_topics
+
+    score_pdc = ppr.evaluate_report(raw_text_pdc)
+    score_kms = ppr.evaluate_report(raw_text_kms)
+    score_gdpr = ppr.evaluate_report(raw_text_gdpr)
+
+    # try evaluation on randomly generated sentences for benchmarking
+    with open('random_sentences.txt','r') as f:
+        random_sentences = f.read().split('\n')
+
+    # choose 14 from list of random sentences
+    random_14 = random.sample(random_sentences,14)
+
+    score_rand = ppr.evaluate_report(random_14)
+
+    log.info('report eval score:\n\trandom:{}\n\tpdc:{}\n\tkms:{}\n\tgdpr:{}'.format(
+                                                                                        round(score_rand,4),
+                                                                                        round(score_pdc,4),
+                                                                                        round(score_kms,4),
+                                                                                        round(score_gdpr,4)
+                                                                                    ))
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 if __name__ == '__main__':
     main()

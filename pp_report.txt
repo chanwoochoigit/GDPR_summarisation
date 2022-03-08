@@ -1,0 +1,141 @@
+[cluster 0]
+
+	topic: what data do we collect?
+
+		clause found: "Contact and identity data: Including name, date of birth, national insurance number, address including previous addresses, email address, phone number and gender;."
+		relevance: 2.4909
+
+		clause found: "In the course of providing Our Services We may collect Personal Information:."
+		relevance: 2.491184
+
+[cluster 1]
+
+	topic: How do we collect your data?
+
+		clause found: "If You wish to use a location data service which engages Your Device’s GPS tracker, You will be asked to consent to Your Personal Information being used for this purpose upon registering to use the App."
+		relevance: 2.670357
+
+		clause found: "Like many website and App providers, We use "cookies" to enable Us to personalise Your visits to Our Platforms, simplify the signing-in procedure, keep track of Your preferences and to track the usage of Our Platforms."
+		relevance: 2.724014
+
+[cluster 2]
+
+	topic: How will we use your data?
+
+		clause found: "This includes exchanging Personal Information with other companies for the purposes of fraud protection and credit risk reduction.."
+		relevance: 2.429976
+
+		clause found: "We may need to share Your Referencing Data with the managing agents, insurance providers, underwriters, legal advisors, bailiffs, debt collection agencies and other third parties in furtherance of collecting payments by You, enforcing the tenancy agreement or pursuing any claim against You."
+		relevance: 2.626539
+
+[cluster 3]
+
+	topic: How do we store your data?
+
+		clause found: "We will store this Personal Information for two years from the date on which You last used Our Platforms or Services at which point it will be erased or anonymised so that the data no longer identifies You.."
+		relevance: 2.573288
+
+		clause found: "We will retain these records for up to 6 years from the conclusion of the Data Subject Right Request, after which any Personal Information will be anonymised.."
+		relevance: 2.747027
+
+[cluster 4]
+
+	topic: Marketing
+
+		clause found: "Sometimes We may Use Your Personal Information to provide direct marketing messages to You; either directly from Us or on behalf of Our Members."
+		relevance: 2.49037
+
+		clause found: "If You would like to stop receiving direct marketing and communications from Us please contact Us via email at talk-to-Us@rightmove.co.uk or please write to the Customer Services Team, Building 2, Caldecotte Lake Business Park, Milton Keynes, MK7 8LE and where possible include a copy of the communications You have received.."
+		relevance: 2.552433
+
+[cluster 5]
+
+	topic: What are your data protection rights?
+
+		clause found: "Restrict the processing of Your Personal Information;."
+		relevance: 2.793144
+
+		clause found: "To determine the appropriate retention period for Personal Information, We consider the amount, nature, and sensitivity of the Personal Information, the potential risk of harm from unauthorised use or disclosure of Your Personal Information, the purposes for which We process Your Personal Information and whether We can achieve those purposes through other means, and the applicable legal requirements; and."
+		relevance: 2.838296
+
+[cluster 6]
+
+	topic: What are cookies?
+
+		clause found: "Like many website and App providers, We use "cookies" to enable Us to personalise Your visits to Our Platforms, simplify the signing-in procedure, keep track of Your preferences and to track the usage of Our Platforms."
+		relevance: 2.5052
+
+		clause found: "To help Us deliver third party advertisements on Our Platforms We do use Cookies."
+		relevance: 2.772346
+
+[cluster 7]
+
+	topic: How do we use cookies?
+
+		clause found: "Like many website and App providers, We use "cookies" to enable Us to personalise Your visits to Our Platforms, simplify the signing-in procedure, keep track of Your preferences and to track the usage of Our Platforms."
+		relevance: 2.055221
+
+		clause found: "This site: Site map Help Cookies Safety and security Terms of Use Privacy Policy."
+		relevance: 2.721011
+
+[cluster 8]
+
+	topic: What types of cookies do we use?
+
+		clause found: "Like many website and App providers, We use "cookies" to enable Us to personalise Your visits to Our Platforms, simplify the signing-in procedure, keep track of Your preferences and to track the usage of Our Platforms."
+		relevance: 2.222832
+
+		clause found: "To help Us deliver third party advertisements on Our Platforms We do use Cookies."
+		relevance: 2.482797
+
+[cluster 9]
+
+	topic: How to manage your cookies
+
+		clause found: "You can exercise Your right to prevent such processing by selecting the specific options in the fields or forms when You become a registered User.."
+		relevance: 3.005634
+
+		clause found: "Like many website and App providers, We use "cookies" to enable Us to personalise Your visits to Our Platforms, simplify the signing-in procedure, keep track of Your preferences and to track the usage of Our Platforms."
+		relevance: 3.013233
+
+[cluster 10]
+
+	topic: Privacy policies of other websites
+
+		clause found: "We are not responsible for the content, security, privacy policies and practices of any other third party websites, even if You access them using links from Our Platforms or if You can access Our Platforms or use Our Services from them."
+		relevance: 2.520446
+
+		clause found: "We may also have links to other third party websites from Our Platforms."
+		relevance: 2.549842
+
+[cluster 11]
+
+	topic: Changes to our privacy policy
+
+		clause found: "Please check back frequently to see any updates or changes to this Policy, as You will be deemed to accept such changes from Your continued use of Our Platforms.."
+		relevance: 2.834318
+
+		clause found: "Any changes We may make to this Policy in the future will be posted on Our Platforms and displayed on-screen when You use Our App.."
+		relevance: 2.995128
+
+[cluster 12]
+
+	topic: How to contact us
+
+		clause found: "If You have any questions about this Policy or Our use of Your Personal Information or would like to submit a subject access request or exercise Your other data subject rights, please contact Our Data Protection Officer/Team via email at dpo@rightmove.co.uk or please write to The Data Protection Officer, Building 2, Caldecotte Lake Business Park, Milton Keynes, MK7 8LE.."
+		relevance: 2.144838
+
+		clause found: "This privacy policy (referred to as the "Policy") explains how and for what purposes We use the Personal Information collected about You when You use the Site or download and use Our App on Your mobile device ("Device")."
+		relevance: 2.397509
+
+[cluster 13]
+
+	topic: How to contact the appropriate authorities
+
+		clause found: "You have the right to complain to the Information Commissioner’s Office if You feel unhappy with the way We process Your Personal Information."
+		relevance: 2.217498
+
+		clause found: "To exercise any of these rights, please contact the Data Protection Officer whose contact details are provided earlier in this Policy."
+		relevance: 2.71557
+
+[END OF REPORT]
