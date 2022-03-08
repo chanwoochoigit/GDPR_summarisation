@@ -18,6 +18,9 @@ from sklearn.mixture import GaussianMixture
 from sklearn.cluster import KMeans, MiniBatchKMeans, DBSCAN, Birch, \
                             AffinityPropagation, MeanShift, OPTICS, \
                             AgglomerativeClustering
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.by import By
 import hdbscan
 from nltk.tokenize import word_tokenize
 from nltk import PorterStemmer
@@ -25,10 +28,11 @@ from logging.handlers import RotatingFileHandler
 
 # set logging
 log_name = 'cluster.py.log'
-logging.basicConfig(filename=log_name, format='%(levelname)s:%(message)s', level=logging.DEBUG)
+logging.basicConfig(filename=log_name, format='%(levelname)s:%(message)s', level=logging.INFO)
 log = logging.getLogger()
 handler = RotatingFileHandler(log_name, maxBytes=1048576)
 log.addHandler(handler)
+log.propagate=False
 
 class Clustering():
 
@@ -52,8 +56,8 @@ class Clustering():
                 worth_sentences.append(s)
 
         sentence_embeddings = model.encode(worth_sentences)
-        # log.debug('Sample BERT embedding vector - length', len(sentence_embeddings[0]))
-        # log.debug('Sample BERT embedding vector - note includes negative values', sentence_embeddings[0])
+        # log.info('Sample BERT embedding vector - length', len(sentence_embeddings[0]))
+        # log.info('Sample BERT embedding vector - note includes negative values', sentence_embeddings[0])
 
         sentence_dict = {}
         sentence_dict_reverse = {}
@@ -79,14 +83,14 @@ class Clustering():
                                     # dict[plain_text] = cluster
             try:
                 sent_cluster_dict[str(sent_dict_reverse[str(x.tolist())])] = str(p)
-                # log.debug(str(sent_dict_reverse[str(x.tolist())])+': '+str(p))
+                # log.info(str(sent_dict_reverse[str(x.tolist())])+': '+str(p))
             except AttributeError:  # decoding list of centroids
                 sent_cluster_dict[str(sent_dict_reverse[str(x)])] = str(p)
 
         #decode encoded sentences and save to a dict -> dict[cluster_num] = decoded_vector
         cluster_dict = {}
         for i in range(num_clusters):
-            log.debug('saving decoded sentence vectors ... {}/{}'.format(i, num_clusters))
+            log.info('saving decoded sentence vectors ... {}/{}'.format(i, num_clusters))
             temp = []
             for k, v in sent_cluster_dict.items():
                 if str(v) == str(i):
@@ -115,21 +119,21 @@ class Clustering():
         for i in range(5,len(data)):
             temp_dist = euclidean(data[i],point)
             if temp_dist < d1:
-                log.debug('updating d1 from {} to {}'.format(d1, temp_dist))
+                log.info('updating d1 from {} to {}'.format(d1, temp_dist))
                 d1 = temp_dist
                 p1 = data[i]
             elif d1 < temp_dist < d2:
-                log.debug('updating d2 from {} to {}'.format(d2, temp_dist))
+                log.info('updating d2 from {} to {}'.format(d2, temp_dist))
                 d2 = temp_dist
                 p2 = data[i]
             elif d2 < temp_dist < d3:
-                log.debug('updating d3 from {} to {}'.format(d3, temp_dist))
+                log.info('updating d3 from {} to {}'.format(d3, temp_dist))
                 p3 = data[i]
             elif d3 < temp_dist < d4:
-                log.debug('updating d4 from {} to {}'.format(d4, temp_dist))
+                log.info('updating d4 from {} to {}'.format(d4, temp_dist))
                 p4 = data[i]
             elif d4 < temp_dist < d5:
-                log.debug('updating d5 from {} to {}'.format(d4, temp_dist))
+                log.info('updating d5 from {} to {}'.format(d4, temp_dist))
                 p5 = data[i]
 
         return [p1,p2,p3,p4,p5]
@@ -169,8 +173,8 @@ class Clustering():
                     cluster_labels = []
                     [cluster_labels.append([x] * 5) for x in range(10)]
                     cluster_labels = list(itertools.chain.from_iterable(cluster_labels))
-                    log.debug('pseudo centres length: {}'.format(len(pseudo_centers)))
-                    log.debug('cluster labels length: {}'.format(len(cluster_labels)))
+                    log.info('pseudo centres length: {}'.format(len(pseudo_centers)))
+                    log.info('cluster labels length: {}'.format(len(cluster_labels)))
                     centers_decoded = self.cluster_decode(pseudo_centers, cluster_labels, num_clusters)
                     with open('cluster_centers.json', 'w') as f:
                         json.dump(centers_decoded, f)
@@ -241,12 +245,12 @@ class Clustering():
         else:
             raise ValueError('chosen clusterer not supported on current version!')
 
-        log.debug(len(set(labels))) # get number of clusters for algorithms not requiring num_cluster param
+        log.info(len(set(labels))) # get number of clusters for algorithms not requiring num_cluster param
         try:
             sil = silhouette_score(normed_X, labels)
-            log.debug(sil)
+            log.info(sil)
         except ValueError:
-            log.debug('clustering failed miserably! There is only a single cluster.')
+            log.info('clustering failed miserably! There is only a single cluster.')
 
         # plot kmeans for further checkup
         self.plot_labels(normed_X, labels, clusterer)
@@ -263,7 +267,7 @@ class Clustering():
         sse = []
         start = time.time()
         for k in range(1, kmax + 1):
-            log.debug('finding the optimum cluster number ... {}/{} | running time: {} seconds'.format(k,kmax,round(time.time()-start,4)))
+            log.info('finding the optimum cluster number ... {}/{} | running time: {} seconds'.format(k,kmax,round(time.time()-start,4)))
             kmeans = KMeans(n_clusters=k).fit(normed_X)
             centroids = kmeans.cluster_centers_
             pred_clusters = kmeans.predict(normed_X)
@@ -314,7 +318,7 @@ class Clustering():
         start = time.time()
         # dissimilarity would not be defined for a single cluster, thus, minimum number of clusters should be 2
         for k in range(2, kmax + 1):
-            log.debug('finding the optimum cluster number ... {}/{} | running time: {} seconds'.format(k,kmax,round(time.time()-start,4)))
+            log.info('finding the optimum cluster number ... {}/{} | running time: {} seconds'.format(k,kmax,round(time.time()-start,4)))
             kmeans = KMeans(n_clusters=k).fit(normed_X)
             labels = kmeans.labels_
             sil.append(silhouette_score(normed_X, labels, metric='euclidean'))
@@ -459,8 +463,8 @@ class EvalCluster():
         start = time.time()
         for i, cls in enumerate(corpus.keys()):
             for doc in corpus[cls]:
-                log.debug('class: {}/{}---------------------------------------------------'.format(i+1, self.num_classes))
-                log.debug('calculating mutual information...{}/{} | running time: {} seconds'.format(doc, len(corpus[cls].keys()), round(time.time()-start,4)))
+                log.info('class: {}/{}---------------------------------------------------'.format(i+1, self.num_classes))
+                log.info('calculating mutual information...{}/{} | running time: {} seconds'.format(doc, len(corpus[cls].keys()), round(time.time()-start,4)))
                 for word in corpus[cls][doc]:
                     score = self.calc_mi(corpus, word, cls)
                     result[word][cls] = score
@@ -511,7 +515,7 @@ class EvalCluster():
         for i in list(results.keys()):
             for j in range(num_keywords):
                 superwords[i][j] = list(results[str(i)].keys())[j]
-        log.debug(superwords)
+        log.info(superwords)
 
         with open('sentences_clustered.json', 'r') as f:
             clusters = json.load(f)
@@ -593,7 +597,6 @@ class UtilityFunct():
 
         log.info('[individual] sentences length: {}\n[individual] labels length: {}'.format(len(formatted),
                                                                                             len(labels_extended)))
-
         return formatted, labels_extended
 
 #pre-determined centroid clustering
@@ -601,23 +604,63 @@ class PDC():
 
     def __init__(self):
         self.model = SentenceTransformer('snt_tsfm_model/')
+        self.key_topics_titles = [
+            'what data do we collect?',
+            'How do we collect your data?',
+            'How will we use your data?',
+            'How do we store your data?',
+            'Marketing',
+            'What are your data protection rights?',
+            'What are cookies?',
+            'How do we use cookies?',
+            'What types of cookies do we use?',
+            'How to manage your cookies',
+            'Privacy policies of other websites',
+            'Changes to our privacy policy',
+            'How to contact us',
+            'How to contact the appropriate authorities'
+        ]
         self.key_topics = [
-        'we collect personal identification information name email phone number etc',
-        'we collect your data when you register online place order voluntarily complete survey provide feedback use or view via cookies',
-        'we use your data to process order and manage account email you with special offers share your data with partner companies',
-        'we securely store your data at keep your data until once this period time expired delete by',
-        'we send you information about products and services you might like marketing third party use opt out later right to stop no longer wish marketing',
-        'your data protection rights you have right to access rectify edit erase delete restrict processing object data portable transfer',
-        'cookies are text files placed on your computer when you visit our website we collect through cookies',
+        'we collect personal identification information such as name email phone number etc and other necessary data',
+
+        'you directly provide us most of the data we collect your data when you register online place order voluntarily '
+        'complete survey provide feedback use or view via cookies',
+
+        'we use your data to process order and manage account email you with special offers share your data with partner '
+        'companies send your data to credit reference agencies to prevent fraud abuse misuse',
+
+        'we securely store retain your data at keep your data safe until once this period time expired we delete'
+        ' your data by months years',
+
+        'we send you information about products and services you might like recommend marketing third party use opt out '
+        'later right to stop no longer wish marketing purposes',
+
+        'your data protection rights you have right to access rectify edit erase remove delete restrict processing object'
+        ' data portable control transfer',
+
+        'what are cookies cookies are text files placed on your computer when you visit our website we collect through cookies',
+
         'we use your cookies to keep you signed in understand how you use our website',
-        'we use different types of cookies functionality advertising authentication security performance analytics research',
-        'you can set your browser not to accept cookies remove cookies some of features not function',
-        'we keep its privacy policy under review and change last updated on',
-        'how to contact us if you have questions do not hesitate to contact us',
-        'how to contact the appropriate authorities and data protection officer report complaint contact'
+
+        'we use different types of cookies functionality remember your preferences language location advertising links you followed'
+        'share online data with third parties for advertising authentication security performance analytics research',
+
+        'how to manage cookies you can set your browser not to accept cookies remove cookies some of features not function as a result',
+
+        'privacy policy of other websites other companies other parties we contain links to other websites our privacy policy apply only to our'
+        'if you clink link to another website you should read refer too their policy',
+
+        'we keep our privacy policy under review and change regularly this was last updated on',
+
+        'how to contact us if you have questions on privacy policy data we hold on you data about data protection rights',
+
+        'how to contact the appropriate authorities and data protection officer report complaint information commissioner office'
     ]
 
-    def cluster_by_distance_get_n_best(self, sentences, n_best=5):
+    def get_predefined_centroids(self):
+        return self.model.encode(self.key_topics)
+
+    def get_n_best_from_predefined_centroids(self, sentences, n_best=5):
         key_topics_encoded = self.model.encode(self.key_topics)
         sentences_encoded = self.model.encode(sentences)
 
@@ -648,7 +691,7 @@ class PDC():
                 cluster_result[cluster][sid] = {'text':id2sent[sid],
                                                 'distance':cluster_result[cluster][sid]}
 
-            cluster_result[cluster] = {'topic':self.key_topics[int(cluster[1:])],
+            cluster_result[cluster] = {'topic':self.key_topics_titles[int(cluster)],
                                        'members':cluster_result[cluster]}
         return cluster_result
 
@@ -702,6 +745,41 @@ class PDC():
         # return cluster allocation result and the original sentence vectors
         return clustered, np.asarray(list(map(id2vector.get,list(clustered.keys()))))
 
+class PPReporter():
+
+    def generate_report_pdc(self, url, n_best=1):
+        # get Selenium work to get all the text from url and split by \n
+        options = Options()
+        driver = webdriver.Firefox(options=options)
+        driver.get(url)
+        body = driver.find_element(By.TAG_NAME, 'body')
+        clauses = body.text.split('\n')
+        driver.close()
+
+        # clauses_splitted = []
+        # for c in clauses:
+        #     clauses_splitted.append([e+'.' for e in c.split('. ') if e])   #split by '. ' and add the full stop back to the sentence
+        #
+        # clauses_splitted = list(itertools.chain.from_iterable(clauses_splitted))
+
+        # remove empty clauses
+        try:
+            clauses.remove('')
+        except:
+            pass
+
+        pdc = PDC()
+        report = pdc.get_n_best_from_predefined_centroids(sentences=clauses,
+                                                          n_best=n_best)
+
+        with open('pp_report.txt', 'w') as f:
+            for cluster in report.keys():
+                f.write('[cluster {}]\n\n'.format(cluster))
+                f.write('\ttopic: {}\n\n'.format(report[cluster]['topic']))
+                for sid in report[cluster]['members'].keys():
+                    f.write('\t\tclause found: "{}"\n'.format(report[cluster]['members'][sid]['text']))
+                    f.write('\t\trelevance: {}\n\n'.format(round(report[cluster]['members'][sid]['distance'],6)))
+            f.write('[END OF REPORT]\n')
 
 def main():
 
@@ -716,11 +794,10 @@ def main():
     sentences_raw = pd.read_csv('training_data/alice/data_alice.csv')['clause']
     labels_raw = pd.read_csv('training_data/alice/data_alice.csv')['class']
     sentences, labels = ut.format_worthy_sentences(sentences_raw, labels_raw)
-    # clu.do_sentenceBERT(sentences, labels)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""do Pre-Deteremined centroid clustering"""""""""""""""""""""""""""""
-    pdc = PDC()
+    # pdc = PDC()
     # result = pdc.cluster_by_distance_get_n_best(sentences,10)
     # for cluster in result.keys():
     #     log.info('topic: {}'.format(result[cluster]['topic']))
@@ -728,20 +805,21 @@ def main():
     #         log.info('{}: {}'.format(member, result[cluster]['members'][member]))
     #     log.info('\n')
 
-    pdc_clustered_dict, sentence_vectors = pdc.run_clustering_with_predetermined_centroids(sentences, n_best=10)
-    pca_vectors, _ = clu.do_pca(n_components=100, sentences=sentence_vectors)
-    labels = list(map(int, list(pdc_clustered_dict.values())))
-    clu.plot_labels(pca_vectors, labels, 'pdc') #plot clustering results
-    sil = silhouette_score(pca_vectors, labels)
-    log.info(sil)
+    # pdc_clustered_dict, sentence_vectors = pdc.run_clustering_with_predetermined_centroids(sentences, n_best=30)
+    # pca_vectors, _ = clu.do_pca(n_components=140, sentences=sentence_vectors)
+    # labels = list(map(int, list(pdc_clustered_dict.values())))
+    # clu.plot_labels(pca_vectors, labels, 'pdc') #plot clustering results
+    # sil = silhouette_score(pca_vectors, labels)
+    # log.info(sil)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-    """""""""load embedded sentences to be processed"""""""""
+    """""""""do embedding and load embedded sentences to be processed"""""""""
+    # clu.do_sentenceBERT(sentences, labels)
     # with open('stnce_embedding.json', 'r') as f:
     #     sent_dict = json.load(f)
     #
     # embedded_sentences = list(sent_dict.values())
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """"""""""""""""""""""""""""""""""""""""""""""do pca on embedded sentences"""""""""""""""""""""""""""""""""""""""""""""
     # clu.find_best_ncomp_for_pca(embedded_sentences)
@@ -751,7 +829,7 @@ def main():
     # sil = []
     # k = 30
     # for i, n in enumerate(range(3,200)):
-    #     log.debug('doing silhouette scores on various ncomp ... {}/{}'.format(i, len(list(range(3,200)))))
+    #     log.info('doing silhouette scores on various ncomp ... {}/{}'.format(i, len(list(range(3,200)))))
     #     pca_sentences, pca2vector = clu.do_pca(n_components=n,
     #                                            sentences=embedded_sentences)  #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
     #     sil.append(clu.do_silhouette_single(pca_sentences, k))
@@ -770,7 +848,7 @@ def main():
 
     """""""""""""""""""""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""""""""""""""""""
     # distance_metric = 'euclidean'
-    # k = 13
+    # k = 14
     # algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian',
     #                'birch','affinity','meanshift','optics','agglomerative']
     # algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
@@ -784,14 +862,14 @@ def main():
     # sorted_clustering_result = {k: float(v) for k, v in sorted(clustering_result.items(), key=lambda item: item[1],reverse=True)}
     #
     # for item in sorted_clustering_result.items():
-    #     log.debug(item)
+    #     log.info(item)
     #
     # # go further with kmeans cos it's the best atm
     # clu.perform_clustering(pca_sentences, 'kmeans', num_clusters=k, metric=distance_metric, pca2vector=pca2vector)
     # with open('cluster_centers.json', 'r') as f:
     #     centers = json.load(f)
     # for item in centers.items():
-    #     log.debug(item)
+    #     log.info(item)
     # clu.format_cluster_centres()
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -806,6 +884,11 @@ def main():
     #                    num_keywords=7,
     #                    num_max_sentences=1)
     """"""""""""""""""""""""""""""""""""""""""""""""""
+
+    """""""""""""""""generate report on PP by url"""""""""""""""""
+    sample_url = 'https://stackoverflow.com/legal/privacy-policy'
+    ppr = PPReporter()
+    ppr.generate_report_pdc(sample_url, n_best=2)
 
 
 if __name__ == '__main__':
