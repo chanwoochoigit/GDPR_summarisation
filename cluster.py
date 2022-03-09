@@ -925,15 +925,17 @@ def main():
     sample_url_4 = 'https://www.ebay.com/help/policies/member-behaviour-policies/user-privacy-notice-privacy-policy?id=4260'
     sample_url_5 = 'https://static.zara.net/static/pdfs/US/privacy-policy/privacy-policy-en_US-20131125.pdf'
     sample_url_6 = 'https://www.selfridges.com/GB/en/features/info/our-corporate-policies/privacy-cookie-policy/'
+    sample_url_7 = 'https://www.zoopla.co.uk/privacy/'
+    sample_url_8 = 'https://tripadvisor.mediaroom.com/UK-privacy-policy'
 
     pdc = PDC()
     ppr = PPReporter()
 
-    raw_text_pdc = ppr.generate_report(url=sample_url_2,
+    raw_text_pdc = ppr.generate_report(url=sample_url_8,
                                        mode='pdc',
                                        n_best=3)
 
-    raw_text_kms = ppr.generate_report( url=sample_url_2,
+    raw_text_kms = ppr.generate_report( url=sample_url_8,
                                         mode='kmeans')
 
     # direct sample from gdpr for benchmarking
