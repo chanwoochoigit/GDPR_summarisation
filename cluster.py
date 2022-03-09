@@ -600,34 +600,34 @@ class PDC():
             'How to contact the appropriate authorities'
         ]
         self.key_topics = [
-        'we collect personal identification information such as name email phone number etc and other necessary data',
+        'we collect personal identification information such as name, email, phone number, etc and other necessary data.',
 
-        'you directly provide us most of the data we collect your data when you register online place order voluntarily '
-        'complete survey provide feedback use or view via cookies',
+        'you directly provide us most of the data we collect your data when you register online, place order, voluntarily '
+        'complete survey, provide feedback, use or view via cookies.',
 
-        'we use your data to process order and manage account email you with special offers share your data with partner '
-        'companies send your data to credit reference agencies to prevent fraud abuse misuse',
+        'we use your data to process order and manage account email you with special offers, share your data with partner '
+        'companies, and send your data to credit reference agencies to prevent fraud and abuse.',
 
-        'we securely store retain maintain keep hold your data at until once this period time expired we delete'
-        ' your data by months years',
+        'we securely retain, and maintain your data at until once this period time expired we delete'
+        ' your data by months years.',
 
         'we send you information about products and services you might like recommend marketing third party use opt out '
-        'later right to stop no longer wish marketing purposes',
+        'later right to stop no longer wish marketing purposes.',
 
         'your data protection rights you have right to access rectify edit erase remove delete restrict processing object'
-        ' data portable control transfer',
+        ' data portable control transfer.',
 
-        'what are cookies cookies are text files placed on your computer when you visit our website we collect through cookies',
+        'what are cookies cookies are text files placed on your computer when you visit our website we collect through cookies.',
 
-        'we use your cookies to keep you signed in understand how you use our website',
+        'we use your cookies to keep you signed in understand how you use our website.',
 
-        'we use different types of cookies functionality remember your preferences language location advertising links you followed'
-        'share online data with third parties for advertising authentication security performance analytics research',
+        'we use different types of cookies, functionality remember your preferences language location advertising links you followed'
+        'share online data with third parties for advertising authentication security performance analytics research.',
 
-        'how to manage cookies you can set your browser not to accept cookies remove cookies some of features not function as a result',
+        'manage cookies, you can set your browser not to accept cookies remove cookies some of features not function as a result',
 
-        'privacy policy of other websites other companies other parties we contain links to other websites our privacy policy apply only to our'
-        'if you clink link to another website you should read refer too their policy',
+        'we contain links to other websites our privacy policy apply only to our website, if you click link to another website '
+        'you should read and refer to their policy',
 
         'we keep our privacy policy under review and change regularly this was last updated on',
 
@@ -746,9 +746,6 @@ class PPReporter():
         clauses_splitted = []
         for c in clauses:
             clauses_splitted.append([e+'.' for e in c.split('. ') if e])   #split by '. ' and add the full stop back to the sentence
-
-        if clauses_splitted == [[]]:
-            clauses_splitted = clauses
 
         clauses_splitted = list(itertools.chain.from_iterable(clauses_splitted))
 
@@ -932,13 +929,12 @@ def main():
     pdc = PDC()
     ppr = PPReporter()
 
-    raw_text_pdc = ppr.generate_report(url=sample_url_3,
+    raw_text_pdc = ppr.generate_report(url=sample_url_2,
                                        mode='pdc',
-                                       n_best=2)
+                                       n_best=3)
 
-    raw_text_kms = ppr.generate_report( url=sample_url_3,
-                                        mode='kmeans',
-                                        n_best=2)
+    raw_text_kms = ppr.generate_report( url=sample_url_2,
+                                        mode='kmeans')
 
     # direct sample from gdpr for benchmarking
     raw_text_gdpr = pdc.key_topics
@@ -956,11 +952,11 @@ def main():
 
     score_rand = ppr.evaluate_report(random_14)
 
-    print('report eval score:\n\trandom:{}\n\tpdc:{}\n\tkms:{}\n\tgdpr:{}'.format(
-                                                                                        round(score_rand,4),
-                                                                                        round(score_pdc,4),
-                                                                                        round(score_kms,4),
-                                                                                        round(score_gdpr,4)
+    print('report eval score:\n\t\trandom:{}\n\t\tpdc:{}\n\t\tkms:{}\n\t\tgdpr:{}'.format(
+                                                                                        round(score_rand,2),
+                                                                                        round(score_pdc,2),
+                                                                                        round(score_kms,2),
+                                                                                        round(score_gdpr,2)
                                                                                     ))
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
