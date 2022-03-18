@@ -783,10 +783,21 @@ class PPReporter():
 
         elif mode == 'kmeans':
             with open('cluster_centers.json', 'r') as f:
-                centers_dict = json.load(f)
+                trained_centroids = json.load(f)
 
-            # only return the sentences & flatten the list because it's 2d (2d arrays are not accepted by SentenceTransformer
-            return list(itertools.chain.from_iterable(list(centers_dict.values())))
+            tsfm = SentenceTransformer('snt_tsfm_model')
+            raw_text = []
+            centroids = list(itertools.chain.from_iterable(list(trained_centroids.values())))
+            centroids_encoded = tsfm.encode(centroids)
+
+            clauses_no_titles_encoded = tsfm.encode(clauses_no_titles)
+
+            for i, c in enumerate(centroids_encoded):
+                distances = [(euclidean(c, v), s) for s, v in zip(clauses_no_titles, clauses_no_titles_encoded)]    # calculate distance and keep the original sentence
+                distances = sorted(distances)   #sort sentences by distance to trained centroids
+                raw_text.append(distances[0][1])    #append closest sentence to retuning text
+            # # only return the sentences & flatten the list because it's 2d (2d arrays are not accepted by SentenceTransformer
+            # return list(itertools.chain.from_iterable(list(centers_dict.values())))
 
         else:
             raise ValueError('entered wrong mode! it should be either pdc or kmeans.')
@@ -919,7 +930,7 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""generate report on PP using a url & evaluate"""""""""""""""""""""""""""""""""
-    sample_url = 'https://stackoverflow.com/legal/privacy-policy'
+    sample_url_1 = 'https://stackoverflow.com/legal/privacy-policy'
     sample_url_2 = 'https://www.rightmove.co.uk/this-site/privacy-policy.html'
     sample_url_3 = 'https://privacy.patreon.com/policies'
     sample_url_4 = 'https://www.ebay.com/help/policies/member-behaviour-policies/user-privacy-notice-privacy-policy?id=4260'
@@ -928,14 +939,16 @@ def main():
     sample_url_7 = 'https://www.zoopla.co.uk/privacy/'
     sample_url_8 = 'https://tripadvisor.mediaroom.com/UK-privacy-policy'
 
+    target_url = sample_url_1
+
     pdc = PDC()
     ppr = PPReporter()
 
-    raw_text_pdc = ppr.generate_report(url=sample_url_8,
+    raw_text_pdc = ppr.generate_report(url=target_url,
                                        mode='pdc',
                                        n_best=3)
 
-    raw_text_kms = ppr.generate_report( url=sample_url_8,
+    raw_text_kms = ppr.generate_report(url=target_url,
                                         mode='kmeans')
 
     # direct sample from gdpr for benchmarking
@@ -951,7 +964,6 @@ def main():
 
     # choose 14 from list of random sentences
     random_14 = random.sample(random_sentences,14)
-
     score_rand = ppr.evaluate_report(random_14)
 
     print('report eval score:\n\t\trandom:{}\n\t\tpdc:{}\n\t\tkms:{}\n\t\tgdpr:{}'.format(
