@@ -822,6 +822,36 @@ class PPReporter():
         # log.info('report score: {}'.format(round(ssd,2)))
         return ssd
 
+def take_input(n_best, url):
+    ppr = PPReporter()
+    topics = [
+            'what data do we collect?',
+            'How do we collect your data?',
+            'How will we use your data?',
+            'How do we store your data?',
+            'Marketing',
+            'What are your data protection rights?',
+            'What are cookies?',
+            'How do we use cookies?',
+            'What types of cookies do we use?',
+            'How to manage your cookies',
+            'Privacy policies of other websites',
+            'Changes to our privacy policy',
+            'How to contact us',
+            'How to contact the appropriate authorities'
+        ]
+    raw_text_pdc = ppr.generate_report(url=url,
+                                       mode='pdc',
+                                       n_best=n_best)
+    result = defaultdict(list)
+    for i, t in enumerate(topics):
+        result[t].append(raw_text_pdc[n_best * i : n_best * (i+1)])
+
+    for key in result:
+        temp = result[key]
+        result[key] = list(itertools.chain.from_iterable(temp))
+
+    return result
 
 def main():
 
@@ -930,49 +960,52 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""generate report on PP using a url & evaluate"""""""""""""""""""""""""""""""""
-    sample_url_1 = 'https://stackoverflow.com/legal/privacy-policy'
-    sample_url_2 = 'https://www.rightmove.co.uk/this-site/privacy-policy.html'
-    sample_url_3 = 'https://privacy.patreon.com/policies'
-    sample_url_4 = 'https://www.ebay.com/help/policies/member-behaviour-policies/user-privacy-notice-privacy-policy?id=4260'
-    sample_url_5 = 'https://static.zara.net/static/pdfs/US/privacy-policy/privacy-policy-en_US-20131125.pdf'
-    sample_url_6 = 'https://www.selfridges.com/GB/en/features/info/our-corporate-policies/privacy-cookie-policy/'
-    sample_url_7 = 'https://www.zoopla.co.uk/privacy/'
-    sample_url_8 = 'https://tripadvisor.mediaroom.com/UK-privacy-policy'
+    # sample_url_1 = 'https://stackoverflow.com/legal/privacy-policy'
+    # sample_url_2 = 'https://www.rightmove.co.uk/this-site/privacy-policy.html'
+    # sample_url_3 = 'https://privacy.patreon.com/policies'
+    # sample_url_4 = 'https://www.ebay.com/help/policies/member-behaviour-policies/user-privacy-notice-privacy-policy?id=4260'
+    # sample_url_5 = 'https://static.zara.net/static/pdfs/US/privacy-policy/privacy-policy-en_US-20131125.pdf'
+    # sample_url_6 = 'https://www.selfridges.com/GB/en/features/info/our-corporate-policies/privacy-cookie-policy/'
+    # sample_url_7 = 'https://www.zoopla.co.uk/privacy/'
+    # sample_url_8 = 'https://tripadvisor.mediaroom.com/UK-privacy-policy'
+    #
+    # target_url = sample_url_1
+    #
+    # pdc = PDC()
+    # ppr = PPReporter()
+    #
+    # raw_text_pdc = ppr.generate_report(url=target_url,
+    #                                    mode='pdc',
+    #                                    n_best=3)
+    #
+    # raw_text_kms = ppr.generate_report(url=target_url,
+    #                                     mode='kmeans')
+    #
+    # # direct sample from gdpr for benchmarking
+    # raw_text_gdpr = pdc.key_topics
+    #
+    # score_pdc = ppr.evaluate_report(raw_text_pdc)
+    # score_kms = ppr.evaluate_report(raw_text_kms)
+    # score_gdpr = ppr.evaluate_report(raw_text_gdpr)
+    #
+    # # try evaluation on randomly generated sentences for benchmarking
+    # with open('random_sentences.txt','r') as f:
+    #     random_sentences = f.read().split('\n')
+    #
+    # # choose 14 from list of random sentences
+    # random_14 = random.sample(random_sentences,14)
+    # score_rand = ppr.evaluate_report(random_14)
+    #
+    # print('report eval score:\n\t\trandom:{}\n\t\tpdc:{}\n\t\tkms:{}\n\t\tgdpr:{}'.format(
+    #                                                                                     round(score_rand,2),
+    #                                                                                     round(score_pdc,2),
+    #                                                                                     round(score_kms,2),
+    #                                                                                     round(score_gdpr,2)
+    #                                                                                 ))
+    # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-    target_url = sample_url_1
-
-    pdc = PDC()
-    ppr = PPReporter()
-
-    raw_text_pdc = ppr.generate_report(url=target_url,
-                                       mode='pdc',
-                                       n_best=3)
-
-    raw_text_kms = ppr.generate_report(url=target_url,
-                                        mode='kmeans')
-
-    # direct sample from gdpr for benchmarking
-    raw_text_gdpr = pdc.key_topics
-
-    score_pdc = ppr.evaluate_report(raw_text_pdc)
-    score_kms = ppr.evaluate_report(raw_text_kms)
-    score_gdpr = ppr.evaluate_report(raw_text_gdpr)
-
-    # try evaluation on randomly generated sentences for benchmarking
-    with open('random_sentences.txt','r') as f:
-        random_sentences = f.read().split('\n')
-
-    # choose 14 from list of random sentences
-    random_14 = random.sample(random_sentences,14)
-    score_rand = ppr.evaluate_report(random_14)
-
-    print('report eval score:\n\t\trandom:{}\n\t\tpdc:{}\n\t\tkms:{}\n\t\tgdpr:{}'.format(
-                                                                                        round(score_rand,2),
-                                                                                        round(score_pdc,2),
-                                                                                        round(score_kms,2),
-                                                                                        round(score_gdpr,2)
-                                                                                    ))
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+    n_best = 1
+    url = 'https://stackoverflow.com/legal/privacy-policy'
+    take_input(n_best, url)
 if __name__ == '__main__':
     main()
