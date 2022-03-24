@@ -3,6 +3,7 @@ import logging
 import pickle
 import json
 import random
+import re
 import time
 from collections import defaultdict
 from math import log2
@@ -125,7 +126,7 @@ class Clustering():
         u_labels = np.unique(pred)
         for i in u_labels:
             plt.scatter(df[pred == i, 0], df[pred == i, 1], label=i)
-        plt.legend(bbox_to_anchor=(1.14,1.05), loc='upper right')
+        # plt.legend(bbox_to_anchor=(1.14,1.05), loc='upper right')
         plt.savefig('clustering_results/{}.png'.format(algorithm))
 
     # perform unsupervised clustering and compare results for different clustering algorithms
@@ -541,7 +542,7 @@ class EvalCluster():
 
 class UtilityFunct():
 
-    def format_worthy_sentences(self, sentences, labels):
+    def format_sentences(self, sentences, labels):
         splitted = []
         labels_extended = []    # each element in "sentences" is a set of multiple setences: therefore when they are split,
                                 # the labels should be duplicated accordingly
@@ -758,6 +759,7 @@ class PPReporter():
         # remove titles
         clauses_no_titles = []
         [clauses_no_titles.append(c) for c in clauses_splitted if not self.is_title(c)]
+        log.info('original clauses length: %d' % len(clauses_no_titles))
 
         if mode == 'pdc':
 
@@ -880,12 +882,27 @@ def evaluate_clauses(target_url):
     random_14 = random.sample(random_sentences, 14)
     score_rand = ppr.evaluate_report(random_14)
 
-    return ('report eval score:\n\t\trandom:%.4f\n\t\tpdc:%.4f\n\t\tkms:%.4f\n\t\tgdpr:%.4f' % (
-        score_rand,
-        score_pdc,
-        score_kms,
-        score_gdpr,
-    ))
+    target_url = target_url.replace('https://','').replace('www.','').replace('/','.')
+    company_name = target_url.split('.')[0] + target_url.split('.')[1]
+    return "%s,%.4f,%.4f,%.4f,%.4f" % (company_name, score_rand, score_pdc, score_kms, score_gdpr)
+
+def calc_avg(list):
+    sum = 0
+    for item in list:
+        sum += float(item)
+    return sum / len(list)
+
+def visualise_evaluation_results_ssd():
+    eval = pd.read_csv('evaluate_urls.csv')
+    print(eval)
+    score_rand = calc_avg(eval['score_rand'])
+    score_pdc = calc_avg(eval['score_pdc'])
+    score_kms = calc_avg(eval['score_kms'])
+    score_gdpr = calc_avg(eval['score_gdpr'])
+    print('random: %.4f\npdc: %.4f\nkms: %.4f\nGDPR: %.4f' % (score_rand,
+                                                                 score_pdc,
+                                                                 score_kms,
+                                                                 score_gdpr))
 
 def main():
 
@@ -896,10 +913,10 @@ def main():
 
     """""""""""""""""""""""""init knn module and encode clauses"""""""""""""""""""""""""
     clu = Clustering()
-    # ut = UtilityFunct()
-    # sentences_raw = pd.read_csv('training_data/alice/data_alice.csv')['clause']
-    # labels_raw = pd.read_csv('training_data/alice/data_alice.csv')['class']
-    # sentences, labels = ut.format_worthy_sentences(sentences_raw, labels_raw)
+    ut = UtilityFunct()
+    sentences_raw = pd.read_csv('training_data/alice/data_alice.csv')['clause']
+    labels_raw = pd.read_csv('training_data/alice/data_alice.csv')['class']
+    sentences, labels = ut.format_sentences(sentences_raw, labels_raw)
     # sum = 0
     # for s in sentences:
     #     sum += len(s)
@@ -908,15 +925,15 @@ def main():
 
     """""""""""""""""""""""""""""do Pre-Deteremined centroid clustering"""""""""""""""""""""""""""""
     # pdc = PDC()
-    # result = pdc.cluster_by_distance_get_n_best(sentences,10)
+    # result = pdc.get_n_best_from_predefined_centroids(sentences,10)
     # for cluster in result.keys():
     #     log.info('topic: {}'.format(result[cluster]['topic']))
     #     for member in result[cluster]['members'].keys():
     #         log.info('{}: {}'.format(member, result[cluster]['members'][member]))
     #     log.info('\n')
 
-    # pdc_clustered_dict, sentence_vectors = pdc.run_clustering_with_predetermined_centroids(sentences, n_best=30)
-    # pca_vectors, _ = clu.do_pca(n_components=140, sentences=sentence_vectors)
+    # pdc_clustered_dict, sentence_vectors = pdc.run_clustering_with_predetermined_centroids(sentences, n_best=100000)
+    # pca_vectors, _ = clu.do_pca(n_components=3, sentences=sentence_vectors)
     # labels = list(map(int, list(pdc_clustered_dict.values())))
     # clu.plot_labels(pca_vectors, labels, 'pdc') #plot clustering results
     # sil = silhouette_score(pca_vectors, labels)
@@ -933,20 +950,22 @@ def main():
 
     """"""""""""""""""""""""""""""""""""""""""""""do pca on embedded sentences"""""""""""""""""""""""""""""""""""""""""""""
     # clu.find_best_ncomp_for_pca(embedded_sentences)
-    # pca_sentences, pca2vector = clu.do_pca(n_components=100,sentences=embedded_sentences)   #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
+    # pca_sentences, pca2vector = clu.do_pca(n_components=10,sentences=embedded_sentences)   #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
 
-    # find best ncomp by silhouette scores
+    ### find best ncomp by silhouette scores
     # sil = []
-    # k = 30
+    # k = 14
     # for i, n in enumerate(range(3,200)):
     #     log.info('doing silhouette scores on various ncomp ... {}/{}'.format(i, len(list(range(3,200)))))
     #     pca_sentences, pca2vector = clu.do_pca(n_components=n,
     #                                            sentences=embedded_sentences)  #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
     #     sil.append(clu.do_silhouette_single(pca_sentences, k))
-
+    #
     # y = sil
     # x = range(3,200)
     # plt.plot(x, y)
+    # plt.xlabel('Number of Components')
+    # plt.ylabel('Silhouette score')
     # plt.savefig('silhouette_by_ncomps_k={}.png'.format(k))
     # plt.show()
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -957,15 +976,15 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""""""""""""""""""
-    distance_metric = 'euclidean'
-    k = 14
-
-    ## run clustering and compare results using many clustering algorithms
+    # distance_metric = 'euclidean'
+    # k = 14
+    #
+    # # run clustering and compare results using many clustering algorithms
     # algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian',
     #                'birch','affinity','meanshift','optics','agglomerative']
     # algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
     # clustering_result = {}
-    # for al in algorithms_competitive:
+    # for al in algorithms:
     #      sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
     #      clustering_result[al] = sil
     # log.info(clustering_result)
@@ -998,24 +1017,22 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""generate report on PP using a url & evaluate"""""""""""""""""""""""""""""""""
-    sample_url_1 = 'https://stackoverflow.com/legal/privacy-policy'
-    sample_url_2 = 'https://www.rightmove.co.uk/this-site/privacy-policy.html'
-    sample_url_3 = 'https://privacy.patreon.com/policies'
-    sample_url_4 = 'https://www.ebay.com/help/policies/member-behaviour-policies/user-privacy-notice-privacy-policy?id=4260'
-    sample_url_5 = 'https://static.zara.net/static/pdfs/US/privacy-policy/privacy-policy-en_US-20131125.pdf'
-    sample_url_6 = 'https://www.selfridges.com/GB/en/features/info/our-corporate-policies/privacy-cookie-policy/'
-    sample_url_7 = 'https://www.zoopla.co.uk/privacy/'
-    sample_url_8 = 'https://tripadvisor.mediaroom.com/UK-privacy-policy'
-    urls_to_eval = [
-        sample_url_1, sample_url_2, sample_url_3, sample_url_4,
-        sample_url_5, sample_url_6, sample_url_7, sample_url_8
-    ]
+    ### get list of urls to test
+    # with open('pps_to_eval.txt', 'r') as f:
+    #     urls_to_eval = f.read().split('\n')
+    # try:
+    #     urls_to_eval.remove('')
+    # except:
+    #     pass
 
-    with open('evaluate_urls.txt', 'w') as f:
-        for url in urls_to_eval:
-            f.write(url+'\n')
-            f.write(evaluate_clauses(url)+'\n')
+    # ## run evaluation on all urls
+    # with open('evaluate_urls.csv', 'w') as f:
+    #     f.write('company_name,score_rand,score_pdc,score_kms,score_gdpr\n')
+    #     for url in urls_to_eval:
+    #         f.write(evaluate_clauses(url)+'\n')
 
+    # play around with the SSD evaluation result
+    visualise_evaluation_results_ssd()
 
     ### test take input module for flask app
     # n_best = 1
