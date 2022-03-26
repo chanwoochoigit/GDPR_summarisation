@@ -939,6 +939,13 @@ def evaluate_clauses_rouge(target_url):
     # get reference summary
     ref_summary = ref.key_topics
 
+    # try evaluation on randomly generated sentences for benchmarking
+    with open('random_sentences.txt', 'r') as f:
+        random_sentences = f.read().split('\n')
+
+    # choose 14 from list of random sentences
+    random_14 = random.sample(random_sentences, 14)
+
     raw_text_pdc = ppr.generate_report(url=target_url,
                                        mode='pdc',
                                        n_best=3)
@@ -946,9 +953,11 @@ def evaluate_clauses_rouge(target_url):
     raw_text_kms = ppr.generate_report(url=target_url,
                                        mode='kmeans')
 
+    rand = rg.evaluate(random_14, ref_summary)
     pdc = rg.evaluate(raw_text_pdc, ref_summary)
     kms = rg.evaluate(raw_text_kms, ref_summary)
     return {
+        'rand': rand,
         'pdc': pdc,
         'kms': kms
     }
@@ -992,6 +1001,47 @@ def record_evaluation_results_ssd():
                                                                             pdc_std,
                                                                             kms_std,
                                                                             gdpr_std))
+
+def record_evaluation_results_rouge():
+    with open('rouge_evaluation.json', 'r') as f:
+        rouge_json = json.load(f)
+
+    with open('rouge_evaluation.txt', 'w') as f:
+        pdc_mean_global = 0
+        kms_mean_global = 0
+        rand_mean_global = 0
+
+        pdc_means = []
+        kms_means = []
+        rand_means = []
+
+        # calculate mean score across topics for each website
+        for website in rouge_json.keys():
+            pdc_mean = rouge_json[website]['pdc']['mean']
+            pdc_means.append(pdc_mean)
+
+            kms_mean = rouge_json[website]['kms']['mean']
+            kms_means.append(kms_mean)
+
+            rand_mean = rouge_json[website]['rand']['mean']
+            rand_means.append(rand_mean)
+
+            f.write('[%s] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (website, rand_mean, pdc_mean, kms_mean))
+
+            pdc_mean_global += pdc_mean
+            kms_mean_global += kms_mean
+            rand_mean_global += rand_mean
+
+        pdc_mean_global = pdc_mean_global/len(rouge_json)
+        kms_mean_global = kms_mean_global/len(rouge_json)
+        rand_mean_global = rand_mean_global/len(rouge_json)
+
+        pdc_std = std_dev(pdc_means, pdc_mean_global)
+        kms_std = std_dev(kms_means, kms_mean_global)
+        rand_std = std_dev(rand_means, rand_mean_global)
+
+        f.write('[GLOBAL] [mean] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (rand_mean_global, pdc_mean_global, kms_mean_global))
+        f.write('[GLOBAL] [std. dev.] rand: %.4f | pdc: %.4f | kms: %.4f' % (rand_std, pdc_std, kms_std))
 
 
 def visualise_evaluation_results_ssd():
@@ -1151,18 +1201,27 @@ def main():
     # take_input(n_best, url)
 
     """""""""""""""""""""""""""""""""generate report on PP (ROUGE) using a url & evaluate"""""""""""""""""""""""""""""""""
-    ## get list of urls to test
-    with open('pps_to_eval.txt', 'r') as f:
-        urls_to_eval = f.read().split('\n')
-    try:
-        urls_to_eval.remove('')
-    except:
-        pass
+    # ## get list of urls to test
+    # with open('pps_to_eval.txt', 'r') as f:
+    #     urls_to_eval = f.read().split('\n')
+    # try:
+    #     urls_to_eval.remove('')
+    # except:
+    #     pass
+    #
+    # rouge_results = {}
+    # start = time.time()
+    # for i, url in enumerate(urls_to_eval):
+    #     log.info('evaluating url num %d/%d | running time: %.4f seconds!' % (i, len(urls_to_eval), time.time()-start))
+    #     result = evaluate_clauses_rouge(url)
+    #     url = url.replace('https://', '').replace('www.', '').replace('/', '.')
+    #     company_name = url.split('.')[0] + url.split('.')[1]
+    #     rouge_results[company_name] = result
+    #
+    # with open('rouge_evaluation.json', 'w') as f:
+    #     json.dump(rouge_results, f)
 
-    for url in urls_to_eval:
-        result = evaluate_clauses_rouge(url)
-        print(result)
-        break
-
+    record_evaluation_results_rouge()
+    # visualise_evaluation_results_ssd()
 if __name__ == '__main__':
     main()
