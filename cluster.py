@@ -582,11 +582,8 @@ class UtilityFunct():
                                                                                             len(labels_extended)))
         return formatted, labels_extended
 
-#pre-determined centroid clustering
-class PDC():
-
+class RefGDPR():
     def __init__(self):
-        self.model = SentenceTransformer('snt_tsfm_model/')
         self.key_topics_titles = [
             'what data do we collect?',
             'How do we collect your data?',
@@ -604,47 +601,54 @@ class PDC():
             'How to contact the appropriate authorities'
         ]
         self.key_topics = [
-        'we collect personal identification information such as name, email, phone number, etc and other necessary data.',
+            'we collect personal identification information such as name, email, phone number, etc and other necessary data.',
 
-        'you directly provide us most of the data we collect your data when you register online, place order, voluntarily '
-        'complete survey, provide feedback, use or view via cookies.',
+            'you directly provide us most of the data we collect your data when you register online, place order, voluntarily '
+            'complete survey, provide feedback, use or view via cookies.',
 
-        'we use your data to process order and manage account email you with special offers, share your data with partner '
-        'companies, and send your data to credit reference agencies to prevent fraud and abuse.',
+            'we use your data to process order and manage account email you with special offers, share your data with partner '
+            'companies, and send your data to credit reference agencies to prevent fraud and abuse.',
 
-        'we securely retain, and maintain your data at until once this period time expired we delete'
-        ' your data by months years.',
+            'we securely retain, and maintain your data at until once this period time expired we delete'
+            ' your data by months years.',
 
-        'we send you information about products and services you might like recommend marketing third party use opt out '
-        'later right to stop no longer wish marketing purposes.',
+            'we send you information about products and services you might like recommend marketing third party use opt out '
+            'later right to stop no longer wish marketing purposes.',
 
-        'your data protection rights you have right to access rectify edit erase remove delete restrict processing object'
-        ' data portable control transfer.',
+            'your data protection rights you have right to access rectify edit erase remove delete restrict processing object'
+            ' data portable control transfer.',
 
-        'what are cookies cookies are text files placed on your computer when you visit our website we collect through cookies.',
+            'what are cookies cookies are text files placed on your computer when you visit our website we collect through cookies.',
 
-        'we use your cookies to keep you signed in understand how you use our website.',
+            'we use your cookies to keep you signed in understand how you use our website.',
 
-        'we use different types of cookies, functionality remember your preferences language location advertising links you followed'
-        'share online data with third parties for advertising authentication security performance analytics research.',
+            'we use different types of cookies, functionality remember your preferences language location advertising links you followed'
+            'share online data with third parties for advertising authentication security performance analytics research.',
 
-        'manage cookies, you can set your browser not to accept cookies remove cookies some of features not function as a result',
+            'manage cookies, you can set your browser not to accept cookies remove cookies some of features not function as a result',
 
-        'we contain links to other websites our privacy policy apply only to our website, if you click link to another website '
-        'you should read and refer to their policy',
+            'we contain links to other websites our privacy policy apply only to our website, if you click link to another website '
+            'you should read and refer to their policy',
 
-        'we keep our privacy policy under review and change regularly this was last updated on',
+            'we keep our privacy policy under review and change regularly this was last updated on',
 
-        'how to contact us if you have questions on privacy policy data we hold on you data about data protection rights',
+            'how to contact us if you have questions on privacy policy data we hold on you data about data protection rights',
 
-        'how to contact the appropriate authorities and data protection officer report complaint information commissioner office'
-    ]
+            'how to contact the appropriate authorities and data protection officer report complaint information commissioner office'
+        ]
+
+#pre-determined centroid clustering
+class PDC():
+
+    def __init__(self):
+        self.model = SentenceTransformer('snt_tsfm_model/')
+        self.ref = RefGDPR()
 
     def get_predefined_centroids(self):
-        return self.model.encode(self.key_topics)
+        return self.model.encode(self.ref.key_topics)
 
     def get_n_best_from_predefined_centroids(self, sentences, n_best=5):
-        key_topics_encoded = self.model.encode(self.key_topics)
+        key_topics_encoded = self.model.encode(self.ref.key_topics)
         sentences_encoded = self.model.encode(sentences)
 
         cluster_result = defaultdict(dict)
@@ -674,7 +678,7 @@ class PDC():
                 cluster_result[cluster][sid] = {'text':id2sent[sid],
                                                 'distance':cluster_result[cluster][sid]}
 
-            cluster_result[cluster] = {'topic':self.key_topics_titles[int(cluster)],
+            cluster_result[cluster] = {'topic':self.ref.key_topics_titles[int(cluster)],
                                        'members':cluster_result[cluster]}
         return cluster_result
 
@@ -685,7 +689,7 @@ class PDC():
         return str(product).split('e')[0][-8:]
 
     def run_clustering_with_predetermined_centroids(self, sentences, n_best=10):
-        key_topics_encoded = self.model.encode(self.key_topics)
+        key_topics_encoded = self.model.encode(self.ref.key_topics)
         sentences_encoded = self.model.encode(sentences)
 
         # dictionary that converts sentence id to vector
@@ -811,8 +815,9 @@ class PPReporter():
 
     # take a list of unencoded sentences and do evaluation on the summary report
     def evaluate_report(self, report_sentences):
+        ref = RefGDPR()
         pdc = PDC()
-        titles = pdc.model.encode(pdc.key_topics_titles)
+        titles = pdc.model.encode(ref.key_topics_titles)
         rs_encoded = pdc.model.encode(report_sentences)
 
         ssd = 0
@@ -844,9 +849,23 @@ class RougeEvaluation():
             stemming=True
         )
 
-    def evaluate(self, hypothesis, reference):
-        scores = self.rouge_model.get_scores(hypothesis=[hypothesis],
-                                    references=[reference])
+    def evaluate(self, summaries_list, references):
+        rf = RefGDPR()
+        scores = {}
+        for topic, ref in zip(rf.key_topics_titles, references):  # essential GDPR topic sample sentence (out of 14)
+            score = -1
+            for summary in summaries_list:
+                results = self.rouge_model.get_scores(hypothesis=[summary], references=[ref])
+                rouge_2 = results['rouge-2']['f']
+                rouge_1 = results['rouge-1']['f']
+                rouge_l = results['rouge-l']['f']
+                rouge_w = results['rouge-w']['f']
+                rouge_avg = (rouge_2+rouge_1+rouge_l+rouge_w)/4
+                if rouge_avg > score:
+                    score = rouge_avg
+            scores[topic.replace(' ','_')] = score
+
+        scores['mean'] = sum(list(scores.values()))/len(scores)
         # print(scores)
         return scores
 
@@ -881,11 +900,11 @@ def take_input(n_best, url):
 
     return result
 
-def evaluate_clauses(target_url):
+def evaluate_clauses_ssd(target_url):
 
-    pdc = PDC()
     ppr = PPReporter()
-
+    ref = RefGDPR()
+    
     raw_text_pdc = ppr.generate_report(url=target_url,
                                        mode='pdc',
                                        n_best=3)
@@ -894,7 +913,7 @@ def evaluate_clauses(target_url):
                                        mode='kmeans')
 
     # direct sample from gdpr for benchmarking
-    raw_text_gdpr = pdc.key_topics
+    raw_text_gdpr = ref.key_topics
 
     score_pdc = ppr.evaluate_report(raw_text_pdc)
     score_kms = ppr.evaluate_report(raw_text_kms)
@@ -911,6 +930,28 @@ def evaluate_clauses(target_url):
     target_url = target_url.replace('https://','').replace('www.','').replace('/','.')
     company_name = target_url.split('.')[0] + target_url.split('.')[1]
     return "%s,%.4f,%.4f,%.4f,%.4f" % (company_name, score_rand, score_pdc, score_kms, score_gdpr)
+
+def evaluate_clauses_rouge(target_url):
+    rg = RougeEvaluation()
+    ppr = PPReporter()
+    ref = RefGDPR()
+
+    # get reference summary
+    ref_summary = ref.key_topics
+
+    raw_text_pdc = ppr.generate_report(url=target_url,
+                                       mode='pdc',
+                                       n_best=3)
+
+    raw_text_kms = ppr.generate_report(url=target_url,
+                                       mode='kmeans')
+
+    pdc = rg.evaluate(raw_text_pdc, ref_summary)
+    kms = rg.evaluate(raw_text_kms, ref_summary)
+    return {
+        'pdc': pdc,
+        'kms': kms
+    }
 
 def calc_avg(list):
     sum = 0
@@ -951,6 +992,7 @@ def record_evaluation_results_ssd():
                                                                             pdc_std,
                                                                             kms_std,
                                                                             gdpr_std))
+
 
 def visualise_evaluation_results_ssd():
     eval = pd.read_csv('evaluate_urls.csv')
@@ -1085,24 +1127,21 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""generate report on PP (SSD) using a url & evaluate"""""""""""""""""""""""""""""""""
-    # url = 'https://discord.com/privacy'
-    # print(take_input(3,url))
-
-    ### get list of urls to test
+    # ## get list of urls to test
     # with open('pps_to_eval.txt', 'r') as f:
     #     urls_to_eval = f.read().split('\n')
     # try:
     #     urls_to_eval.remove('')
     # except:
     #     pass
-
+    #
     # ## run evaluation on all urls
     # with open('evaluate_urls.csv', 'w') as f:
     #     f.write('company_name,score_rand,score_pdc,score_kms,score_gdpr\n')
     #     for url in urls_to_eval:
-    #         f.write(evaluate_clauses(url)+'\n')
-
-    # play around with the SSD evaluation result
+    #         f.write(evaluate_clauses_ssd(url)+'\n')
+    #
+    # #### play around with the SSD evaluation result
     # record_evaluation_results_ssd()
     # visualise_evaluation_results_ssd()
 
@@ -1112,27 +1151,18 @@ def main():
     # take_input(n_best, url)
 
     """""""""""""""""""""""""""""""""generate report on PP (ROUGE) using a url & evaluate"""""""""""""""""""""""""""""""""
-    target_url = 'https://twitter.com/en/privacy'
-    ppr = PPReporter()
-    rg = RougeEvaluation()
+    ## get list of urls to test
+    with open('pps_to_eval.txt', 'r') as f:
+        urls_to_eval = f.read().split('\n')
+    try:
+        urls_to_eval.remove('')
+    except:
+        pass
 
-    #prepare human summary
-    human_summaries = pd.read_csv('human_summary.csv')
-    twitter = human_summaries['twitter']
-
-    raw_text_pdc = ppr.generate_report(url=target_url,
-                                       mode='pdc',
-                                       n_best=3)
-
-    raw_text_kms = ppr.generate_report(url=target_url,
-                                       mode='kmeans')
-
-
-    #run scoring for each topic
-    for pdc_s, kms_s, human_s in zip(raw_text_pdc, raw_text_kms, twitter):
-        pdc_score = rg.evaluate(hypothesis=pdc_s, reference=human_s)
-        kms_score = rg.evaluate(hypothesis=kms_s, reference=human_s)
-        print('pdc score: {}\nkms score: {}\n\n'.format(json.dumps(pdc_score), json.dumps(kms_score)))
+    for url in urls_to_eval:
+        result = evaluate_clauses_rouge(url)
+        print(result)
+        break
 
 if __name__ == '__main__':
     main()
