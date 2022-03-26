@@ -1,5 +1,6 @@
 import itertools
 import logging
+import math
 import pickle
 import json
 import random
@@ -9,6 +10,8 @@ from collections import defaultdict
 from math import log2
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import rouge
 from scipy.spatial.distance import euclidean
 from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
@@ -824,6 +827,29 @@ class PPReporter():
         # log.info('report score: {}'.format(round(ssd,2)))
         return ssd
 
+class RougeEvaluation():
+
+    def __init__(self):
+        self.rouge_model = rouge.Rouge(
+            metrics=['rouge-n', 'rouge-l', 'rouge-w'],
+            # metrics=['rouge-n'],
+            max_n=2,
+            limit_length=True,
+            length_limit=100,
+            length_limit_type='words',
+            apply_avg='Avg',
+            apply_best='Best',
+            alpha=0.5,  # Default F1_score
+            weight_factor=1.2,
+            stemming=True
+        )
+
+    def evaluate(self, hypothesis, reference):
+        scores = self.rouge_model.get_scores(hypothesis=[hypothesis],
+                                    references=[reference])
+        # print(scores)
+        return scores
+
 def take_input(n_best, url):
     ppr = PPReporter()
     topics = [
@@ -892,17 +918,59 @@ def calc_avg(list):
         sum += float(item)
     return sum / len(list)
 
+def std_dev(list, avg):
+    var = 0
+    for item in list:
+        var += (item-avg) ** 2
+
+    return math.sqrt(var/len(list))
+
+
+def record_evaluation_results_ssd():
+    eval = pd.read_csv('evaluate_urls.csv')
+
+    with open('ssd_evaluation.txt', 'w') as f:
+        f.write(str(eval))
+        score_rand = calc_avg(eval['score_rand'])
+        rand_std = std_dev(eval['score_rand'], score_rand)
+
+        score_pdc = calc_avg(eval['score_pdc'])
+        pdc_std = std_dev(eval['score_pdc'], score_pdc)
+
+        score_kms = calc_avg(eval['score_kms'])
+        kms_std = std_dev(eval['score_kms'], score_kms)
+
+        score_gdpr = calc_avg(eval['score_gdpr'])
+        gdpr_std = std_dev(eval['score_gdpr'], score_gdpr)
+
+        f.write('\n[SSD] random: %.4f | pdc: %.4f | kms: %.4f | GDPR: %.4f' % (score_rand,
+                                                                             score_pdc,
+                                                                             score_kms,
+                                                                             score_gdpr))
+        f.write('\n[std] random: %.4f | pdc: %.4f | kms: %.4f | GDPR: %.4f' % (rand_std,
+                                                                            pdc_std,
+                                                                            kms_std,
+                                                                            gdpr_std))
+
 def visualise_evaluation_results_ssd():
     eval = pd.read_csv('evaluate_urls.csv')
-    print(eval)
-    score_rand = calc_avg(eval['score_rand'])
-    score_pdc = calc_avg(eval['score_pdc'])
-    score_kms = calc_avg(eval['score_kms'])
-    score_gdpr = calc_avg(eval['score_gdpr'])
-    print('random: %.4f\npdc: %.4f\nkms: %.4f\nGDPR: %.4f' % (score_rand,
-                                                                 score_pdc,
-                                                                 score_kms,
-                                                                 score_gdpr))
+    companies = eval['company_name']
+    score_rand = eval['score_rand']
+    score_pdc = eval['score_pdc']
+    score_kms = eval['score_kms']
+    score_gdpr = eval['score_gdpr']
+
+    fig, ax = plt.subplots()
+    ax.plot(companies, score_rand, label='random')
+    ax.plot(companies, score_pdc, label='PDC')
+    ax.plot(companies, score_kms, label='K-means')
+    ax.plot(companies, score_gdpr, label='GDPR', linestyle='-', color='blue')
+    ax.set_xticks(companies[::2])
+    ax.set_xticklabels(companies[::2], rotation=75)
+    ax.set_ylabel('Sum of Squared Distance')
+    ax.set_xlabel('Privacy Policy company name')
+    plt.legend(bbox_to_anchor=(0.99,1.0), loc='upper left')
+    plt.savefig('ssd_plot.png', bbox_inches='tight')
 
 def main():
 
@@ -1016,7 +1084,10 @@ def main():
     #                    num_max_sentences=1)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-    """""""""""""""""""""""""""""""""generate report on PP using a url & evaluate"""""""""""""""""""""""""""""""""
+    """""""""""""""""""""""""""""""""generate report on PP (SSD) using a url & evaluate"""""""""""""""""""""""""""""""""
+    # url = 'https://discord.com/privacy'
+    # print(take_input(3,url))
+
     ### get list of urls to test
     # with open('pps_to_eval.txt', 'r') as f:
     #     urls_to_eval = f.read().split('\n')
@@ -1032,11 +1103,36 @@ def main():
     #         f.write(evaluate_clauses(url)+'\n')
 
     # play around with the SSD evaluation result
-    visualise_evaluation_results_ssd()
+    # record_evaluation_results_ssd()
+    # visualise_evaluation_results_ssd()
 
     ### test take input module for flask app
     # n_best = 1
     # url = 'https://stackoverflow.com/legal/privacy-policy'
     # take_input(n_best, url)
+
+    """""""""""""""""""""""""""""""""generate report on PP (ROUGE) using a url & evaluate"""""""""""""""""""""""""""""""""
+    target_url = 'https://twitter.com/en/privacy'
+    ppr = PPReporter()
+    rg = RougeEvaluation()
+
+    #prepare human summary
+    human_summaries = pd.read_csv('human_summary.csv')
+    twitter = human_summaries['twitter']
+
+    raw_text_pdc = ppr.generate_report(url=target_url,
+                                       mode='pdc',
+                                       n_best=3)
+
+    raw_text_kms = ppr.generate_report(url=target_url,
+                                       mode='kmeans')
+
+
+    #run scoring for each topic
+    for pdc_s, kms_s, human_s in zip(raw_text_pdc, raw_text_kms, twitter):
+        pdc_score = rg.evaluate(hypothesis=pdc_s, reference=human_s)
+        kms_score = rg.evaluate(hypothesis=kms_s, reference=human_s)
+        print('pdc score: {}\nkms score: {}\n\n'.format(json.dumps(pdc_score), json.dumps(kms_score)))
+
 if __name__ == '__main__':
     main()
