@@ -2,182 +2,182 @@
 
 	topic: what data do we collect?
 
-		clause found: "You can choose to share additional information with us like your email address, phone number, address book contacts, and a public profile."
-		relevance: 2.656048
+		clause found: "     What Personal Data do we collect and use (“Categories of Personal Data”)?."
+		relevance: 2.68938
 
-		clause found: "If you do choose to create an account, you must provide us with some personal data so that we can provide our services to you."
-		relevance: 2.78631
+		clause found: "        Make sure your Personal Data are correct."
+		relevance: 3.056497
 
-		clause found: "We use your contact information, such as your email address or phone number, to authenticate your account and keep it - and our services - secure, and to help prevent spam, fraud, and abuse."
-		relevance: 2.812532
+		clause found: "       Access your personal data."
+		relevance: 3.140146
 
 [cluster 1]
 
 	topic: How do we collect your data?
 
-		clause found: "We share or disclose your personal data with your consent or at your direction, such as when you authorize a third-party web client or application to access your account or when you direct us to share your feedback with a business."
-		relevance: 2.522039
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.513411
 
-		clause found: "When your browser or device allows it, we use both session cookies and persistent cookies to better understand how you interact with our services, to monitor aggregate usage patterns, and to personalize and otherwise operate our services such as by providing account security, personalizing the content we show you including ads, and remembering your language preferences."
-		relevance: 2.527021
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 2.698396
 
-		clause found: "Like many websites, we use cookies and similar technologies to collect additional website usage data and to operate our services."
-		relevance: 2.529933
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 2.993336
 
 [cluster 2]
 
 	topic: How will we use your data?
 
-		clause found: "We share your payment information with payment services providers to process payments; prevent, detect, and investigate fraud or other prohibited activities; facilitate dispute resolution such as chargebacks or refunds; and for other purposes associated with the acceptance of credit and debit cards.."
-		relevance: 2.105424
+		clause found: "       Obtain a machine-readable, portable copy of your personal data which you can share with another Company."
+		relevance: 2.982078
 
-		clause found: "  Basic Account Information Public Information Contact Information and Address Books Direct Messages and Non-Public Communications Payment Information How You Control the Information You Share With Us."
-		relevance: 2.392353
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 3.069538
 
-		clause found: "We use your payment information to process transactions you’ve approved and for fraud detection.."
-		relevance: 2.424909
+		clause found: "     How do you exercise your rights for your Personal Data?."
+		relevance: 3.12591
 
 [cluster 3]
 
 	topic: How do we store your data?
 
-		clause found: "When you communicate with others by sending or receiving Direct Messages, we will store and process your communications and information related to them."
-		relevance: 3.06956
+		clause found: "       Delete your account and all Personal Data connected to your email address.."
+		relevance: 3.2612
 
-		clause found: "We do not associate this web browsing history with your name, email address, phone number, or username, and we delete, obfuscate, or aggregate it after no longer than 30 days."
-		relevance: 3.085598
+		clause found: "       Access your personal data."
+		relevance: 3.537825
 
-		clause found: "Keep in mind that search engines and other third parties may still retain copies of your public information, like your profile information and public Tweets, even after you have deleted the information from our services or deactivated your account."
-		relevance: 3.135288
+		clause found: "     How do you exercise your rights for your Personal Data?."
+		relevance: 3.546464
 
 [cluster 4]
 
 	topic: Marketing
 
-		clause found: "We receive certain information when you use our services or other websites or mobile applications that include our content, and from third parties including advertisers."
-		relevance: 2.54809
+		clause found: "        Unsubscribe from our email marketing messages."
+		relevance: 3.023875
 
-		clause found: "To submit a request related to access, modification, or deletion of your information, or someone else’s information if you are their authorized agent, you may also contact us as specified in the How To Contact Us section of our Privacy Policy (Additional Information or Assistance)."
-		relevance: 2.677991
+		clause found: "        Object when we process your Personal Data based on “Legitimate Interest” (including unsubscribing from our direct marketing messages)."
+		relevance: 3.042858
 
-		clause found: "Subject to your settings, we also use contact information to enable certain account features (for example, for login verification), to send you information about our services, and to personalize our services, including ads."
-		relevance: 2.683969
+		clause found: "     Using Third-Party Tools to Exercise Your Individual Rights."
+		relevance: 3.09369
 
 [cluster 5]
 
 	topic: What are your data protection rights?
 
-		clause found: "Accessing or Rectifying Your Personal Data Deletion Object, Restrict, or Withdraw Consent Portability Additional Information or Assistance."
-		relevance: 2.550465
+		clause found: "        Restrict how we use your Personal Data."
+		relevance: 2.9083
 
-		clause found: "We give you control through your settings to limit the data we collect from you and how we use it, and to control things like account security, marketing preferences, apps that can access your account, and address book contacts you’ve uploaded to Twitter."
-		relevance: 2.745904
+		clause found: "     How do you exercise your rights for your Personal Data?."
+		relevance: 2.968913
 
-		clause found: "Notwithstanding anything to the contrary in this Privacy Policy or controls we may otherwise offer to you, we may preserve, use, share, or disclose your personal data or other safety data if we believe that it is reasonably necessary to comply with a law, regulation, legal process, or governmental request; to protect the safety of any person; to protect the safety or integrity of our platform, including to help prevent spam, abuse, or malicious actors on our services, or to explain why we have removed content or accounts from our services8; to address fraud, security, or technical issues; or to protect our rights or property or the rights or property of those who use our services."
-		relevance: 2.844148
+		clause found: "       Access your personal data."
+		relevance: 3.171106
 
 [cluster 6]
 
 	topic: What are cookies?
 
-		clause found: "Like many websites, we use cookies and similar technologies to collect additional website usage data and to operate our services."
-		relevance: 2.355079
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 2.450474
 
-		clause found: "You can learn more about how we use cookies and similar technologies here.."
-		relevance: 2.482581
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.869244
 
-		clause found: "When your browser or device allows it, we use both session cookies and persistent cookies to better understand how you interact with our services, to monitor aggregate usage patterns, and to personalize and otherwise operate our services such as by providing account security, personalizing the content we show you including ads, and remembering your language preferences."
-		relevance: 2.499647
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 3.191597
 
 [cluster 7]
 
 	topic: How do we use cookies?
 
-		clause found: "Like many websites, we use cookies and similar technologies to collect additional website usage data and to operate our services."
-		relevance: 2.144111
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 2.451517
 
-		clause found: "When your browser or device allows it, we use both session cookies and persistent cookies to better understand how you interact with our services, to monitor aggregate usage patterns, and to personalize and otherwise operate our services such as by providing account security, personalizing the content we show you including ads, and remembering your language preferences."
-		relevance: 2.213178
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.477538
 
-		clause found: "You can learn more about how we use cookies and similar technologies here.."
-		relevance: 2.400543
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 3.165862
 
 [cluster 8]
 
 	topic: What types of cookies do we use?
 
-		clause found: "When your browser or device allows it, we use both session cookies and persistent cookies to better understand how you interact with our services, to monitor aggregate usage patterns, and to personalize and otherwise operate our services such as by providing account security, personalizing the content we show you including ads, and remembering your language preferences."
-		relevance: 1.887571
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 2.451804
 
-		clause found: "Like many websites, we use cookies and similar technologies to collect additional website usage data and to operate our services."
-		relevance: 2.296753
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.731649
 
-		clause found: "Our ad partners and affiliates share information with us such as browser cookie IDs, mobile device IDs, hashed email addresses, demographic or interest data, and content viewed or actions taken on a website or app."
-		relevance: 2.366401
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 2.836611
 
 [cluster 9]
 
 	topic: How to manage your cookies
 
-		clause found: "Although most web browsers automatically accept cookies, many browsers’ settings can be set to decline cookies or alert you when a website is attempting to place a cookie on your computer7."
-		relevance: 2.026386
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 3.066699
 
-		clause found: "However, some of our services may not function properly if you disable cookies."
-		relevance: 2.259815
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 3.263608
 
-		clause found: "When your browser or device allows it, we use both session cookies and persistent cookies to better understand how you interact with our services, to monitor aggregate usage patterns, and to personalize and otherwise operate our services such as by providing account security, personalizing the content we show you including ads, and remembering your language preferences."
-		relevance: 2.976343
+		clause found: "       Delete your account and all Personal Data connected to your email address.."
+		relevance: 3.521516
 
 [cluster 10]
 
 	topic: Privacy policies of other websites
 
-		clause found: "We may share your private personal data with such service providers subject to obligations consistent with this Privacy Policy and any other appropriate confidentiality and security measures, and on the condition that the third parties use your private personal data only on our behalf and pursuant to our instructions (service providers may use other non-personal data for their own benefit)."
-		relevance: 2.602656
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.722594
 
-		clause found: "When you view our content on third-party websites."
-		relevance: 2.793235
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 3.159871
 
-		clause found: "To submit a request related to access, modification, or deletion of your information, or someone else’s information if you are their authorized agent, you may also contact us as specified in the How To Contact Us section of our Privacy Policy (Additional Information or Assistance)."
-		relevance: 2.841461
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 3.254357
 
 [cluster 11]
 
 	topic: Changes to our privacy policy
 
-		clause found: "  We may revise this Privacy Policy from time to time."
-		relevance: 2.25215
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 3.328128
 
-		clause found: "  Changes to This Privacy Policy."
-		relevance: 2.326381
+		clause found: "     What does this Privacy Notice tell you?."
+		relevance: 3.730359
 
-		clause found: "By continuing to access or use the Services after those changes become effective, you agree9 to be bound by the revised Privacy Policy.."
-		relevance: 2.858846
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 3.761273
 
 [cluster 12]
 
 	topic: How to contact us
 
-		clause found: "If you have questions about this policy, how we collect or process your personal data, or anything else related to our privacy practices, we want to hear from you."
-		relevance: 1.646847
+		clause found: "     How do you exercise your rights for your Personal Data?."
+		relevance: 2.481524
 
-		clause found: "Thoughts or questions about this Privacy Policy? Please let us know by contacting us here or writing to us at the appropriate address below.."
-		relevance: 2.249054
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.599859
 
-		clause found: "To submit a request related to access, modification, or deletion of your information, or someone else’s information if you are their authorized agent, you may also contact us as specified in the How To Contact Us section of our Privacy Policy (Additional Information or Assistance)."
-		relevance: 2.278588
+		clause found: "     What does this Privacy Notice tell you?."
+		relevance: 2.889209
 
 [cluster 13]
 
 	topic: How to contact the appropriate authorities
 
-		clause found: "If you wish to raise a concern about our use of your information (and without prejudice to any other rights you may have), you have the right to do so with your local supervisory authority or Twitter International Company’s lead supervisory authority, the Irish Data Protection Commission."
-		relevance: 2.877345
+		clause found: "     File a complaint with your local data protection supervisory authority."
+		relevance: 2.566626
 
-		clause found: "If you have a Privacy Shield-related complaint, please contact us here."
-		relevance: 2.9781
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 3.347169
 
-		clause found: "To submit a request related to access, modification, or deletion of your information, or someone else’s information if you are their authorized agent, you may also contact us as specified in the How To Contact Us section of our Privacy Policy (Additional Information or Assistance)."
-		relevance: 2.979387
+		clause found: "     How do you exercise your rights for your Personal Data?."
+		relevance: 3.458242
 
 [END OF REPORT]

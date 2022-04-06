@@ -763,7 +763,7 @@ class PPReporter():
         except:
             pass
 
-        # remove titles
+        # remove section titles because we're only using plain sentences
         clauses_no_titles = []
         [clauses_no_titles.append(c) for c in clauses_splitted if not self.is_title(c)]
         log.info('original clauses length: %d' % len(clauses_no_titles))
@@ -791,6 +791,8 @@ class PPReporter():
                     raw_text.append(report[cluster]['members'][sid]['text'])
 
         elif mode == 'kmeans':
+
+            # load trained centroids
             with open('cluster_centers.json', 'r') as f:
                 trained_centroids = json.load(f)
 
@@ -801,10 +803,11 @@ class PPReporter():
 
             clauses_no_titles_encoded = tsfm.encode(clauses_no_titles)
 
-            for i, c in enumerate(centroids_encoded):
+            for i, c in enumerate(centroids_encoded): # for each trained centroid find the closest sentence
                 distances = [(euclidean(c, v), s) for s, v in zip(clauses_no_titles, clauses_no_titles_encoded)]    # calculate distance and keep the original sentence
                 distances = sorted(distances)   #sort sentences by distance to trained centroids
-                raw_text.append(distances[0][1])    #append closest sentence to retuning text
+                closest_sentence = distances[0][1]
+                raw_text.append(closest_sentence)    #append closest sentence to returning text
             # # only return the sentences & flatten the list because it's 2d (2d arrays are not accepted by SentenceTransformer
             # return list(itertools.chain.from_iterable(list(centers_dict.values())))
 
@@ -821,14 +824,18 @@ class PPReporter():
         rs_encoded = pdc.model.encode(report_sentences)
 
         ssd = 0
-        for t in titles:
+        for i, t in enumerate(titles):
+            print('[%s]' % ref.key_topics_titles[i])
             t_distance = 1e+10
-            for rs in rs_encoded:
+            closest_sentence = ''
+            for i, rs in enumerate(rs_encoded):
                 d = euclidean(t,rs)
                 if d < t_distance:
                     t_distance = d
+                    closest_sentence = report_sentences[i]
+                    print('%s: %.4f' % (closest_sentence, t_distance ** 2))
             ssd += t_distance ** 2  # add squared minimal distance
-
+        print('----------------------------------------------------------')
         # log.info('report score: {}'.format(round(ssd,2)))
         return ssd
 
@@ -851,23 +858,29 @@ class RougeEvaluation():
 
     def evaluate(self, summaries_list, references):
         rf = RefGDPR()
-        scores = {}
+        scores_1 = {}
+        scores_L = {}
         for topic, ref in zip(rf.key_topics_titles, references):  # essential GDPR topic sample sentence (out of 14)
-            score = -1
+            score_1 = -1
+            score_L = -1
             for summary in summaries_list:
                 results = self.rouge_model.get_scores(hypothesis=[summary], references=[ref])
-                rouge_2 = results['rouge-2']['f']
                 rouge_1 = results['rouge-1']['f']
-                rouge_l = results['rouge-l']['f']
-                rouge_w = results['rouge-w']['f']
-                rouge_avg = (rouge_2+rouge_1+rouge_l+rouge_w)/4
-                if rouge_avg > score:
-                    score = rouge_avg
-            scores[topic.replace(' ','_')] = score
+                rouge_L = results['rouge-l']['f']
 
-        scores['mean'] = sum(list(scores.values()))/len(scores)
+                if rouge_1 > score_1:
+                    score_1 = rouge_1
+                if rouge_L > score_L:
+                    score_L = rouge_L
+
+            scores_1[topic.replace(' ', '_')] = score_1
+            scores_L[topic.replace(' ', '_')] = score_L
+
+        scores_1['mean'] = sum(list(scores_1.values()))/len(scores_1)
+        scores_L['mean'] = sum(list(scores_L.values()))/len(scores_L)
+
         # print(scores)
-        return scores
+        return scores_1, scores_L
 
 def take_input(n_best, url):
     ppr = PPReporter()
@@ -953,13 +966,16 @@ def evaluate_clauses_rouge(target_url):
     raw_text_kms = ppr.generate_report(url=target_url,
                                        mode='kmeans')
 
-    rand = rg.evaluate(random_14, ref_summary)
-    pdc = rg.evaluate(raw_text_pdc, ref_summary)
-    kms = rg.evaluate(raw_text_kms, ref_summary)
+    rand_1, rand_L = rg.evaluate(random_14, ref_summary)
+    pdc_1, pdc_L = rg.evaluate(raw_text_pdc, ref_summary)
+    kms_1, kms_L = rg.evaluate(raw_text_kms, ref_summary)
     return {
-        'rand': rand,
-        'pdc': pdc,
-        'kms': kms
+        'rand': {'one': rand_1,
+                 'L' : rand_L},
+        'pdc': {'one': pdc_1,
+                'L': pdc_L},
+        'kms': {'one': kms_1,
+                'L': kms_L}
     }
 
 def calc_avg(list):
@@ -1007,41 +1023,77 @@ def record_evaluation_results_rouge():
         rouge_json = json.load(f)
 
     with open('rouge_evaluation.txt', 'w') as f:
-        pdc_mean_global = 0
-        kms_mean_global = 0
-        rand_mean_global = 0
+        pdc_mean_1_global = 0
+        kms_mean_1_global = 0
+        rand_mean_1_global = 0
 
-        pdc_means = []
-        kms_means = []
-        rand_means = []
+        pdc_mean_L_global = 0
+        kms_mean_L_global = 0
+        rand_mean_L_global = 0
+
+        # means for ROUGE_1
+        pdc_means_1 = []
+        kms_means_1 = []
+        rand_means_1 = []
+
+        # means for ROUGE_L
+        pdc_means_L = []
+        kms_means_L = []
+        rand_means_L = []
 
         # calculate mean score across topics for each website
         for website in rouge_json.keys():
-            pdc_mean = rouge_json[website]['pdc']['mean']
-            pdc_means.append(pdc_mean)
+            pdc_mean_1 = rouge_json[website]['pdc']['one']['mean']
+            pdc_means_1.append(pdc_mean_1)
 
-            kms_mean = rouge_json[website]['kms']['mean']
-            kms_means.append(kms_mean)
+            pdc_mean_L = rouge_json[website]['pdc']['L']['mean']
+            pdc_means_L.append(pdc_mean_L)
 
-            rand_mean = rouge_json[website]['rand']['mean']
-            rand_means.append(rand_mean)
+            kms_mean_1 = rouge_json[website]['kms']['one']['mean']
+            kms_means_1.append(kms_mean_1)
 
-            f.write('[%s] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (website, rand_mean, pdc_mean, kms_mean))
+            kms_mean_L = rouge_json[website]['kms']['L']['mean']
+            kms_means_L.append(kms_mean_L)
 
-            pdc_mean_global += pdc_mean
-            kms_mean_global += kms_mean
-            rand_mean_global += rand_mean
+            rand_mean_1 = rouge_json[website]['rand']['one']['mean']
+            rand_means_1.append(rand_mean_1)
 
-        pdc_mean_global = pdc_mean_global/len(rouge_json)
-        kms_mean_global = kms_mean_global/len(rouge_json)
-        rand_mean_global = rand_mean_global/len(rouge_json)
+            rand_mean_L = rouge_json[website]['rand']['L']['mean']
+            rand_means_L.append(rand_mean_L)
 
-        pdc_std = std_dev(pdc_means, pdc_mean_global)
-        kms_std = std_dev(kms_means, kms_mean_global)
-        rand_std = std_dev(rand_means, rand_mean_global)
+            f.write('[%s] ROUGE-1 | rand: %.4f | pdc: %.4f | kms: %.4f\n' % (website, rand_mean_1, pdc_mean_1, kms_mean_1))
+            f.write('[%s] ROUGE-L | rand: %.4f | pdc: %.4f | kms: %.4f\n' % (website, rand_mean_L, pdc_mean_L, kms_mean_L))
 
-        f.write('[GLOBAL] [mean] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (rand_mean_global, pdc_mean_global, kms_mean_global))
-        f.write('[GLOBAL] [std. dev.] rand: %.4f | pdc: %.4f | kms: %.4f' % (rand_std, pdc_std, kms_std))
+            pdc_mean_1_global += pdc_mean_1
+            kms_mean_1_global += kms_mean_1
+            rand_mean_1_global += rand_mean_1
+
+            pdc_mean_L_global += pdc_mean_L
+            kms_mean_L_global += kms_mean_L
+            rand_mean_L_global += rand_mean_L
+
+        ###calculate global mean for ROUGE-1
+        pdc_mean_1_global = pdc_mean_1_global/len(rouge_json)
+        kms_mean_1_global = kms_mean_1_global/len(rouge_json)
+        rand_mean_1_global = rand_mean_1_global/len(rouge_json)
+
+        ###calculate global standard deviation for ROUGE-1
+        pdc_mean_L_global = pdc_mean_L_global / len(rouge_json)
+        kms_mean_L_global = kms_mean_L_global / len(rouge_json)
+        rand_mean_L_global = rand_mean_L_global / len(rouge_json)
+
+        pdc_1_std = std_dev(pdc_means_1, pdc_mean_1_global)
+        kms_1_std = std_dev(kms_means_1, kms_mean_1_global)
+        rand_1_std = std_dev(rand_means_1, rand_mean_1_global)
+
+        pdc_L_std = std_dev(pdc_means_L, pdc_mean_L_global)
+        kms_L_std = std_dev(kms_means_L, kms_mean_L_global)
+        rand_L_std = std_dev(rand_means_L, rand_mean_L_global)
+
+        f.write('[GLOBAL] [ROUGE-1] [mean] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (rand_mean_1_global, pdc_mean_1_global, kms_mean_1_global))
+        f.write('[GLOBAL] [ROUGE-1] [std. dev.] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (rand_1_std, pdc_1_std, kms_1_std))
+        f.write('[GLOBAL] [ROUGE-L] [mean] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (rand_mean_L_global, pdc_mean_L_global, kms_mean_L_global))
+        f.write('[GLOBAL] [ROUGE-L] [std. dev.] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (rand_L_std, pdc_L_std, kms_L_std))
 
 
 def visualise_evaluation_results_ssd():
@@ -1064,6 +1116,31 @@ def visualise_evaluation_results_ssd():
     plt.legend(bbox_to_anchor=(0.99,1.0), loc='upper left')
     plt.savefig('ssd_plot.png', bbox_inches='tight')
 
+def visualise_evaluation_results_rouge():
+    with open('rouge_evaluation.json', 'r') as f:
+        rouge_eval = json.load(f)
+
+    companies = list(rouge_eval.keys())
+    scores_rand = []
+    scores_pdc = []
+    scores_kms = []
+
+    for comp in companies:
+        scores_rand.append(rouge_eval[comp]['rand']['mean'])
+        scores_pdc.append(rouge_eval[comp]['pdc']['mean'])
+        scores_kms.append(rouge_eval[comp]['kms']['mean'])
+
+    fig, ax = plt.subplots()
+    ax.plot(companies, scores_rand, label='random')
+    ax.plot(companies, scores_pdc, label='PDC')
+    ax.plot(companies, scores_kms, label='K-means')
+    ax.set_xticks(companies[::2])
+    ax.set_xticklabels(companies[::2], rotation=75)
+    ax.set_ylabel('Rouge mean score')
+    ax.set_xlabel('Privacy Policy company name')
+    plt.legend(bbox_to_anchor=(0.99,1.0), loc='upper left')
+    plt.savefig('rouge_plot.png', bbox_inches='tight')
+
 def main():
 
     """""""download sentence transformer model and save"""""""
@@ -1077,27 +1154,29 @@ def main():
     sentences_raw = pd.read_csv('training_data/alice/data_alice.csv')['clause']
     labels_raw = pd.read_csv('training_data/alice/data_alice.csv')['class']
     sentences, labels = ut.format_sentences(sentences_raw, labels_raw)
+
+    ### find average word length of sentences
     # sum = 0
     # for s in sentences:
-    #     sum += len(s)
+    #     sum += len(s.split(' '))
     # print('%d words on average!'%(sum/len(sentences)))
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""do Pre-Deteremined centroid clustering"""""""""""""""""""""""""""""
-    # pdc = PDC()
-    # result = pdc.get_n_best_from_predefined_centroids(sentences,10)
-    # for cluster in result.keys():
-    #     log.info('topic: {}'.format(result[cluster]['topic']))
-    #     for member in result[cluster]['members'].keys():
-    #         log.info('{}: {}'.format(member, result[cluster]['members'][member]))
-    #     log.info('\n')
+    pdc = PDC()
+    result = pdc.get_n_best_from_predefined_centroids(sentences,1000)
+    for cluster in result.keys():
+        log.info('topic: {}'.format(result[cluster]['topic']))
+        for member in result[cluster]['members'].keys():
+            log.info('{}: {}'.format(member, result[cluster]['members'][member]))
+        log.info('\n')
 
-    # pdc_clustered_dict, sentence_vectors = pdc.run_clustering_with_predetermined_centroids(sentences, n_best=100000)
-    # pca_vectors, _ = clu.do_pca(n_components=3, sentences=sentence_vectors)
-    # labels = list(map(int, list(pdc_clustered_dict.values())))
-    # clu.plot_labels(pca_vectors, labels, 'pdc') #plot clustering results
-    # sil = silhouette_score(pca_vectors, labels)
-    # log.info(sil)
+    pdc_clustered_dict, sentence_vectors = pdc.run_clustering_with_predetermined_centroids(sentences, n_best=100000)
+    pca_vectors, _ = clu.do_pca(n_components=3, sentences=sentence_vectors)
+    labels = list(map(int, list(pdc_clustered_dict.values())))
+    clu.plot_labels(pca_vectors, labels, 'pdc') #plot clustering results
+    sil = silhouette_score(pca_vectors, labels)
+    log.info(sil)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""do embedding and load embedded sentences to be processed"""""""""
@@ -1190,18 +1269,18 @@ def main():
     #     f.write('company_name,score_rand,score_pdc,score_kms,score_gdpr\n')
     #     for url in urls_to_eval:
     #         f.write(evaluate_clauses_ssd(url)+'\n')
-    #
-    # #### play around with the SSD evaluation result
+
+    # play around with the SSD evaluation result
     # record_evaluation_results_ssd()
     # visualise_evaluation_results_ssd()
 
-    ### test take input module for flask app
+    # test take input module for flask app
     # n_best = 1
     # url = 'https://stackoverflow.com/legal/privacy-policy'
     # take_input(n_best, url)
 
-    """""""""""""""""""""""""""""""""generate report on PP (ROUGE) using a url & evaluate"""""""""""""""""""""""""""""""""
-    # ## get list of urls to test
+    # """""""""""""""""""""""""""""""""generate report on PP (ROUGE) using a url & evaluate"""""""""""""""""""""""""""""""""
+    # ######## get list of urls to test
     # with open('pps_to_eval.txt', 'r') as f:
     #     urls_to_eval = f.read().split('\n')
     # try:
@@ -1221,7 +1300,13 @@ def main():
     # with open('rouge_evaluation.json', 'w') as f:
     #     json.dump(rouge_results, f)
 
-    record_evaluation_results_rouge()
-    # visualise_evaluation_results_ssd()
+    ### make the results pretty to human eyes
+    # record_evaluation_results_rouge()
+    # visualise_evaluation_results_rouge()
+
+    # ### print out sentences to interpret SSD results
+    # test_url = 'https://weather.com/en-US/twc/privacy-policy'
+    # evaluate_clauses_ssd(test_url)
+
 if __name__ == '__main__':
     main()

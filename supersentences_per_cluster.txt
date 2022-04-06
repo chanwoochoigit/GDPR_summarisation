@@ -1,0 +1,300 @@
+cluster 0:
+	data:
+		The face recognition templates that we create are data with special protections under EU law.
+	information:
+		For example, we analyse information that we have about migration patterns during crises to aid relief efforts.
+	We:
+		We'll notify you before we make changes to this Policy and give you the opportunity to review the revised Policy before you choose to continue using our Products.
+	services:
+		This also includes gender and/or occupation when required for certain services or programs, such as our Cash services or Women Rider Preferred.
+	collect:
+		We collect information with 5 means.
+	personal:
+		In addition our legitimate interests where we have carried out balancing tests which can be informed on 'How we use your personal information' section, potential disputes and guidelines issued by relevant data protection authorities.
+	share:
+		Occasionally we share CCTV with public or regulatory authorities or in response to requests from individuals seeking to protect their rights, the rights of others or helping to prevent crime and nuisance.
+cluster 1:
+	services:
+		These partners provide information about your activities off our application including information about your device, websites you visit, purchases you make, the ads you see and how you use their services .
+	providers:
+		We also receive information about your online and offline actions and purchases from third party data providers who have the rights to provide us with your information.
+	party:
+		We also receive information about your online and offline actions and purchases from third party data providers who have the rights to provide us with your information.
+	parties:
+		Partners receive your data when you visit or use their services, or through third parties that they work with.
+	companies:
+		We work with third party partners who help us provide and improve our Products or who use our application Business Tools to grow their businesses, which makes it possible to operate our companies and provide free services to people around the world.
+	infrastructure:
+		our application and our application share infrastructure, systems and technology with other our application Companies which include WhatsApp and Oculus to provide an innovative, relevant, consistent and safe experience across all our application Company Products that you use.
+	external:
+		Other customers you want to set up joint our accounts with, other apps, other banks if you use account switching or aggregation services and people you ve asked to represent you, like solicitors and Law enforcement and other external parties.
+cluster 2:
+	security:
+		We use the information that we have to verify accounts and activity, combat harmful conduct, detect and prevent spam and other bad experiences, maintain the integrity of our Products, and promote safety and security on and off our Products.
+	safe:
+		We use the information that we have to verify accounts and activity, combat harmful conduct, detect and prevent spam and other bad experiences, maintain the integrity of our Products, and promote safety and security on and off our Products.
+	protect:
+		When we have a good faith belief that it is necessary to detect, prevent and address fraud, unauthorised use of the Products, breaches of our Terms or Policies, or other harmful or illegal activity, to protect ourselves including our rights, property or Products, you or others, including as part of investigations or regulatory enquiries, or to prevent death or imminent bodily harm.
+	unauthorised:
+		When we have a good faith belief that it is necessary to detect, prevent and address fraud, unauthorised use of the Products, breaches of our Terms or Policies, or other harmful or illegal activity, to protect ourselves including our rights, property or Products, you or others, including as part of investigations or regulatory enquiries, or to prevent death or imminent bodily harm.
+	secure:
+		We also obtain information from security service providers who provide us with information to secure our systems, prevent fraud and help us protect the security of your accounts.
+	loss:
+		We use reasonable administrative, logical, physical and managerial measures to safeguard your personal information against loss, theft and unauthorized access, use and modification.
+	ensure:
+		We will take all steps reasonably necessary to ensure that your data is treated securely and in accordance with this privacy policy when it is transferred to third parties.
+cluster 3:
+	share:
+		Learn more about how you can control who can see the things you share.
+	information:
+		Learn how we share information with these partners.
+	We:
+		We also let other accounts see who has viewed their application pages.
+	service:
+		Public information can also be seen, accessed, reshared or downloaded through third party services such as search engines, APIs and offline media such as TV, and by apps, websites and other services that integrate with our Products.
+	friends:
+		For example, when you share a post or send a message to specific friends or accounts, they can download, screenshot or reshare that content to others across or off our Products, in person or in virtual reality experiences.
+	affiliates:
+		We may collect information about you from other users, our affiliates, and third parties.
+	sharing:
+		This includes sharing personal data with law enforcement officials, public health officials, other government authorities, airports if required by the airport authorities as a condition of operating on airport property, or other third parties as necessary to enforce our Terms of Service, user agreements, or other policies, to protect Uber s rights or property or the rights, safety, or property of others, or in the event of a claim or dispute relating to the use of our services.
+cluster 4:
+	cookies:
+		Like most online services and mobile applications, we may use cookies and other technologies, such as web beacons, web storage, and unique advertising identifiers, to collect information about your activity, browser, and device.
+	technologies:
+		Like most online services and mobile applications, we may use cookies and other technologies, such as web beacons, web storage, and unique advertising identifiers, to collect information about your activity, browser, and device.
+	cookie:
+		Like most online services and mobile applications, we may use cookies and other technologies, such as web beacons, web storage, and unique advertising identifiers, to collect information about your activity, browser, and device.
+	browser:
+		Like most online services and mobile applications, we may use cookies and other technologies, such as web beacons, web storage, and unique advertising identifiers, to collect information about your activity, browser, and device.
+	similar:
+		In some cases, we collect this data through cookies, pixels, tags, and similar tracking technologies that create and maintain unique identifiers.
+	Cookies:
+		Cookies are small text files that are stored on browsers or devices by websites, apps, online media, and advertisements.
+	small:
+		Cookies are small text files that are stored on browsers or devices by websites, apps, online media, and advertisements.
+cluster 5:
+	ads:
+		For example, we use information collected about your use of our Products on your phone to better personalise the content including ads or features that you see when you use our Products on another device, such as your laptop or tablet, or to measure whether you took an action in response to an ad that we showed you on your phone on a different device.
+	show:
+		For example, we use information collected about your use of our Products on your phone to better personalise the content including ads or features that you see when you use our Products on another device, such as your laptop or tablet, or to measure whether you took an action in response to an ad that we showed you on your phone on a different device.
+	measure:
+		For example, we use information collected about your use of our Products on your phone to better personalise the content including ads or features that you see when you use our Products on another device, such as your laptop or tablet, or to measure whether you took an action in response to an ad that we showed you on your phone on a different device.
+	ad:
+		For example, we use information collected about your use of our Products on your phone to better personalise the content including ads or features that you see when you use our Products on another device, such as your laptop or tablet, or to measure whether you took an action in response to an ad that we showed you on your phone on a different device.
+	advertising:
+		We may also use these technologies to collect information when you interact with services we offer through one of our partners, such as advertising and commerce features.
+	relevant:
+		For example, we may use information collected on other websites to show you more relevant ads.
+	advertisements:
+		We re constantly collecting and updating information about the things you might like and dislike, so we can provide you with more relevant content and advertisements.
+cluster 6:
+	collect:
+		We collect the content, communications and other information you provide when you use our Products, including when you sign up for an account, create or share content and message or communicate with others.
+	We:
+		We collect the content, communications and other information you provide when you use our Products, including when you sign up for an account, create or share content and message or communicate with others.
+	provide:
+		We collect the content, communications and other information you provide when you use our Products, including when you sign up for an account, create or share content and message or communicate with others.
+	data:
+		For example, we use data that we have to investigate suspicious activity or breaches of our Terms or Policies, or to detect when someone needs help.
+	services:
+		When you interact with our services, we collect information that you provide to us.
+	improve:
+		We use your information to develop, operate, improve, deliver, maintain, and protect our products and services.
+	personal:
+		We use your personal data to create and update users accounts.
+cluster 7:
+	address:
+		We also collect contact information if you choose to upload, sync or import it from a device such as an address book or call log or SMS log history, which we use for things such as helping you and others find people you may know and for the other purposes listed below.
+	contact:
+		We also collect contact information if you choose to upload, sync or import it from a device such as an address book or call log or SMS log history, which we use for things such as helping you and others find people you may know and for the other purposes listed below.
+	number:
+		This includes payment information, such as your credit or debit card number and other card information, other account and authentication information, and billing, delivery and contact details.
+	delivery:
+		This includes payment information, such as your credit or debit card number and other card information, other account and authentication information, and billing, delivery and contact details.
+	details:
+		This includes payment information, such as your credit or debit card number and other card information, other account and authentication information, and billing, delivery and contact details.
+	email:
+		For example, most of our services require you to set up an account, so we need to collect a few important details about you, such as your name, username, password, email address, phone number, and date of birth.
+	birth:
+		For example, most of our services require you to set up an account, so we need to collect a few important details about you, such as your name, username, password, email address, phone number, and date of birth.
+cluster 8:
+	long:
+		We store data until it is no longer necessary to provide our services and our application Products or until your account is deleted whichever comes first.
+	data:
+		We store data until it is no longer necessary to provide our services and our application Products or until your account is deleted whichever comes first.
+	legal:
+		This is a case by case determination that depends on things such as the nature of the data, why it is collected and processed, and relevant legal or operational retention needs.
+	period:
+		Information we receive about you including financial transaction data related to purchases made with our application can be accessed and preserved for an extended period when it is the subject of a legal request or obligation, governmental investigation or investigations of possible violations of our terms or policies, or otherwise to prevent harm.
+	retain:
+		We also retain information from accounts disabled for term breaches for at least a year to prevent repeat abuse or other term breaches.
+	required:
+		Finally, we may also retain certain information in backup for a limited period of time or as required by law.
+	hold:
+		If you are not an Account holder, we will collect and store all information you provide and use such information in accordance with this Privacy Statement.
+cluster 9:
+	law:
+		We require each of these partners to have lawful rights to collect, use and share your data before providing us with any data.
+	rights:
+		We require each of these partners to have lawful rights to collect, use and share your data before providing us with any data.
+	data:
+		We require each of these partners to have lawful rights to collect, use and share your data before providing us with any data.
+	legal:
+		We share information with law enforcement or in response to legal requests in the circumstances outlined below.
+	comply:
+		We use your information to enforce our Terms of Service and other usage policies and comply with legal requirements.
+	personal:
+		Because your privacy is important to us, we will ask you to verify your identity or provide additional information before we let you access or update your personal information.
+	obligation:
+		We process personal data to fulfill our legal obligations.
+cluster 10:
+	sell:
+		We don't sell any of your information to anyone and we never will.
+	don:
+		We don't sell any of your information to anyone and we never will.
+	won:
+		Information that others have shared about you isn't part of your account and won't be deleted.
+	children:
+		We do not knowingly collect personal data from children under 13 years or under the applicable age limit.
+	knowingly:
+		We do not knowingly collect personal data from children under 13 years or under the applicable age limit.
+	13:
+		We do not knowingly collect personal data from children under 13 years or under the applicable age limit.
+	DNT:
+		Do Not Track DNT is an optional browser setting that allows you to express your preferences regarding tracking by advertisers and other third parties.
+cluster 11:
+	delete:
+		For example, when you search for something on our application, you can access and delete that query from within your search history at any time, but the log of that search is deleted after six months.
+	stop:
+		If you ever decide to stop using our product, you can just ask us to delete your account.
+	We:
+		We ll also delete most of the information we ve collected about you after you have been inactive for a while.
+	opt:
+		In most cases, if you let us use your information, you can simply revoke your permission by changing the settings in the app or on your device if your device offers those options.
+	You:
+		You can also delete some information in the app, like photos you ve saved to Memories, Our Story submissions, and search history.
+	longer:
+		Responses to such surveys are collected on the basis of consent and will be deleted once no longer necessary for the purposes collected.
+	withdraw:
+		You can object to processing of your personal information, ask us to restrict processing of your personal information or request portability of your personal information, if we have collected and process your personal information with your consent, then you can withdraw your consent at any time.
+cluster 12:
+	suggest:
+		It can also include what you see through features that we provide, such as our camera, so we can do things such as suggest masks and filters that you might like, or give you tips on using portrait mode.
+	products:
+		We use the information we have to develop, test and improve our Products, including by conducting surveys and research, and testing and troubleshooting new products and features.
+	improve:
+		We use the information we have to develop, test and improve our Products, including by conducting surveys and research, and testing and troubleshooting new products and features.
+	personal:
+		For example, if you use the Map, we store information about your favorite places for up to 40 days so we can personalize and improve your experience.
+	data:
+		Uber uses the data we collect to provide, personalize, maintain, and improve our products and services.
+	opportunities:
+		You don t have to provide additional information on your profile, however, profile information helps you to get more from our services, including helping recruiters and business opportunities find you.
+	ideas:
+		Our product allow you to stay informed about news, events and ideas regarding professional topics you care about, and from professionals you respect.
+cluster 13:
+	consent:
+		In some cases we ll ask for consent to use your information for specific purposes.
+	ll:
+		In some cases we ll ask for consent to use your information for specific purposes.
+	permission:
+		Even if we re not relying on consent to use your information, we may ask you for permission to access data like contacts and location.
+	direct:
+		Although we may send users communications about our partners products and services, we do not sell users personal data to, or share it with, such partners or others for purposes of their own direct marketing or advertising, except with users consent.
+	constitutes:
+		Android devices notify users of the permissions that the app seeks before their first use of the app, and use of the app constitutes a grant of such permission.
+	contract:
+		We will normally collect personal information from you where we need the personal information to perform a contract with you for example, to provide our services to you, where the processing is in our legitimate interests and not overridden by your data protection interests or fundamental rights and freedoms for example, our direct marketing activities in accordance with your preferences, or where we have your consent to do so for example, for you to participate in certain consumer insights activities like specific surveys and focus groups.
+	legitimate:
+		We will normally collect personal information from you where we need the personal information to perform a contract with you for example, to provide our services to you, where the processing is in our legitimate interests and not overridden by your data protection interests or fundamental rights and freedoms for example, our direct marketing activities in accordance with your preferences, or where we have your consent to do so for example, for you to participate in certain consumer insights activities like specific surveys and focus groups.
+cluster 14:
+	object:
+		You have the right to object to our use of your information.
+	questions:
+		Questions or comments from users submitted through public forums such as our blogs and our social media pages may be viewable by the public, including any personal data included in the questions or comments submitted by a user.
+	complaint:
+		We use data which can include your communications to investigate, respond to and resolve complaints and for Service issues such as bugs.
+	complaints:
+		We use data which can include your communications to investigate, respond to and resolve complaints and for Service issues such as bugs.
+	resolve:
+		We use data which can include your communications to investigate, respond to and resolve complaints and for Service issues such as bugs.
+	contact:
+		You may also contact us using the contact information below, and we will consider your request in accordance with applicable laws.
+	Protection:
+		Residents in the Designated Countries and other regions may also have the right to contact our Data Protection Officer.
+cluster 15:
+	financial:
+		If you use our Products for purchases or other financial transactions such as when you make a purchase in a game or make a donation, we collect information about the purchase or transaction.
+	fraud:
+		For example, if relevant, we provide information to and receive information from third party partners about the reliability of your account to prevent fraud, abuse and other harmful activity on and off our Products.
+	credit:
+		Other services, such as commerce products, may require you to provide us with a debit or credit card number and its associated account information.
+	money:
+		When you use our Services or access our Sites, for example to make purchases from merchants, to receive money, to process payments, or to send money to friends and family, we collect information about the transaction, as well as other information associated with the transaction such as amount sent or requested, amount paid for products or services, merchant information, including information about any funding instruments used to complete the transaction, Device Information, Technical Usage Data, and Geolocation Information.
+	agencies:
+		We may share information about you with credit agencies and data processors for credit reference checks and anti fraud and compliance purposes.
+	laundering:
+		We and other organisations, including parties that accept us, may also share, access and use, including from other countries, necessary information, including, without limitation the information recorded by fraud prevention agencies, to help us and them assess and to manage risk, including, without limitation, to prevent fraud, money laundering and terrorist financing.
+	Credit:
+		If you choose to apply for our Credit, in order to process your application, we will supply your personal information to credit reference agencies CRAs and they will give us information about you, such as about your financial history.
+cluster 16:
+	send:
+		We use the information that we have to send you marketing communications, communicate with you about our Products and let you know about our Policies and Terms.
+	communications:
+		We use the information that we have to send you marketing communications, communicate with you about our Products and let you know about our Policies and Terms.
+	messages:
+		For example, we may collect information about how you communicate with other product users, such as their names, the time and date of your communications, the number of messages you exchange with your friends, which friends you exchange messages with the most, and your interactions with messages such as when you open a message or capture a screenshot.
+	email:
+		We use your information to send you communications, including by email.
+	data:
+		To provide this service, we receive some data regarding the calls, texts, or other communications, including the date and time of the communications and the content of the communications.
+	push:
+		Users may enable our app to send push notifications about discounts and news from us.
+	personal:
+		We use your personal information to communicate with you in relation to our Services via different channels, for example, by phone, email, chat.
+cluster 17:
+	profile:
+		This includes your username, any information you share with a public audience, information in your public profile , and content you share on a Page, public account or any other public forum.
+	account:
+		This includes your username, any information you share with a public audience, information in your public profile , and content you share on a Page, public account or any other public forum.
+	change:
+		Also, when you comment on someone else's post or react to their content, your comment or reaction is visible to anyone who can see the other person's content, and that person can change the audience later.
+	settings:
+		How widely your content is shared depends on your personal settings and the type of service you are using.
+	You:
+		You can access and edit most of your basic account information right in our apps.
+	preferences:
+		If you would like to modify the information we and our advertising partners use to select these ads, you can do so in the app and through your device preferences.
+	We:
+		We provide many choices about the collection, use and sharing of your data, from deleting or correcting data you include in your profile and controlling the visibility of your posts to advertising opt outs and communication controls.
+cluster 18:
+	privacy:
+		As always, we encourage you to review the privacy policies of every third party service that you visit or use, including those third parties you interact with through our services.
+	Privacy:
+		This notice applies to all users of our apps, websites, features, or other services anywhere in the world, unless covered by a separate privacy notice, such as the Privacy Notice or Privacy Policy.
+	Policy:
+		This notice applies to all users of our apps, websites, features, or other services anywhere in the world, unless covered by a separate privacy notice, such as the Privacy Notice or Privacy Policy.
+	Notice:
+		This notice applies to all users of our apps, websites, features, or other services anywhere in the world, unless covered by a separate privacy notice, such as the Privacy Notice or Privacy Policy.
+	notice:
+		This notice applies to all users of our apps, websites, features, or other services anywhere in the world, unless covered by a separate privacy notice, such as the Privacy Notice or Privacy Policy.
+	policy:
+		This Privacy Policy applies to our homepage, our brand apps and other related sites, apps, communications and services, including off site services, such as our ad services and the Apply with us and Share with us plugins, but excluding services that state that they are offered under a different privacy policy.
+	Shield:
+		Second, we use the EU approved Standard Contractual Clauses and where your personal data is transferred to third party providers based in the US, data may be transferred to them if they have self certified under the Privacy Shield framework in relation to the type of data being transferred, which requires them to provide similar protection to personal data shared between the EU and the US.
+cluster 19:
+	device:
+		As described below, we collect information from and about the computers, phones, connected TVs and other web connected devices you use that integrate with our Products, and we combine this information across different devices that you use.
+	devices:
+		As described below, we collect information from and about the computers, phones, connected TVs and other web connected devices you use that integrate with our Products, and we combine this information across different devices that you use.
+	collect:
+		As described below, we collect information from and about the computers, phones, connected TVs and other web connected devices you use that integrate with our Products, and we combine this information across different devices that you use.
+	location:
+		Location related information can be based on things such as precise device location if you've allowed us to collect it, IP addresses and information from your and others' use of our Products such as check ins or events you attend.
+	IP:
+		Location related information can be based on things such as precise device location if you've allowed us to collect it, IP addresses and information from your and others' use of our Products such as check ins or events you attend.
+	app:
+		Devices and operating systems providing native versions of our application and our application i.
+	mobile:
+		For example, we collect information about your wireless and mobile network connections, such as mobile phone number, service provider, IP address, and signal strength.
