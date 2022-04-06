@@ -1,49 +1,28 @@
 0:
-You consent to and direct us to disclose Account Information to intellectual property right owners if under the applicable national law of an EU member state they have a claim against us for an out of court information disclosure due to an infringement of their intellectual property rights for which our Services have been used, for example, but without limitation, Sec.
-Individuals in California, the European Economic Area, Canada, Costa Rica and some other jurisdictions outside the United States have certain legal rights to obtain confirmation of whether we hold personal data about them, to access personal data we hold about them including, in some cases, in portable form, and to obtain its correction, update, amendment or deletion in appropriate circumstances.
-Some analytics providers we partner with may provide specific opt out mechanisms and we may provide, as needed and as available, additional tools and third party services that allow you to better understand cookies and how you can opt out.
+Companies that help us with marketing but we won t share identifiable personal data with third parties for their own direct marketing unless you give us permission, and you can opt out any time, software companies that we use for emailing you like Front, or for processing and storing email communications with you like Intercom.
 1:
-2:
-Notwithstanding anything to the contrary in this Privacy Policy or controls we may otherwise offer to you, we may preserve, use, share, or disclose your personal data or other safety data if we believe that it is reasonably necessary to protect the safety or integrity of our platform, including to help prevent spam, abuse, or malicious actors on our services, or to explain why we have removed content or accounts from our services.
-Notwithstanding anything to the contrary in this Privacy Policy or controls we may otherwise offer to you, we may preserve, use, share, or disclose your personal data or other safety data if we believe that it is reasonably necessary to address fraud, security, or technical issues, or to protect our rights or property or the rights or property of those who use our services.
-Please note, however, that the posts, comments, and messages you submitted prior to deleting your account will still be visible to others unless you first delete the specific content.
-3:
-Where necessary, we transmit your personal data to processors and the following recipients for one or several of the purposes described above including corporate family members, external service providers, third parties using our single sign on service as authorised by you in each single case, other third parties with whom we partner to offer you specific services as described at the collection of the respective user consent.
-We may share information if we believe it's necessary to prevent imminent and serious bodily harm to a person.
-4:
-By continuing to use our Services after Privacy Policy changes go into effect, you agree to be bound by the revised policy.
-This enables us, in particular, to provide you, with your consent as legally required, with information about products and services, which we believe might interest you, and improve our products, services, content, and advertising by analysing your use of the services of other corporate family members, in particular through the matching of certain data like cookie IDs.
-You can opt out from our use of data from cookies and similar technologies that track your behavior on the sites of others for ad targeting and other ad related purposes.
-These rights can be exercised using the information provided under Your Choices above or as described in the Your Rights Data Subject and Consumer Information Requests section above.
-5:
-We may obtain certain data about you, such as cookie id, mobile device id, or email address, and inferences about your interests and preferences from certain advertisers and advertising partners that allow us to deliver more relevant ads and measure their effectiveness.
-We collect information about you and your use of our service, your interactions with us and our advertising, as well as information regarding your network, network devices, and your computer or other devices you might use to access our service such as gaming systems, smart TVs, mobile devices, set top boxes, and other streaming media devices.
-6:
-For example, we process your personal data to provide and improve our Services, to provide you with a personalised user experience on this website, to contact you about your account and our Services, to provide customer service, to provide you with personalised advertising and marketing communications, and to detect, prevent, mitigate and investigate fraudulent or illegal activity.
-Third parties based on statutory information claims against us, third party service providers, third parties who are involved in judicial proceedings, in particular, if they submit a legal order, court order or equivalent legal order to us, credit agencies, bureaus, or associations, if required by applicable law like information on payment delays, payment defaults or other irregularities that may be relevant to your credit report and our corporate family members.
-As required by applicable law, we collect and process information about individuals in the EEA only where we have a legal basis for doing so.
-7:
-As a result of those actions, you might supply us with such information as your name, address and phone number, payment information, your age, your location information, your IP address, people, addresses and phone numbers listed in your Addresses, e mail addresses of your friends and other people, content of reviews and e mails to us, personal description and photograph in Your Profile, voice recordings when you speak to Alexa, images and video collected or stored in connection with our Services, information and documents regarding identity and standing, corporate and financial information, credit history information, VAT numbers, and device log files and configurations, including Wi Fi credentials, if you choose to automatically synchronise them with your other our devices.
-This can include information about your name, date of birth, email address, postal address, phone number, mobile number, financial details, such as payment cards you use to purchase products, subscriptions or support our journalism.
-These rights can be exercised as described in the Data Subject and Consumer Information Requests section above.
-8:
-We encourage you to review the Privacy Policy whenever you access or use our Services or otherwise interact with us to stay informed about our information practices and the ways you can help protect your privacy.
-If the changes, in our sole discretion, are material, we may also notify you by sending an email to the address associated with your account if you have chosen to provide an email address or by otherwise providing notice through our Services.
-Information we receive about you including financial transaction data related to purchases made with our application can be accessed and preserved for an extended period when it is the subject of a legal request or obligation, governmental investigation or investigations of possible violations of our terms or policies, or otherwise to prevent harm.
 We rely on our legitimate interests to use your personal data for internal administrative purposes related to when you use our services such as our accounting and records and to make you aware of any changes to our services.
+2:
+We may obtain certain data about you, such as cookie id, mobile device id, or email address, and inferences about your interests and preferences from certain advertisers and advertising partners that allow us to deliver more relevant ads and measure their effectiveness.
+3:
+We collect the following categories of personal information identifiers such as your username, the email address you use to sign up, and your phone number, if you ve chosen to provide it, commercial information which is a record of what you ve bought from us, if anything, financial data payment information, if you ve bought anything from us, internet or other network information which shows how you interact with the application, location information because your IP address may indicate your general location, inference data about you and other information that identifies or can be reasonably associated with you.
+4:
+We use details about you to consider your application, give you the services we agreed to in line with our terms and conditions, to send you messages about your account and other services you use if you get in touch, or we need to tell you about something.
+5:
+We provide advertisers with reports about the kinds of people seeing their ads and how their ads are performing, but we don't share information that personally identifies you information such as your name or email address that by itself can be used to contact you or identifies who you are unless you give us permission.
+6:
+For example, when you visit our websites, sign into our services, interact with our email notifications, use your account to authenticate to a third party service, or visit a third party service that includes our content, we may receive information about you.
+7:
+You have the right to request a copy of your information, not let robots make big decisions about you, to ask us to correct information that's wrong, to delete it or to request that we only use it for certain purposes, to change your mind, and ask us to stop using your information.
+8:
+We may also share personal data with that third party about your use of our service, such as whether and to what extent you have used the offer, activated an account, or actively used our service.
 9:
-To send a GDPR data subject request or CCPA consumer request, follow the steps in the Your Rights Data Subject and Consumer Information Requests section above.
-We may share your Personal Data with members of our family of entities to, among other things, provide the Services you have requested or authorised, to manage risk, to help detect and prevent potentially illegal and fraudulent acts and other violations of our policies and agreements and to help us manage the availability and connectivity of our products, Services, and communications.
-We will give you information about how we use your personal data at the time we collect it from you for example, when you open an account or apply for a service online, or through privacy notices such as this one.
-Inferences we make based on other collected data, for purposes such as recommending content, advertising, and analytics.
-We process your information on the following legal bases .
+We may process your Personal Data with your consent to use cookies and other tracking technologies to provide a targeted display, feature, Service or offer to you and/or to work with other third parties such as merchants, advertising or analytics companies to provide these personalised services, also called interest based marketing.
 10:
+The personal data of yours that we use includes details we collect about you when you use our websites and apps, information provided when you use or receive our services and information we receive from other sources.
 11:
+Unless you have elected to remain anonymous through your device and/or platform settings, this information may be collected and used by us automatically if you use the service through your mobile device via any our company s mobile application, through your mobile's browser or otherwise.
 12:
+As a result of those actions, you might supply us with such information as your name, address and phone number, payment information, your age, your location information, your IP address, people, addresses and phone numbers listed in your Addresses, e mail addresses of your friends and other people, content of reviews and e mails to us, personal description and photograph in Your Profile, voice recordings when you speak to Alexa, images and video collected or stored in connection with our Services, information and documents regarding identity and standing, corporate and financial information, credit history information, VAT numbers, and device log files and configurations, including Wi Fi credentials, if you choose to automatically synchronise them with your other our devices.
 13:
-14:
-15:
-16:
-17:
-18:
-19:
+Where necessary, we transmit your personal data to processors and the following recipients for one or several of the purposes described above including corporate family members, external service providers, third parties using our single sign on service as authorised by you in each single case, other third parties with whom we partner to offer you specific services as described at the collection of the respective user consent.

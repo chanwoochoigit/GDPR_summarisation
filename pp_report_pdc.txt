@@ -1,0 +1,183 @@
+[cluster 0]
+
+	topic: what data do we collect?
+
+		clause found: "     What Personal Data do we collect and use (“Categories of Personal Data”)?."
+		relevance: 2.68938
+
+		clause found: "        Make sure your Personal Data are correct."
+		relevance: 3.056497
+
+		clause found: "       Access your personal data."
+		relevance: 3.140146
+
+[cluster 1]
+
+	topic: How do we collect your data?
+
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.513411
+
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 2.698396
+
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 2.993336
+
+[cluster 2]
+
+	topic: How will we use your data?
+
+		clause found: "       Obtain a machine-readable, portable copy of your personal data which you can share with another Company."
+		relevance: 2.982078
+
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 3.069538
+
+		clause found: "     How do you exercise your rights for your Personal Data?."
+		relevance: 3.12591
+
+[cluster 3]
+
+	topic: How do we store your data?
+
+		clause found: "       Delete your account and all Personal Data connected to your email address.."
+		relevance: 3.2612
+
+		clause found: "       Access your personal data."
+		relevance: 3.537825
+
+		clause found: "     How do you exercise your rights for your Personal Data?."
+		relevance: 3.546464
+
+[cluster 4]
+
+	topic: Marketing
+
+		clause found: "        Unsubscribe from our email marketing messages."
+		relevance: 3.023875
+
+		clause found: "        Object when we process your Personal Data based on “Legitimate Interest” (including unsubscribing from our direct marketing messages)."
+		relevance: 3.042858
+
+		clause found: "     Using Third-Party Tools to Exercise Your Individual Rights."
+		relevance: 3.09369
+
+[cluster 5]
+
+	topic: What are your data protection rights?
+
+		clause found: "        Restrict how we use your Personal Data."
+		relevance: 2.9083
+
+		clause found: "     How do you exercise your rights for your Personal Data?."
+		relevance: 2.968913
+
+		clause found: "       Access your personal data."
+		relevance: 3.171106
+
+[cluster 6]
+
+	topic: What are cookies?
+
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 2.450474
+
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.869244
+
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 3.191597
+
+[cluster 7]
+
+	topic: How do we use cookies?
+
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 2.451517
+
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.477538
+
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 3.165862
+
+[cluster 8]
+
+	topic: What types of cookies do we use?
+
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 2.451804
+
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.731649
+
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 2.836611
+
+[cluster 9]
+
+	topic: How to manage your cookies
+
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 3.066699
+
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 3.263608
+
+		clause found: "       Delete your account and all Personal Data connected to your email address.."
+		relevance: 3.521516
+
+[cluster 10]
+
+	topic: Privacy policies of other websites
+
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.722594
+
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 3.159871
+
+		clause found: "        “COOKIES” NOTICE: Installing Cookies, Pixels, Tags, and other Technologies on Your Browser to Collect Your Device Information and Track Your Activities on Ours and Other Platforms."
+		relevance: 3.254357
+
+[cluster 11]
+
+	topic: Changes to our privacy policy
+
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 3.328128
+
+		clause found: "     What does this Privacy Notice tell you?."
+		relevance: 3.730359
+
+		clause found: "We use these technologies to collect your device and browser information in order to track your activity for Marketing and Functional purposes, like featuring personalised ads and improving the website."
+		relevance: 3.761273
+
+[cluster 12]
+
+	topic: How to contact us
+
+		clause found: "     How do you exercise your rights for your Personal Data?."
+		relevance: 2.481524
+
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 2.599859
+
+		clause found: "     What does this Privacy Notice tell you?."
+		relevance: 2.889209
+
+[cluster 13]
+
+	topic: How to contact the appropriate authorities
+
+		clause found: "     File a complaint with your local data protection supervisory authority."
+		relevance: 2.566626
+
+		clause found: "Please visit our privacy notice (see Cookies Notice section) for more information and to understand how we use your data for Required purposes (e.g."
+		relevance: 3.347169
+
+		clause found: "     How do you exercise your rights for your Personal Data?."
+		relevance: 3.458242
+
+[END OF REPORT]

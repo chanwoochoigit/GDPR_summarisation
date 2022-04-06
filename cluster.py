@@ -1,13 +1,17 @@
 import itertools
 import logging
+import math
 import pickle
 import json
 import random
+import re
 import time
 from collections import defaultdict
 from math import log2
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import rouge
 from scipy.spatial.distance import euclidean
 from sentence_transformers import SentenceTransformer
 from matplotlib import pyplot as plt
@@ -125,7 +129,7 @@ class Clustering():
         u_labels = np.unique(pred)
         for i in u_labels:
             plt.scatter(df[pred == i, 0], df[pred == i, 1], label=i)
-        plt.legend(bbox_to_anchor=(1.14,1.05), loc='upper right')
+        # plt.legend(bbox_to_anchor=(1.14,1.05), loc='upper right')
         plt.savefig('clustering_results/{}.png'.format(algorithm))
 
     # perform unsupervised clustering and compare results for different clustering algorithms
@@ -150,7 +154,7 @@ class Clustering():
                         pseudo_centers.append(pca2vector[self.generate_pca_key(pc)])
 
                     # decode cluster centres and write out to a json file
-                    cluster_labels = list(range(10))
+                    cluster_labels = list(range(num_clusters))
                     log.info('pseudo centres length: {}'.format(len(pseudo_centers)))
                     log.info('cluster labels length: {}'.format(len(cluster_labels)))
                     centers_decoded = self.cluster_decode(pseudo_centers, cluster_labels, num_clusters)
@@ -541,7 +545,7 @@ class EvalCluster():
 
 class UtilityFunct():
 
-    def format_worthy_sentences(self, sentences, labels):
+    def format_sentences(self, sentences, labels):
         splitted = []
         labels_extended = []    # each element in "sentences" is a set of multiple setences: therefore when they are split,
                                 # the labels should be duplicated accordingly
@@ -578,11 +582,8 @@ class UtilityFunct():
                                                                                             len(labels_extended)))
         return formatted, labels_extended
 
-#pre-determined centroid clustering
-class PDC():
-
+class RefGDPR():
     def __init__(self):
-        self.model = SentenceTransformer('snt_tsfm_model/')
         self.key_topics_titles = [
             'what data do we collect?',
             'How do we collect your data?',
@@ -600,47 +601,54 @@ class PDC():
             'How to contact the appropriate authorities'
         ]
         self.key_topics = [
-        'we collect personal identification information such as name email phone number etc and other necessary data',
+            'we collect personal identification information such as name, email, phone number, etc and other necessary data.',
 
-        'you directly provide us most of the data we collect your data when you register online place order voluntarily '
-        'complete survey provide feedback use or view via cookies',
+            'you directly provide us most of the data we collect your data when you register online, place order, voluntarily '
+            'complete survey, provide feedback, use or view via cookies.',
 
-        'we use your data to process order and manage account email you with special offers share your data with partner '
-        'companies send your data to credit reference agencies to prevent fraud abuse misuse',
+            'we use your data to process order and manage account email you with special offers, share your data with partner '
+            'companies, and send your data to credit reference agencies to prevent fraud and abuse.',
 
-        'we securely store retain maintain keep hold your data at until once this period time expired we delete'
-        ' your data by months years',
+            'we securely retain, and maintain your data at until once this period time expired we delete'
+            ' your data by months years.',
 
-        'we send you information about products and services you might like recommend marketing third party use opt out '
-        'later right to stop no longer wish marketing purposes',
+            'we send you information about products and services you might like recommend marketing third party use opt out '
+            'later right to stop no longer wish marketing purposes.',
 
-        'your data protection rights you have right to access rectify edit erase remove delete restrict processing object'
-        ' data portable control transfer',
+            'your data protection rights you have right to access rectify edit erase remove delete restrict processing object'
+            ' data portable control transfer.',
 
-        'what are cookies cookies are text files placed on your computer when you visit our website we collect through cookies',
+            'what are cookies cookies are text files placed on your computer when you visit our website we collect through cookies.',
 
-        'we use your cookies to keep you signed in understand how you use our website',
+            'we use your cookies to keep you signed in understand how you use our website.',
 
-        'we use different types of cookies functionality remember your preferences language location advertising links you followed'
-        'share online data with third parties for advertising authentication security performance analytics research',
+            'we use different types of cookies, functionality remember your preferences language location advertising links you followed'
+            'share online data with third parties for advertising authentication security performance analytics research.',
 
-        'how to manage cookies you can set your browser not to accept cookies remove cookies some of features not function as a result',
+            'manage cookies, you can set your browser not to accept cookies remove cookies some of features not function as a result',
 
-        'privacy policy of other websites other companies other parties we contain links to other websites our privacy policy apply only to our'
-        'if you clink link to another website you should read refer too their policy',
+            'we contain links to other websites our privacy policy apply only to our website, if you click link to another website '
+            'you should read and refer to their policy',
 
-        'we keep our privacy policy under review and change regularly this was last updated on',
+            'we keep our privacy policy under review and change regularly this was last updated on',
 
-        'how to contact us if you have questions on privacy policy data we hold on you data about data protection rights',
+            'how to contact us if you have questions on privacy policy data we hold on you data about data protection rights',
 
-        'how to contact the appropriate authorities and data protection officer report complaint information commissioner office'
-    ]
+            'how to contact the appropriate authorities and data protection officer report complaint information commissioner office'
+        ]
+
+#pre-determined centroid clustering
+class PDC():
+
+    def __init__(self):
+        self.model = SentenceTransformer('snt_tsfm_model/')
+        self.ref = RefGDPR()
 
     def get_predefined_centroids(self):
-        return self.model.encode(self.key_topics)
+        return self.model.encode(self.ref.key_topics)
 
     def get_n_best_from_predefined_centroids(self, sentences, n_best=5):
-        key_topics_encoded = self.model.encode(self.key_topics)
+        key_topics_encoded = self.model.encode(self.ref.key_topics)
         sentences_encoded = self.model.encode(sentences)
 
         cluster_result = defaultdict(dict)
@@ -670,7 +678,7 @@ class PDC():
                 cluster_result[cluster][sid] = {'text':id2sent[sid],
                                                 'distance':cluster_result[cluster][sid]}
 
-            cluster_result[cluster] = {'topic':self.key_topics_titles[int(cluster)],
+            cluster_result[cluster] = {'topic':self.ref.key_topics_titles[int(cluster)],
                                        'members':cluster_result[cluster]}
         return cluster_result
 
@@ -681,7 +689,7 @@ class PDC():
         return str(product).split('e')[0][-8:]
 
     def run_clustering_with_predetermined_centroids(self, sentences, n_best=10):
-        key_topics_encoded = self.model.encode(self.key_topics)
+        key_topics_encoded = self.model.encode(self.ref.key_topics)
         sentences_encoded = self.model.encode(sentences)
 
         # dictionary that converts sentence id to vector
@@ -738,8 +746,9 @@ class PPReporter():
         options = Options()
         driver = webdriver.Firefox(options=options)
         driver.get(url)
-        body = driver.find_element(By.TAG_NAME, 'body')
-        clauses = body.text.split('\n')
+        time.sleep(2.5)
+        body = driver.find_element(By.XPATH, '/html/body').text
+        clauses = body.split('\n')
         driver.close()
 
         clauses_splitted = []
@@ -754,9 +763,10 @@ class PPReporter():
         except:
             pass
 
-        # remove titles
+        # remove section titles because we're only using plain sentences
         clauses_no_titles = []
         [clauses_no_titles.append(c) for c in clauses_splitted if not self.is_title(c)]
+        log.info('original clauses length: %d' % len(clauses_no_titles))
 
         if mode == 'pdc':
 
@@ -781,11 +791,25 @@ class PPReporter():
                     raw_text.append(report[cluster]['members'][sid]['text'])
 
         elif mode == 'kmeans':
-            with open('cluster_centers.json', 'r') as f:
-                centers_dict = json.load(f)
 
-            # only return the sentences & flatten the list because it's 2d (2d arrays are not accepted by SentenceTransformer
-            return list(itertools.chain.from_iterable(list(centers_dict.values())))
+            # load trained centroids
+            with open('cluster_centers.json', 'r') as f:
+                trained_centroids = json.load(f)
+
+            tsfm = SentenceTransformer('snt_tsfm_model')
+            raw_text = []
+            centroids = list(itertools.chain.from_iterable(list(trained_centroids.values())))
+            centroids_encoded = tsfm.encode(centroids)
+
+            clauses_no_titles_encoded = tsfm.encode(clauses_no_titles)
+
+            for i, c in enumerate(centroids_encoded): # for each trained centroid find the closest sentence
+                distances = [(euclidean(c, v), s) for s, v in zip(clauses_no_titles, clauses_no_titles_encoded)]    # calculate distance and keep the original sentence
+                distances = sorted(distances)   #sort sentences by distance to trained centroids
+                closest_sentence = distances[0][1]
+                raw_text.append(closest_sentence)    #append closest sentence to returning text
+            # # only return the sentences & flatten the list because it's 2d (2d arrays are not accepted by SentenceTransformer
+            # return list(itertools.chain.from_iterable(list(centers_dict.values())))
 
         else:
             raise ValueError('entered wrong mode! it should be either pdc or kmeans.')
@@ -794,22 +818,328 @@ class PPReporter():
 
     # take a list of unencoded sentences and do evaluation on the summary report
     def evaluate_report(self, report_sentences):
+        ref = RefGDPR()
         pdc = PDC()
-        titles = pdc.model.encode(pdc.key_topics_titles)
+        titles = pdc.model.encode(ref.key_topics_titles)
         rs_encoded = pdc.model.encode(report_sentences)
 
         ssd = 0
-        for t in titles:
+        for i, t in enumerate(titles):
+            print('[%s]' % ref.key_topics_titles[i])
             t_distance = 1e+10
-            for rs in rs_encoded:
+            closest_sentence = ''
+            for i, rs in enumerate(rs_encoded):
                 d = euclidean(t,rs)
                 if d < t_distance:
                     t_distance = d
+                    closest_sentence = report_sentences[i]
+                    print('%s: %.4f' % (closest_sentence, t_distance ** 2))
             ssd += t_distance ** 2  # add squared minimal distance
-
+        print('----------------------------------------------------------')
         # log.info('report score: {}'.format(round(ssd,2)))
         return ssd
 
+class RougeEvaluation():
+
+    def __init__(self):
+        self.rouge_model = rouge.Rouge(
+            metrics=['rouge-n', 'rouge-l', 'rouge-w'],
+            # metrics=['rouge-n'],
+            max_n=2,
+            limit_length=True,
+            length_limit=100,
+            length_limit_type='words',
+            apply_avg='Avg',
+            apply_best='Best',
+            alpha=0.5,  # Default F1_score
+            weight_factor=1.2,
+            stemming=True
+        )
+
+    def evaluate(self, summaries_list, references):
+        rf = RefGDPR()
+        scores_1 = {}
+        scores_L = {}
+        for topic, ref in zip(rf.key_topics_titles, references):  # essential GDPR topic sample sentence (out of 14)
+            score_1 = -1
+            score_L = -1
+            for summary in summaries_list:
+                results = self.rouge_model.get_scores(hypothesis=[summary], references=[ref])
+                rouge_1 = results['rouge-1']['f']
+                rouge_L = results['rouge-l']['f']
+
+                if rouge_1 > score_1:
+                    score_1 = rouge_1
+                if rouge_L > score_L:
+                    score_L = rouge_L
+
+            scores_1[topic.replace(' ', '_')] = score_1
+            scores_L[topic.replace(' ', '_')] = score_L
+
+        scores_1['mean'] = sum(list(scores_1.values()))/len(scores_1)
+        scores_L['mean'] = sum(list(scores_L.values()))/len(scores_L)
+
+        # print(scores)
+        return scores_1, scores_L
+
+def take_input(n_best, url):
+    ppr = PPReporter()
+    topics = [
+            'what data do we collect?',
+            'How do we collect your data?',
+            'How will we use your data?',
+            'How do we store your data?',
+            'Marketing',
+            'What are your data protection rights?',
+            'What are cookies?',
+            'How do we use cookies?',
+            'What types of cookies do we use?',
+            'How to manage your cookies',
+            'Privacy policies of other websites',
+            'Changes to our privacy policy',
+            'How to contact us',
+            'How to contact the appropriate authorities'
+        ]
+    raw_text_pdc = ppr.generate_report(url=url,
+                                       mode='pdc',
+                                       n_best=n_best)
+    result = defaultdict(list)
+    for i, t in enumerate(topics):
+        result[t].append(raw_text_pdc[n_best * i : n_best * (i+1)])
+
+    for key in result:
+        temp = result[key]
+        result[key] = list(itertools.chain.from_iterable(temp))
+
+    return result
+
+def evaluate_clauses_ssd(target_url):
+
+    ppr = PPReporter()
+    ref = RefGDPR()
+    
+    raw_text_pdc = ppr.generate_report(url=target_url,
+                                       mode='pdc',
+                                       n_best=3)
+
+    raw_text_kms = ppr.generate_report(url=target_url,
+                                       mode='kmeans')
+
+    # direct sample from gdpr for benchmarking
+    raw_text_gdpr = ref.key_topics
+
+    score_pdc = ppr.evaluate_report(raw_text_pdc)
+    score_kms = ppr.evaluate_report(raw_text_kms)
+    score_gdpr = ppr.evaluate_report(raw_text_gdpr)
+
+    # try evaluation on randomly generated sentences for benchmarking
+    with open('random_sentences.txt', 'r') as f:
+        random_sentences = f.read().split('\n')
+
+    # choose 14 from list of random sentences
+    random_14 = random.sample(random_sentences, 14)
+    score_rand = ppr.evaluate_report(random_14)
+
+    target_url = target_url.replace('https://','').replace('www.','').replace('/','.')
+    company_name = target_url.split('.')[0] + target_url.split('.')[1]
+    return "%s,%.4f,%.4f,%.4f,%.4f" % (company_name, score_rand, score_pdc, score_kms, score_gdpr)
+
+def evaluate_clauses_rouge(target_url):
+    rg = RougeEvaluation()
+    ppr = PPReporter()
+    ref = RefGDPR()
+
+    # get reference summary
+    ref_summary = ref.key_topics
+
+    # try evaluation on randomly generated sentences for benchmarking
+    with open('random_sentences.txt', 'r') as f:
+        random_sentences = f.read().split('\n')
+
+    # choose 14 from list of random sentences
+    random_14 = random.sample(random_sentences, 14)
+
+    raw_text_pdc = ppr.generate_report(url=target_url,
+                                       mode='pdc',
+                                       n_best=3)
+
+    raw_text_kms = ppr.generate_report(url=target_url,
+                                       mode='kmeans')
+
+    rand_1, rand_L = rg.evaluate(random_14, ref_summary)
+    pdc_1, pdc_L = rg.evaluate(raw_text_pdc, ref_summary)
+    kms_1, kms_L = rg.evaluate(raw_text_kms, ref_summary)
+    return {
+        'rand': {'one': rand_1,
+                 'L' : rand_L},
+        'pdc': {'one': pdc_1,
+                'L': pdc_L},
+        'kms': {'one': kms_1,
+                'L': kms_L}
+    }
+
+def calc_avg(list):
+    sum = 0
+    for item in list:
+        sum += float(item)
+    return sum / len(list)
+
+def std_dev(list, avg):
+    var = 0
+    for item in list:
+        var += (item-avg) ** 2
+
+    return math.sqrt(var/len(list))
+
+
+def record_evaluation_results_ssd():
+    eval = pd.read_csv('evaluate_urls.csv')
+
+    with open('ssd_evaluation.txt', 'w') as f:
+        f.write(str(eval))
+        score_rand = calc_avg(eval['score_rand'])
+        rand_std = std_dev(eval['score_rand'], score_rand)
+
+        score_pdc = calc_avg(eval['score_pdc'])
+        pdc_std = std_dev(eval['score_pdc'], score_pdc)
+
+        score_kms = calc_avg(eval['score_kms'])
+        kms_std = std_dev(eval['score_kms'], score_kms)
+
+        score_gdpr = calc_avg(eval['score_gdpr'])
+        gdpr_std = std_dev(eval['score_gdpr'], score_gdpr)
+
+        f.write('\n[SSD] random: %.4f | pdc: %.4f | kms: %.4f | GDPR: %.4f' % (score_rand,
+                                                                             score_pdc,
+                                                                             score_kms,
+                                                                             score_gdpr))
+        f.write('\n[std] random: %.4f | pdc: %.4f | kms: %.4f | GDPR: %.4f' % (rand_std,
+                                                                            pdc_std,
+                                                                            kms_std,
+                                                                            gdpr_std))
+
+def record_evaluation_results_rouge():
+    with open('rouge_evaluation.json', 'r') as f:
+        rouge_json = json.load(f)
+
+    with open('rouge_evaluation.txt', 'w') as f:
+        pdc_mean_1_global = 0
+        kms_mean_1_global = 0
+        rand_mean_1_global = 0
+
+        pdc_mean_L_global = 0
+        kms_mean_L_global = 0
+        rand_mean_L_global = 0
+
+        # means for ROUGE_1
+        pdc_means_1 = []
+        kms_means_1 = []
+        rand_means_1 = []
+
+        # means for ROUGE_L
+        pdc_means_L = []
+        kms_means_L = []
+        rand_means_L = []
+
+        # calculate mean score across topics for each website
+        for website in rouge_json.keys():
+            pdc_mean_1 = rouge_json[website]['pdc']['one']['mean']
+            pdc_means_1.append(pdc_mean_1)
+
+            pdc_mean_L = rouge_json[website]['pdc']['L']['mean']
+            pdc_means_L.append(pdc_mean_L)
+
+            kms_mean_1 = rouge_json[website]['kms']['one']['mean']
+            kms_means_1.append(kms_mean_1)
+
+            kms_mean_L = rouge_json[website]['kms']['L']['mean']
+            kms_means_L.append(kms_mean_L)
+
+            rand_mean_1 = rouge_json[website]['rand']['one']['mean']
+            rand_means_1.append(rand_mean_1)
+
+            rand_mean_L = rouge_json[website]['rand']['L']['mean']
+            rand_means_L.append(rand_mean_L)
+
+            f.write('[%s] ROUGE-1 | rand: %.4f | pdc: %.4f | kms: %.4f\n' % (website, rand_mean_1, pdc_mean_1, kms_mean_1))
+            f.write('[%s] ROUGE-L | rand: %.4f | pdc: %.4f | kms: %.4f\n' % (website, rand_mean_L, pdc_mean_L, kms_mean_L))
+
+            pdc_mean_1_global += pdc_mean_1
+            kms_mean_1_global += kms_mean_1
+            rand_mean_1_global += rand_mean_1
+
+            pdc_mean_L_global += pdc_mean_L
+            kms_mean_L_global += kms_mean_L
+            rand_mean_L_global += rand_mean_L
+
+        ###calculate global mean for ROUGE-1
+        pdc_mean_1_global = pdc_mean_1_global/len(rouge_json)
+        kms_mean_1_global = kms_mean_1_global/len(rouge_json)
+        rand_mean_1_global = rand_mean_1_global/len(rouge_json)
+
+        ###calculate global standard deviation for ROUGE-1
+        pdc_mean_L_global = pdc_mean_L_global / len(rouge_json)
+        kms_mean_L_global = kms_mean_L_global / len(rouge_json)
+        rand_mean_L_global = rand_mean_L_global / len(rouge_json)
+
+        pdc_1_std = std_dev(pdc_means_1, pdc_mean_1_global)
+        kms_1_std = std_dev(kms_means_1, kms_mean_1_global)
+        rand_1_std = std_dev(rand_means_1, rand_mean_1_global)
+
+        pdc_L_std = std_dev(pdc_means_L, pdc_mean_L_global)
+        kms_L_std = std_dev(kms_means_L, kms_mean_L_global)
+        rand_L_std = std_dev(rand_means_L, rand_mean_L_global)
+
+        f.write('[GLOBAL] [ROUGE-1] [mean] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (rand_mean_1_global, pdc_mean_1_global, kms_mean_1_global))
+        f.write('[GLOBAL] [ROUGE-1] [std. dev.] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (rand_1_std, pdc_1_std, kms_1_std))
+        f.write('[GLOBAL] [ROUGE-L] [mean] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (rand_mean_L_global, pdc_mean_L_global, kms_mean_L_global))
+        f.write('[GLOBAL] [ROUGE-L] [std. dev.] rand: %.4f | pdc: %.4f | kms: %.4f\n' % (rand_L_std, pdc_L_std, kms_L_std))
+
+
+def visualise_evaluation_results_ssd():
+    eval = pd.read_csv('evaluate_urls.csv')
+    companies = eval['company_name']
+    score_rand = eval['score_rand']
+    score_pdc = eval['score_pdc']
+    score_kms = eval['score_kms']
+    score_gdpr = eval['score_gdpr']
+
+    fig, ax = plt.subplots()
+    ax.plot(companies, score_rand, label='random')
+    ax.plot(companies, score_pdc, label='PDC')
+    ax.plot(companies, score_kms, label='K-means')
+    ax.plot(companies, score_gdpr, label='GDPR', linestyle='-', color='blue')
+    ax.set_xticks(companies[::2])
+    ax.set_xticklabels(companies[::2], rotation=75)
+    ax.set_ylabel('Sum of Squared Distance')
+    ax.set_xlabel('Privacy Policy company name')
+    plt.legend(bbox_to_anchor=(0.99,1.0), loc='upper left')
+    plt.savefig('ssd_plot.png', bbox_inches='tight')
+
+def visualise_evaluation_results_rouge():
+    with open('rouge_evaluation.json', 'r') as f:
+        rouge_eval = json.load(f)
+
+    companies = list(rouge_eval.keys())
+    scores_rand = []
+    scores_pdc = []
+    scores_kms = []
+
+    for comp in companies:
+        scores_rand.append(rouge_eval[comp]['rand']['mean'])
+        scores_pdc.append(rouge_eval[comp]['pdc']['mean'])
+        scores_kms.append(rouge_eval[comp]['kms']['mean'])
+
+    fig, ax = plt.subplots()
+    ax.plot(companies, scores_rand, label='random')
+    ax.plot(companies, scores_pdc, label='PDC')
+    ax.plot(companies, scores_kms, label='K-means')
+    ax.set_xticks(companies[::2])
+    ax.set_xticklabels(companies[::2], rotation=75)
+    ax.set_ylabel('Rouge mean score')
+    ax.set_xlabel('Privacy Policy company name')
+    plt.legend(bbox_to_anchor=(0.99,1.0), loc='upper left')
+    plt.savefig('rouge_plot.png', bbox_inches='tight')
 
 def main():
 
@@ -823,24 +1153,30 @@ def main():
     ut = UtilityFunct()
     sentences_raw = pd.read_csv('training_data/alice/data_alice.csv')['clause']
     labels_raw = pd.read_csv('training_data/alice/data_alice.csv')['class']
-    sentences, labels = ut.format_worthy_sentences(sentences_raw, labels_raw)
+    sentences, labels = ut.format_sentences(sentences_raw, labels_raw)
+
+    ### find average word length of sentences
+    # sum = 0
+    # for s in sentences:
+    #     sum += len(s.split(' '))
+    # print('%d words on average!'%(sum/len(sentences)))
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""do Pre-Deteremined centroid clustering"""""""""""""""""""""""""""""
-    # pdc = PDC()
-    # result = pdc.cluster_by_distance_get_n_best(sentences,10)
-    # for cluster in result.keys():
-    #     log.info('topic: {}'.format(result[cluster]['topic']))
-    #     for member in result[cluster]['members'].keys():
-    #         log.info('{}: {}'.format(member, result[cluster]['members'][member]))
-    #     log.info('\n')
+    pdc = PDC()
+    result = pdc.get_n_best_from_predefined_centroids(sentences,1000)
+    for cluster in result.keys():
+        log.info('topic: {}'.format(result[cluster]['topic']))
+        for member in result[cluster]['members'].keys():
+            log.info('{}: {}'.format(member, result[cluster]['members'][member]))
+        log.info('\n')
 
-    # pdc_clustered_dict, sentence_vectors = pdc.run_clustering_with_predetermined_centroids(sentences, n_best=30)
-    # pca_vectors, _ = clu.do_pca(n_components=140, sentences=sentence_vectors)
-    # labels = list(map(int, list(pdc_clustered_dict.values())))
-    # clu.plot_labels(pca_vectors, labels, 'pdc') #plot clustering results
-    # sil = silhouette_score(pca_vectors, labels)
-    # log.info(sil)
+    pdc_clustered_dict, sentence_vectors = pdc.run_clustering_with_predetermined_centroids(sentences, n_best=100000)
+    pca_vectors, _ = clu.do_pca(n_components=3, sentences=sentence_vectors)
+    labels = list(map(int, list(pdc_clustered_dict.values())))
+    clu.plot_labels(pca_vectors, labels, 'pdc') #plot clustering results
+    sil = silhouette_score(pca_vectors, labels)
+    log.info(sil)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""do embedding and load embedded sentences to be processed"""""""""
@@ -853,20 +1189,22 @@ def main():
 
     """"""""""""""""""""""""""""""""""""""""""""""do pca on embedded sentences"""""""""""""""""""""""""""""""""""""""""""""
     # clu.find_best_ncomp_for_pca(embedded_sentences)
-    # pca_sentences, pca2vector = clu.do_pca(n_components=100,sentences=embedded_sentences)   #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
+    # pca_sentences, pca2vector = clu.do_pca(n_components=10,sentences=embedded_sentences)   #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
 
-    # find best ncomp by silhouette scores
+    ### find best ncomp by silhouette scores
     # sil = []
-    # k = 30
+    # k = 14
     # for i, n in enumerate(range(3,200)):
     #     log.info('doing silhouette scores on various ncomp ... {}/{}'.format(i, len(list(range(3,200)))))
     #     pca_sentences, pca2vector = clu.do_pca(n_components=n,
     #                                            sentences=embedded_sentences)  #90% var: 140, 85%:100 80%: 80 75% 65 70%: 45
     #     sil.append(clu.do_silhouette_single(pca_sentences, k))
-
+    #
     # y = sil
     # x = range(3,200)
     # plt.plot(x, y)
+    # plt.xlabel('Number of Components')
+    # plt.ylabel('Silhouette score')
     # plt.savefig('silhouette_by_ncomps_k={}.png'.format(k))
     # plt.show()
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -877,15 +1215,15 @@ def main():
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""""""""""perform different clustering methods"""""""""""""""""""""""""""""""""""""""""
-    distance_metric = 'euclidean'
-    k = 14
-
-    ## run clustering and compare results using many clustering algorithms
+    # distance_metric = 'euclidean'
+    # k = 14
+    #
+    # # run clustering and compare results using many clustering algorithms
     # algorithms = ['kmeans','kmeans_mini','dbscan', 'hdbscan','gaussian',
     #                'birch','affinity','meanshift','optics','agglomerative']
     # algorithms_competitive = ['kmeans','kmeans_mini','gaussian','birch', 'agglomerative']
     # clustering_result = {}
-    # for al in algorithms_competitive:
+    # for al in algorithms:
     #      sil = clu.perform_clustering(pca_sentences,al, num_clusters=k, metric=distance_metric)
     #      clustering_result[al] = sil
     # log.info(clustering_result)
@@ -896,7 +1234,7 @@ def main():
     # for item in sorted_clustering_result.items():
     #     log.info(item)
 
-    # do further analysis and report using kmeans because it gives the best silhouette score
+    # ###do further analysis and report using kmeans because it gives the best silhouette score
     # clu.perform_clustering(pca_sentences, 'kmeans', num_clusters=k, metric=distance_metric, pca2vector=pca2vector)
     # with open('cluster_centers.json', 'r') as f:
     #     centers = json.load(f)
@@ -917,43 +1255,58 @@ def main():
     #                    num_max_sentences=1)
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-    """""""""""""""""""""""""""""""""generate report on PP using a url & evaluate"""""""""""""""""""""""""""""""""
-    sample_url = 'https://stackoverflow.com/legal/privacy-policy'
-    sample_url_2 = 'https://www.rightmove.co.uk/this-site/privacy-policy.html'
-    pdc = PDC()
-    ppr = PPReporter()
+    """""""""""""""""""""""""""""""""generate report on PP (SSD) using a url & evaluate"""""""""""""""""""""""""""""""""
+    # ## get list of urls to test
+    # with open('pps_to_eval.txt', 'r') as f:
+    #     urls_to_eval = f.read().split('\n')
+    # try:
+    #     urls_to_eval.remove('')
+    # except:
+    #     pass
+    #
+    # ## run evaluation on all urls
+    # with open('evaluate_urls.csv', 'w') as f:
+    #     f.write('company_name,score_rand,score_pdc,score_kms,score_gdpr\n')
+    #     for url in urls_to_eval:
+    #         f.write(evaluate_clauses_ssd(url)+'\n')
 
-    raw_text_pdc = ppr.generate_report(url=sample_url_2,
-                                       mode='pdc',
-                                       n_best=2)
+    # play around with the SSD evaluation result
+    # record_evaluation_results_ssd()
+    # visualise_evaluation_results_ssd()
 
-    raw_text_kms = ppr.generate_report( url=sample_url_2,
-                                        mode='kmeans',
-                                        n_best=2)
+    # test take input module for flask app
+    # n_best = 1
+    # url = 'https://stackoverflow.com/legal/privacy-policy'
+    # take_input(n_best, url)
 
-    # direct sample from gdpr for benchmarking
-    raw_text_gdpr = pdc.key_topics
+    # """""""""""""""""""""""""""""""""generate report on PP (ROUGE) using a url & evaluate"""""""""""""""""""""""""""""""""
+    # ######## get list of urls to test
+    # with open('pps_to_eval.txt', 'r') as f:
+    #     urls_to_eval = f.read().split('\n')
+    # try:
+    #     urls_to_eval.remove('')
+    # except:
+    #     pass
+    #
+    # rouge_results = {}
+    # start = time.time()
+    # for i, url in enumerate(urls_to_eval):
+    #     log.info('evaluating url num %d/%d | running time: %.4f seconds!' % (i, len(urls_to_eval), time.time()-start))
+    #     result = evaluate_clauses_rouge(url)
+    #     url = url.replace('https://', '').replace('www.', '').replace('/', '.')
+    #     company_name = url.split('.')[0] + url.split('.')[1]
+    #     rouge_results[company_name] = result
+    #
+    # with open('rouge_evaluation.json', 'w') as f:
+    #     json.dump(rouge_results, f)
 
-    score_pdc = ppr.evaluate_report(raw_text_pdc)
-    score_kms = ppr.evaluate_report(raw_text_kms)
-    score_gdpr = ppr.evaluate_report(raw_text_gdpr)
+    ### make the results pretty to human eyes
+    # record_evaluation_results_rouge()
+    # visualise_evaluation_results_rouge()
 
-    # try evaluation on randomly generated sentences for benchmarking
-    with open('random_sentences.txt','r') as f:
-        random_sentences = f.read().split('\n')
-
-    # choose 14 from list of random sentences
-    random_14 = random.sample(random_sentences,14)
-
-    score_rand = ppr.evaluate_report(random_14)
-
-    log.info('report eval score:\n\trandom:{}\n\tpdc:{}\n\tkms:{}\n\tgdpr:{}'.format(
-                                                                                        round(score_rand,4),
-                                                                                        round(score_pdc,4),
-                                                                                        round(score_kms,4),
-                                                                                        round(score_gdpr,4)
-                                                                                    ))
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    # ### print out sentences to interpret SSD results
+    # test_url = 'https://weather.com/en-US/twc/privacy-policy'
+    # evaluate_clauses_ssd(test_url)
 
 if __name__ == '__main__':
     main()
